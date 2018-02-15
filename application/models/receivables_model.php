@@ -193,16 +193,15 @@ class Receivables_Model extends CI_Model {
 							ELSE 0
 						END amount_due_balance,
 						CASE WHEN days_overdue BETWEEN 1 and 15 THEN balance_php ELSE 0 END past_due_1_to_15,
-						CASE WHEN days_overdue BETWEEN 16 and 15 THEN balance_php ELSE 0 END past_due_16_to_30,
-						CASE WHEN days_overdue BETWEEN 30 and 60 THEN balance_php ELSE 0 END past_due_31_to_60,
+						CASE WHEN days_overdue BETWEEN 16 and 30 THEN balance_php ELSE 0 END past_due_16_to_30,
+						CASE WHEN days_overdue BETWEEN 31 and 60 THEN balance_php ELSE 0 END past_due_31_to_60,
 						CASE WHEN days_overdue BETWEEN 61 and 90 THEN balance_php ELSE 0 END past_due_61_to_90,
 						CASE WHEN days_overdue BETWEEN 91 and 120 THEN balance_php ELSE 0 END past_due_91_to_120,
-						CASE WHEN days_overdue BETWEEN 120 and 360 THEN balance_php ELSE 0 END past_due_120_to_360,
+						CASE WHEN days_overdue BETWEEN 121 and 360 THEN balance_php ELSE 0 END past_due_121_to_360,
 						CASE WHEN days_overdue BETWEEN 361 and 720 THEN balance_php ELSE 0 END past_due_361_to_720,
 						CASE WHEN days_overdue > 720 THEN balance_php ELSE 0 END past_due_over_720,
 						CASE WHEN days_overdue > 0 THEN balance_php ELSE 0 END past_due,
-						CASE WHEN delivery_date IS NULL THEN balance_php ELSE 0 END contingent,
-						CASE WHEN delivery_date IS NOT NULL AND days_overdue = 0 THEN balance_php ELSE 0 END current_
+						CASE WHEN days_overdue = 0 THEN balance_php ELSE 0 END current_
 					   FROM (
 							SELECT 
 								hcaa.cust_account_id customer_id,

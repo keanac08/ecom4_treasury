@@ -63,7 +63,6 @@ class Receivables_excel extends CI_Controller {
 						'PAST_DUE_361_TO_720' => '#,##0.00',
 						'PAST_DUE_OVER_720' => '#,##0.00',
 						'PAST_DUE' => '#,##0.00',
-						'CONTINGENT' => '#,##0.00',
 						'CURRENT' => '#,##0.00'
 					);
 		$writer->writeSheetHeader('Sheet1', $header );
