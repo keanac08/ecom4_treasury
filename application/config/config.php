@@ -23,7 +23,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://ecommerce4/treasury/';
+//~ $config['base_url'] = 'http://ecommerce4/treasury/';
+if(!isset($_SERVER['HTTP_HOST'])){
+	$config['base_url'] = 'http://ecommerce4/treasury/';
+}
+else {
+	$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/treasury/';
+}
 
 /*
 |--------------------------------------------------------------------------
