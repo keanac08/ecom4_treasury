@@ -1,2 +1,2 @@
-# ecom4_treasury
+# treasury
 ecommerce4/treasury
