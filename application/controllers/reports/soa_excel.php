@@ -29,8 +29,9 @@ class Soa_excel extends CI_Controller {
 		$writer = new XLSXWriter();
 		
 		$header = array(
-						'Account_Number' => 'string',
+						'Customer_ID' => 'string',
 						'Customer_Name' => 'string',
+						'Account_Name' => 'string',
 						'Fleet_Name' => 'string',
 						'Customer_PO_Number' => 'string',
 						'Profile_Class' => 'string',
@@ -53,8 +54,9 @@ class Soa_excel extends CI_Controller {
 		foreach($rows as $row){
 			
 			$line = array(
-						$row->ACCOUNT_NUMBER,
+						$row->CUSTOMER_ID,
 						$row->CUSTOMER_NAME,
+						$row->ACCOUNT_NAME,
 						$row->FLEET_NAME,
 						$row->CUST_PO_NUMBER,
 						$row->PROFILE_CLASS,
