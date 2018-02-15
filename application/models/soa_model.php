@@ -77,7 +77,7 @@ class Soa_model extends CI_Model {
 		
 		$and = ' AND soa.profile_class_id IN ('.$profile_class_ids.')';
 		
-		$sql = "SELECT hcaa.cust_account_id account_number,
+		$sql = "SELECT hcaa.cust_account_id customer_id,
 					   hp.party_name       customer_name,
 					   hcaa.account_name   account_name,
 					   hcpc.name           profile_class,
