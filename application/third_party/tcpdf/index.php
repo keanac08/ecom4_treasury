@@ -1,0 +1,1 @@
+<?php header('location:/ipc_central/sys_proc_LTE/'); ?>
