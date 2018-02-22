@@ -83,8 +83,6 @@
 		$('#btn-submit').on('click', function(){
 			//~ alert('aw');
 			
-			
-			
 			 var check_bank = $('input[name=check_bank]:checked').val();
 			 var from_date = $('input[name=from_date]').val();
 			 var to_date = $('input[name=to_date]').val();
@@ -115,10 +113,10 @@
 								}
 							}); 
 						}, 
-					url: '<?php echo base_url();?>check_writer/ajax_export_payables',
+					url: '<?php echo base_url();?>payables/check_writer/ajax_export_payables',
 					success: function(data){
 						if(data != 'false'){
-							document.location.href = 'payables/'+data;
+							document.location.href = 'export/'+data;
 							//~ $.unblockUI;
 							//~ alert('Success!');
 						}

@@ -31,6 +31,7 @@ class Login extends CI_Controller {
 			
 			$treasury_user_data = array(
 					'tre_portal_user_id' => $data[0]->USER_ID,
+					'tre_portal_user_type' => $data[0]->USER_TYPE_NAME,
 					'tre_portal_username' => $data[0]->USER_NAME,
 					'tre_portal_firstname' => $data[0]->FIRST_NAME,
 					'tre_portal_middlename' => $data[0]->MIDDLE_NAME,

@@ -5,7 +5,7 @@ class Soa_excel extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('soa_model');
+		$this->load->model('receivables/soa_model');
 		session_check();
 	}
 	
@@ -29,20 +29,20 @@ class Soa_excel extends CI_Controller {
 		$writer = new XLSXWriter();
 		
 		$header = array(
-						'Customer_ID' => 'string',
+						'Customer_ID' => 'integer',
 						'Customer_Name' => 'string',
 						'Account_Name' => 'string',
 						'Fleet_Name' => 'string',
 						'Customer_PO_Number' => 'string',
 						'Profile_Class' => 'string',
-						'Invoice_ID' => 'string',
+						'Invoice_ID' => 'integer',
 						'Invoice_Number' => 'string',
 						'Invoice_Date' => 'MM/DD/YYYY',
 						'CS_Number' => 'string',
 						'Payment_Term' => 'string',
 						'Delivery_Date' => 'MM/DD/YYYY',
 						'Due_Date' => 'MM/DD/YYYY',
-						'Days_OVerdue' => 'string',
+						'Days_Overdue' => 'integer',
 						'Invoice_Amount' => '#,##0.00',
 						'WHT_Amount' => '#,##0.00',
 						'Balance' => '#,##0.00',

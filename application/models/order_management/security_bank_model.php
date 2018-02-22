@@ -11,10 +11,10 @@ class Security_bank_model extends CI_Model {
 	public function get_tagged(){
 		
 		$sql = "SELECT hcca.cust_account_id customer_id,
-						msn.serial_number || '-' || TO_CHAR(msn.d_attribute20, 'MMDDYYYY') INVOICE_NUMBER,
+						msn.serial_number || '-' || TO_CHAR(sysdate, 'MMDDYYYY') INVOICE_NUMBER,
 						to_char(d_attribute20, 'MM/DD/YYYY') invoice_date,
 						to_char(d_attribute20, 'MM/DD/YYYY') invoice_due_date,
-						round(oola.unit_selling_price + oola.tax_value,2) invoice_amount,
+						round((oola.unit_selling_price + oola.tax_value) - (oola.unit_selling_price * .01),2) invoice_amount,
 						'INV' document_type,
 						'0222025472001' collection_acct_no,
 						msib.attribute9 model,

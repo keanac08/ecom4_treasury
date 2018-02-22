@@ -1,6 +1,6 @@
 <?php
 
-class Receivables_Model extends CI_Model {
+class Aging_Model extends CI_Model {
 	
 	public function __construct(){
 		
@@ -8,7 +8,7 @@ class Receivables_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 
-	public function get_receivables_summary($as_of_date){
+	public function get_receivables_aging($as_of_date){
 	
 		$sql = "SELECT profile_class_id,
 						CASE WHEN profile_class_id IS NULL THEN 'Total' ELSE MAX(profile_class_name) END profile_class,

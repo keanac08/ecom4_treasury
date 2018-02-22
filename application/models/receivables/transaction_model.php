@@ -1,6 +1,6 @@
 <?php
 
-class Dashboard_model extends CI_Model {
+class Transaction_model extends CI_Model {
 	
 	private $oracle = NULL;
 	

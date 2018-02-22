@@ -86,13 +86,13 @@
 					<h3 class="box-title">AP Summary</h3>
 				</div>
 				<div class="box-body">
-					
+
 					<input type="hidden" name="from" value="<?php echo $from; ?>">
 					<input type="hidden" name="to" value="<?php echo $to; ?>">
 					<input type="hidden" name="bank" value="<?php echo $bank; ?>">
-					
+
 					<strong>ID</strong>
-					<p id="batch-id"><?php echo $this->uri->segment(3); ?></p>
+					<p id="batch-id"><?php echo $this->uri->segment(4); ?></p>
 					<strong>Bank</strong>
 					<p><?php echo $bank; ?></p>
 					<strong>Check Date</strong>

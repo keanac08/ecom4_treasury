@@ -7,11 +7,8 @@ class Soa_pdf extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		
-		$this->load->model('soa_model');
+		$this->load->model('receivables/soa_model');
 		session_check();
-		
-		
 	}
 	
 	public function index(){

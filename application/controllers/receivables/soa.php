@@ -5,7 +5,7 @@ class Soa extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('soa_model');
+		$this->load->model('receivables/soa_model');
 		session_check();
 	}
 	
@@ -13,9 +13,9 @@ class Soa extends CI_Controller {
 		
 		$this->load->helper('profile_class_helper');
 		
-		if($this->uri->segment(5)){
-			$customer_id = $this->uri->segment(5) / 101403;
-			$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(6));
+		if($this->uri->segment(6)){
+			$customer_id = $this->uri->segment(6) / 101403;
+			$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(7));
 			$as_of_date =  $as_of_date->format('m/d/Y');
 		}
 		else{
@@ -23,14 +23,14 @@ class Soa extends CI_Controller {
 			$as_of_date = $this->input->post('as_of_date') != NULL ? $this->input->post('as_of_date') : date('m/d/Y');
 		}
 		
-		$sales_type = $this->uri->segment(3);
+		$sales_type = $this->uri->segment(4);
 		$profile_class_ids = get_profile_class_ids($sales_type);
 		
 		$data['customer_id'] = $customer_id;
 		$data['as_of_date'] = $as_of_date;
 		
 		$data['sales_type'] = $sales_type;
-		$data['content']    = 'soa_admin_view';
+		$data['content']    = 'receivables/soa_admin_view';
 		$data['head_title'] = 'Treasury | SOA';
 		$data['title'] = 'Statement of Account<small>' . UCWORDS($sales_type) . ' Transaction</small>';
 		

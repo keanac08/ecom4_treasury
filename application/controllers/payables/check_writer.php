@@ -4,7 +4,7 @@ class Check_Writer extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper('file');
-		$this->load->model('check_writer_model');
+		$this->load->model('payables/check_writer_model');
 		session_check();
 	}
 	
@@ -12,7 +12,7 @@ class Check_Writer extends CI_Controller{
 		
 		$this->load->helper('form');
 		
-		$data['content'] = 'check_writer_generate_view';
+		$data['content'] = 'payables/check_writer_generate_view';
 		$data['head_title'] = 'Treasury | Check Writer';
 		$data['title'] = 'Check Writer';
 		$data['subtitle'] = '';
@@ -96,12 +96,12 @@ class Check_Writer extends CI_Controller{
 
 	}
 	
-	public function payables(){
+	public function export(){
 		
-		$header_id = $this->uri->segment(3);
+		$header_id = $this->uri->segment(4);
 		$data['head_title'] = 'Treasury | Check Writer';
 		$data['result'] = $this->check_writer_model->get_payables_summary($header_id);
-		$data['content'] = 'check_writer_payables_view';
+		$data['content'] = 'payables/check_writer_export_view';
 		$data['title'] = 'Check Writer';
 		$this->load->view('include/template',$data);
 	}

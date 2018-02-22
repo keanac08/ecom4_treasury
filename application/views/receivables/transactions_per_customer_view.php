@@ -66,7 +66,7 @@ $this->load->helper('profile_class_helper');
 								?>
 									<tr class="<?php echo ($row->PROFILE_CLASS_ID == NULL) ? 'text-bold':''; ?>">
 										<td><a class="btn btn-danger btn-xs <?php echo ($row->PROFILE_CLASS_ID == NULL) ? 'hidden':''; ?>" 
-												href="soa/admin/<?php echo get_sales_type($row->PROFILE_CLASS_ID); ?>/<?php echo $row->PROFILE_CLASS_ID; ?>/<?php echo $customer_id * 101403; ?>/<?php echo date('mdY', strtotime($as_of_date)); ?>">
+												href="../soa/admin/<?php echo get_sales_type($row->PROFILE_CLASS_ID); ?>/<?php echo $row->PROFILE_CLASS_ID; ?>/<?php echo $customer_id * 101403; ?>/<?php echo date('mdY', strtotime($as_of_date)); ?>">
 												<i class="glyphicon glyphicon-chevron-right"></i>
 											</a>
 										</td>
@@ -163,7 +163,7 @@ $this->load->helper('profile_class_helper');
 		$("select.select2").select2({
 			width: '100%',
 			  ajax: {
-				url: "dashboard/ajax_customer_list",
+				url: "ajax_customer_list",
 				dataType: 'json',
 				type: 'GET',
 				delay: 250,

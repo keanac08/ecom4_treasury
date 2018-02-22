@@ -1,18 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller {
+class Transaction extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('dashboard_model');
+		$this->load->model('receivables/transaction_model');
 		session_check();
 	}
 	
-	public function index(){
+	public function per_customer(){
 		
-		$data['content']    = 'dashboard_view';
-		$data['head_title'] = 'Treasury | Dashboard';
+		$data['content']    = 'receivables/transactions_per_customer_view';
+		$data['head_title'] = 'Treasury | Home';
 		$data['title']      = 'Transaction Summary<small>Per Customer</small>';
 		
 		$as_of_date_orig = $this->input->post('as_of_date');
@@ -32,7 +32,7 @@ class Dashboard extends CI_Controller {
 		$data['customer_id'] = $customer_id;
 		$data['customer_name'] = $customer_name;
 		
-		$data['results'] = $this->dashboard_model->get_summary_per_customer($customer_id, $as_of_date1);
+		$data['results'] = $this->transaction_model->get_summary_per_customer($customer_id, $as_of_date1);
 
 		$this->load->view('include/template',$data);
 	}
@@ -42,7 +42,7 @@ class Dashboard extends CI_Controller {
 		$q = strtolower('%'.$this->input->get('q').'%');
 		
 		$return_arr = array();
-		$data =  $this->dashboard_model->get_customers($q);
+		$data =  $this->transaction_model->get_customers($q);
 		foreach($data as $row){
 			$row_array = array(
 							'id'=>$row->CUSTOMER_ID,

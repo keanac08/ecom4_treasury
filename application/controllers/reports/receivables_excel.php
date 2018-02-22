@@ -5,7 +5,7 @@ class Receivables_excel extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('receivables_model');
+		$this->load->model('receivables/aging_model');
 		session_check();
 	}
 	
@@ -21,19 +21,19 @@ class Receivables_excel extends CI_Controller {
 		$as_of_date =  $as_of_date->format('m/d/Y');
 		$profile_class_id = $this->uri->segment(5);
 		
-		$rows = $this->receivables_model->get_receivables_summary_excel(date('d-M-y', strtotime($as_of_date)), $profile_class_id);
+		$rows = $this->aging_model->get_receivables_summary_excel(date('d-M-y', strtotime($as_of_date)), $profile_class_id);
 
 		$writer = new XLSXWriter();
 		
 		$header = array(
-						'CUSTOMER_ID' => 'string',
+						'CUSTOMER_ID' => 'integer',
 						'CUSTOMER_NAME' => 'string',
 						'ACCOUNT_NAME' => 'string',
 						'FLEET_NAME' => 'string',
 						'CUST_PO_NUMBER' => 'string',
 						'PROFILE_CLASS' => 'string',
 						'ACCOUNT_CODE' => 'string',
-						'INVOICE_ID' => 'string',
+						'INVOICE_ID' => 'integer',
 						'INVOICE_NUMBER' => 'string',
 						'INVOICE_DATE' => 'MM/DD/YYYY',
 						'CS_NUMBER' => 'string',
@@ -42,7 +42,7 @@ class Receivables_excel extends CI_Controller {
 						'PAYMENT_TERMS' => 'string',
 						'DELIVERY_DATE' => 'MM/DD/YYYY',
 						'DUE_DATE' => 'MM/DD/YYYY',
-						'DAYS_OVERDUE' => 'string',
+						'DAYS_OVERDUE' => 'integer',
 						'INVOICE_AMOUNT_ORIG' => '#,##0.00',
 						'VAT_AMOUNT_ORIG' => '#,##0.00',
 						'BALANCE_ORIG' => '#,##0.00',

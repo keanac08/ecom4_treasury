@@ -10,7 +10,7 @@ $this->load->helper('date_helper');
 		<div class="col-md-12">
 			<div class="box box-danger">
 				<div class="box-body">
-					<form id="myForm" class="form-inline" method="POST" accept-charset="utf-8" action="<?php echo base_url('soa/admin/'.$sales_type); ?>">
+					<form id="myForm" class="form-inline" method="POST" accept-charset="utf-8" action="<?php echo base_url('receivables/soa/admin/'.$sales_type); ?>">
 						<input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>" />
 						<input type="hidden" name="as_of_date"  value="<?php echo $as_of_date; ?>" />
 						<input type="hidden" name="sales_type"  value="<?php echo $sales_type; ?>" />
@@ -404,7 +404,7 @@ $this->load->helper('date_helper');
 		$("select.select2").select2({
 			width: '100%',
 			  ajax: {
-				url: "<?php echo base_url(); ?>soa/ajax_customers_per_profile",
+				url: "<?php echo base_url(); ?>receivables/soa/ajax_customers_per_profile",
 				dataType: 'json',
 				type: 'POST',
 				delay: 250,
@@ -496,7 +496,7 @@ $this->load->helper('date_helper');
 			 //~ alert(profile_class);
 			$.ajax({
 				type: 'POST',
-				url: '<?php echo base_url();?>soa/ajax_invoice_details',
+				url: '<?php echo base_url();?>receivables/soa/ajax_invoice_details',
 				data: {
 						customer_trx_id: customer_trx_id,
 						profile_class: profile_class

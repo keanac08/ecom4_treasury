@@ -10,6 +10,7 @@ class Invoice_Model extends CI_Model {
 	
 	public function get_vehicle_invoice_by_duedate($from_date, $to_date){
 		
+		
 		$sql = "SELECT
 					soa.customer_id,
 					hp.party_name       customer_name,
@@ -18,13 +19,13 @@ class Invoice_Model extends CI_Model {
 					hcpc.name           profile_class,
 					soa.customer_trx_id invoice_id,
 					soa.trx_number      invoice_number,
-					soa.trx_date      invoice_date,
+					to_char(soa.trx_date, 'YYYY-MM-DD')      invoice_date,
 					soa.cs_number,
 					msib.attribute9 sales_model,
 					msib.attribute8 body_color,
 					soa.payment_term,
-					soa.delivery_date,
-					soa.due_date,
+					to_char(soa.delivery_date, 'YYYY-MM-DD')delivery_date,
+					to_char(soa.due_date, 'YYYY-MM-DD') due_date,
 					CASE
 						WHEN soa.due_date IS NOT NULL AND soa.due_date < TRUNC(SYSDATE)
 							THEN
@@ -35,7 +36,9 @@ class Invoice_Model extends CI_Model {
 					days_overdue,
 					soa.invoice_amount ,
 					soa.wht_orig_amount wht_amount,
-					apsa.amount_due_remaining balance
+					apsa.amount_due_remaining balance,
+					to_char(to_date('".$from_date."'), 'YYYY-MM-DD') from_duedate,
+					to_char(to_date('".$to_date."'), 'YYYY-MM-DD') to_duedate
 				FROM ipc.ipc_invoice_details soa
 					LEFT JOIN ar_payment_schedules_all apsa
 						ON soa.customer_trx_id = apsa.customer_trx_id
@@ -51,7 +54,7 @@ class Invoice_Model extends CI_Model {
 					LEFT JOIN hz_cust_accounts_all hcaa
 						ON soa.customer_id = hcaa.cust_account_id
 					LEFT JOIN hz_customer_profiles hzp
-						ON     hcaa.cust_account_id = hzp.cust_account_id
+						ON hcaa.cust_account_id = hzp.cust_account_id
 						AND soa.customer_site_use_id = hzp.site_use_id
 					LEFT JOIN hz_cust_profile_classes hcpc
 						ON hzp.profile_class_id = hcpc.profile_class_id
@@ -61,6 +64,7 @@ class Invoice_Model extends CI_Model {
 					AND soa.profile_class_id IN (1040, 1043, 1045)
 					AND soa.due_date BETWEEN ? AND ?
 					AND soa.status = 'OP'";
+					//~ echo $sql;die();
 		
 		$data = $this->oracle->query($sql, array($from_date, $to_date));
 		return $data->result_array();

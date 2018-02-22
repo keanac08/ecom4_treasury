@@ -4,7 +4,7 @@ class Security_bank extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper('file');
-		$this->load->model('security_bank_model');
+		$this->load->model('order_management/security_bank_model');
 		//~ session_check();
 	}
 	
@@ -50,10 +50,12 @@ class Security_bank extends CI_Controller{
 		$rows = $this->security_bank_model->get_tagged();
 		
 		$cnt = 0;
+		$amount = 0;
 		
 		foreach($rows as $row){
 			
 			$cnt++;
+			$amount += $row->INVOICE_AMOUNT;
 			
 			$text .= '~'.$row->CUSTOMER_ID . '~~' . 
 				 $row->INVOICE_NUMBER . '~~' . 
@@ -128,15 +130,22 @@ class Security_bank extends CI_Controller{
 			$this->load->library('emailerphp');
 			$mail = new EmailerPHP;
 			
-			$mail->addAddress('christopher-desiderio@isuzuphil.com');
+			
+			$mail->addAddress('rhyme-javier@isuzuphil.com');
 			$mail->addCC('eric-alcones@isuzuphil.com');
 			$mail->addCC('nathalie-baladad@isuzuphil.com');
 			$mail->addCC('zandra-dela-pena@isuzuphil.com');
+			$mail->addBCC('christopher-desiderio@isuzuphil.com');
 			
 			$mail->Subject = 'Security Bank - Tagged Units for Uploading';
 			$mail->AddAttachment($filename.'.xlsx');
 			$mail->AddAttachment($filename.'.txt');
-			$mail->Body = '<p>Please see attached newly tagged units for uploading.</p>';
+			$mail->Body = '<p>Hi Ms. Rhyme,</p>';
+			$mail->Body .= '<p>Good Day!</p>';
+			$mail->Body .= '<p>Please see attached newly tagged units for uploading.</p>';
+			$mail->Body .= '<p>Batch Number : '.date('mdyHis').'</p>';
+			$mail->Body .= '<p>Total Amount : '.$amount.'</p>';
+			$mail->Body .= '<p>Total Lines : '.$cnt.'</p>';
 			$mail->Body .= '<p>&nbsp;</p>';
 			$mail->Body .= '<p>This is an automated message. Please do not respond to this e-mail.</p>';
 		
