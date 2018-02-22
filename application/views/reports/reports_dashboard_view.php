@@ -16,7 +16,7 @@
 								<th>Report ID</th>
 								<th>Report Name</th>
 								<th>Report Output</th>
-								<th>Generate</th>
+								<th class="text-center">Generate</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -27,7 +27,7 @@
 								<td><?php echo sprintf('REP-%05d', $row->REPORT_ID); ?></td>
 								<td><?php echo $row->NAME; ?></td>
 								<td><?php echo $row->TYPE; ?></td>
-								<td width="10%" align="center"><a href="#" data-link="<?php echo $row->LINK; ?>" class="btn btn-sm btn-success btn_dr_modal"><i class="fa fa-download"></i></a></td>
+								<td width="10%" align="center"><a href="#" data-link="<?php echo $row->LINK; ?>" class="btn btn-xs btn-<?php echo $row->TYPE == 'Excel' ? 'success':'danger'; ?> btn_dr_modal"><i class="fa <?php echo $row->TYPE == 'Excel' ? 'fa-file-excel-o':'fa-file-pdf-o'; ?>"></i></a></td>
 							</tr>
 							</tr>
 						<?php 
