@@ -6,13 +6,15 @@ class unapplied_receipt_excel extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		session_check();
-		$this->load->model('payables/receipt_model');
+		$this->load->model('receivables/receipt_model');
 	}
 	
 	public function index(){
 		
 		$from_date = date('d-M-y', strtotime($this->input->post('from_date')));
 		$to_date = date('d-M-y', strtotime($this->input->post('to_date')));
+
+		//~ echo $to_date;
 
 		$rows = $this->receipt_model->get_unapplied_receipts($from_date,$to_date);
 		
@@ -43,7 +45,7 @@ class unapplied_receipt_excel extends CI_Controller {
 			$writer->writeSheetRow('Sheet1', $row);
 		}
 		
-		$filename = "unaplied_receipts.xlsx";
+		$filename = "unapplied_receipts.xlsx";
 		header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
 		header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		header('Content-Transfer-Encoding: binary');

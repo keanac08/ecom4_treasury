@@ -8,7 +8,7 @@ class Receipt_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 
-	public function get_unapplied_receipts($params){
+	public function get_unapplied_receipts($from_date,$to_date){
 		
 		$sql = "SELECT acra.receipt_number,
 			            acra.doc_sequence_value,
@@ -58,9 +58,9 @@ class Receipt_Model extends CI_Model {
 		                acra.status,
 		                acra.currency_code,
 		                cbb.bank_name,
-		                cba.bank_account_name";
+		                cba.bank_account_name"; //echo $sql;print_r($params);die();
 		
-		$data = $this->oracle->query($sql, $params);
+		$data = $this->oracle->query($sql, array($from_date,$to_date));
 		return $data->result_array();
 	}
 	

@@ -1,4 +1,4 @@
-<form target="_blank" method="POST" accept-charset="utf-8" action="../reports/unapplied_receipt_excel">
+<form target="_blank" method="POST" accept-charset="utf-8" action="unapplied_receipt_excel">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title">Unapplied Receipts</h4>

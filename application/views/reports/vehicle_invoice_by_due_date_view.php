@@ -1,4 +1,4 @@
-<form target="_blank" method="POST" accept-charset="utf-8" action="../../reports/vehicle_invoice_by_due_date_excel">
+<form target="_blank" method="POST" accept-charset="utf-8" action="vehicle_invoice_by_due_date_excel">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title">Vehicle Invoice by Due Date Range</h4>
