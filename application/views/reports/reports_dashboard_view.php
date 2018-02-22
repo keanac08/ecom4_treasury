@@ -1,7 +1,7 @@
 <?php 
 
 ?>
-<link href="<?php echo base_url('resources/plugins/daterangepicker/daterangepicker.css') ?>" rel="stylesheet" >
+<link href="<?php echo base_url('resources/plugins/datatables/datatables.min.css') ?>" rel="stylesheet" >
 <section class="content">
 	<div class="row">
 		<div class="col-md-9">
@@ -10,7 +10,7 @@
 					<h3 class="box-title">List of Reports</h3>
 				</div>
 				<div class="box-body">
-					<table class="table table-condensed table-striped table-bordered" id="reports_tab" class="display" cellspacing="0" width="100%" style="font-size: 90%;">
+					<table class="table table-bordered" id="reports_tab" class="display" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								<th>Report ID</th>
@@ -27,7 +27,7 @@
 								<td><?php echo sprintf('REP-%05d', $row->REPORT_ID); ?></td>
 								<td><?php echo $row->NAME; ?></td>
 								<td><?php echo $row->TYPE; ?></td>
-								<td width="10%" align="center"><a href="#" data-link="<?php echo $row->LINK; ?>" class="btn_dr_modal"><i class="fa fa-download"></i></a></td>
+								<td width="10%" align="center"><a href="#" data-link="<?php echo $row->LINK; ?>" class="btn btn-sm btn-success btn_dr_modal"><i class="fa fa-download"></i></a></td>
 							</tr>
 							</tr>
 						<?php 
@@ -53,8 +53,13 @@
 	</div>
 </div>
 
+<script src="<?php echo base_url('resources/plugins/datatables/datatables.min.js');?>"></script>
 <script>
 	$(document).ready(function() {
+		
+		$('#reports_tab').DataTable({
+			//~ 'bSort' : false
+		});
 
 		$('body').on('click','a.btn_dr_modal',function(){
 			v_link = $(this).data('link');
