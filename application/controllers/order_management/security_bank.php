@@ -8,6 +8,11 @@ class Security_bank extends CI_Controller{
 		//~ session_check();
 	}
 	
+	public function truncate_tagged_units_table(){
+		
+		 $this->security_bank_model->truncate_tagged_units();
+	}
+	
 	public function export_tagged(){
 		
 		$this->load->library('excel');
@@ -131,10 +136,10 @@ class Security_bank extends CI_Controller{
 			$mail = new EmailerPHP;
 			
 			
-			$mail->addAddress('rhyme-javier@isuzuphil.com');
-			$mail->addCC('eric-alcones@isuzuphil.com');
-			$mail->addCC('nathalie-baladad@isuzuphil.com');
-			$mail->addCC('zandra-dela-pena@isuzuphil.com');
+			//~ $mail->addAddress('rhyme-javier@isuzuphil.com');
+			//~ $mail->addCC('eric-alcones@isuzuphil.com');
+			//~ $mail->addCC('nathalie-baladad@isuzuphil.com');
+			//~ $mail->addCC('zandra-dela-pena@isuzuphil.com');
 			$mail->addBCC('christopher-desiderio@isuzuphil.com');
 			
 			$mail->Subject = 'Security Bank - Tagged Units for Uploading';

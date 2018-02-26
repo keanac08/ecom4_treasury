@@ -65,13 +65,17 @@ class Security_bank_model extends CI_Model {
 					   
 		$data = $this->oracle->query($sql);
 		return $data->result();
-		
 	}
 	
 	public function insert_sent_tagged($cs_number){
 		
 		$sql = "INSERT INTO ipc.ipc_sb_tagged_units (cs_number) VALUES (?)";
 		$this->oracle->query($sql, $cs_number);
+	}
+	
+	public function truncate_tagged_units(){
 		
+		$sql = "TRUNCATE TABLE ipc.ipc_sb_tagged_units";
+		$this->oracle->query($sql);
 	}
 }
