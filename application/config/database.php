@@ -84,6 +84,15 @@ $prod = "(DESCRIPTION=
 			)
 		)";
 		
+$ado = "(DESCRIPTION =
+			(ADDRESS_LIST =
+			  (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.1.86)(PORT = 1521))
+			)
+			(CONNECT_DATA =
+			  (SERVICE_NAME = PROD)
+			)
+		)";
+		
 $db['oracle']['hostname'] = $prod;
 $db['oracle']['username'] = 'apps';
 $db['oracle']['password'] = 'apps';
