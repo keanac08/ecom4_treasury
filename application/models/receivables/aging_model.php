@@ -184,6 +184,7 @@ class Aging_Model extends CI_Model {
 						vat_amount_php,
 						wht_amount_php,
 						balance_php,
+						TO_CHAR(last_payment_date,'YYYY-MM-DD') last_payment_date,
 						CASE WHEN  wht_amount_php = balance_php
 							THEN wht_amount_php
 							ELSE 0
@@ -233,6 +234,7 @@ class Aging_Model extends CI_Model {
 								soa.vat_amount vat_amount_php,
 								soa.wht_orig_amount wht_amount_php,
 								soa.invoice_amount + (NVL(adj.adjustment_amount,0) * NVL(soa.EXCHANGE_RATE, 1)) - (NVL (araa.paid_amount , 0) * NVL(soa.EXCHANGE_RATE, 1))balance_php,
+								araa2.apply_date last_payment_date,
 								soa.invoice_currency_code,
 								soa.exchange_rate
 							 FROM IPC.IPC_INVOICE_DETAILS soa
@@ -246,7 +248,7 @@ class Aging_Model extends CI_Model {
 							 LEFT JOIN mtl_system_items_b msib
 								ON msn.inventory_item_id = msib.inventory_item_id
 								AND msn.current_organization_id = msib.organization_id
-							 LEFT JOIN	RA_CUST_TRX_LINE_GL_DIST_all gld
+							 LEFT JOIN ra_cust_trx_line_gl_dist_all gld
 								ON soa.customer_trx_id = gld.customer_trx_id
 								and gld.account_class = 'REC'
 							 LEFT JOIN gl_code_combinations gcc
@@ -261,6 +263,17 @@ class Aging_Model extends CI_Model {
 									GROUP BY applied_customer_trx_id, applied_payment_schedule_id) araa
 								ON soa.customer_trx_id = araa.applied_customer_trx_id
 									AND soa.payment_schedule_id = araa.applied_payment_schedule_id
+							 LEFT JOIN
+								(SELECT applied_customer_trx_id,
+												applied_payment_schedule_id,
+												MAX (apply_date) apply_date
+									FROM ar_receivable_applications_all
+										WHERE display = 'Y'
+										AND application_type = 'CASH'
+										AND gl_date <= '".$as_of_date."'
+									GROUP BY applied_customer_trx_id, applied_payment_schedule_id) araa2
+								ON soa.customer_trx_id = araa2.applied_customer_trx_id
+									AND soa.payment_schedule_id = araa2.applied_payment_schedule_id
 							 LEFT JOIN
 								(SELECT customer_trx_id,
 												payment_schedule_id,

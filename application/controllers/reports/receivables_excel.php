@@ -52,6 +52,7 @@ class Receivables_excel extends CI_Controller {
 						'VAT_AMOUNT_PHP' => '#,##0.00',
 						'WHT_AMOUNT_PHP' => '#,##0.00',
 						'BALANCE_PHP' => '#,##0.00',
+						'LAST_PAYMENT_DATE' => 'MM/DD/YYYY',
 						'CWT_BALANCE' => '#,##0.00',
 						'AMOUNT_DUE_BALANCE' => '#,##0.00',
 						'PAST_DUE_1_TO_15' => '#,##0.00',
