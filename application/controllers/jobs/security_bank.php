@@ -136,10 +136,10 @@ class Security_bank extends CI_Controller{
 			$mail = new EmailerPHP;
 			
 			
-			//~ $mail->addAddress('rhyme-javier@isuzuphil.com');
-			//~ $mail->addCC('eric-alcones@isuzuphil.com');
-			//~ $mail->addCC('nathalie-baladad@isuzuphil.com');
-			//~ $mail->addCC('zandra-dela-pena@isuzuphil.com');
+			$mail->addAddress('rhyme-javier@isuzuphil.com');
+			$mail->addCC('eric-alcones@isuzuphil.com');
+			$mail->addCC('nathalie-baladad@isuzuphil.com');
+			$mail->addCC('zandra-dela-pena@isuzuphil.com');
 			$mail->addBCC('christopher-desiderio@isuzuphil.com');
 			
 			$mail->Subject = 'Security Bank - Tagged Units for Uploading';
