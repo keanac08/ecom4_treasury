@@ -4,7 +4,7 @@ class Security_bank extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper('file');
-		$this->load->model('order_management/security_bank_model');
+		$this->load->model('jobs/security_bank_model');
 		//~ session_check();
 	}
 	
