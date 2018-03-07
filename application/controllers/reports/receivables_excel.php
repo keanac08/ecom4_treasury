@@ -55,6 +55,7 @@ class Receivables_excel extends CI_Controller {
 						'LAST_PAYMENT_DATE' => 'MM/DD/YYYY',
 						'CWT_BALANCE' => '#,##0.00',
 						'AMOUNT_DUE_BALANCE' => '#,##0.00',
+						'CURRENT' => '#,##0.00',
 						'PAST_DUE_1_TO_15' => '#,##0.00',
 						'PAST_DUE_16_TO_30' => '#,##0.00',
 						'PAST_DUE_31_TO_60' => '#,##0.00',
@@ -63,8 +64,7 @@ class Receivables_excel extends CI_Controller {
 						'PAST_DUE_120_TO_360' => '#,##0.00',
 						'PAST_DUE_361_TO_720' => '#,##0.00',
 						'PAST_DUE_OVER_720' => '#,##0.00',
-						'PAST_DUE' => '#,##0.00',
-						'CURRENT' => '#,##0.00'
+						'PAST_DUE' => '#,##0.00'
 					);
 		$writer->writeSheetHeader('Sheet1', $header );
 		

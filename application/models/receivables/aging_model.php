@@ -185,14 +185,15 @@ class Aging_Model extends CI_Model {
 						wht_amount_php,
 						balance_php,
 						TO_CHAR(last_payment_date,'YYYY-MM-DD') last_payment_date,
-						CASE WHEN  wht_amount_php = balance_php
+						CASE WHEN  wht_amount_php - balance_php > 1
 							THEN wht_amount_php
 							ELSE 0
 						END cwt_balance,
-						CASE WHEN  wht_amount_php != balance_php
+						CASE WHEN  wht_amount_php - balance_php < 1
 							THEN balance_php
 							ELSE 0
 						END amount_due_balance,
+						CASE WHEN days_overdue = 0 THEN balance_php ELSE 0 END current_,
 						CASE WHEN days_overdue BETWEEN 1 and 15 THEN balance_php ELSE 0 END past_due_1_to_15,
 						CASE WHEN days_overdue BETWEEN 16 and 30 THEN balance_php ELSE 0 END past_due_16_to_30,
 						CASE WHEN days_overdue BETWEEN 31 and 60 THEN balance_php ELSE 0 END past_due_31_to_60,
@@ -201,9 +202,8 @@ class Aging_Model extends CI_Model {
 						CASE WHEN days_overdue BETWEEN 121 and 360 THEN balance_php ELSE 0 END past_due_121_to_360,
 						CASE WHEN days_overdue BETWEEN 361 and 720 THEN balance_php ELSE 0 END past_due_361_to_720,
 						CASE WHEN days_overdue > 720 THEN balance_php ELSE 0 END past_due_over_720,
-						CASE WHEN days_overdue > 0 THEN balance_php ELSE 0 END past_due,
-						CASE WHEN days_overdue = 0 THEN balance_php ELSE 0 END current_
-					   FROM (
+						CASE WHEN days_overdue > 0 THEN balance_php ELSE 0 END past_due
+						FROM (
 							SELECT 
 								hcaa.cust_account_id customer_id,
 								hp.party_name       customer_name,
