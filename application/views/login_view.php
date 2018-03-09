@@ -26,7 +26,7 @@
 				<div class="page-login-main">
 					<div class="brand" style="text-align: center;">
 						<img class="brand-img" style="margin-bottom: 10px;" src="<?php echo base_url('resources/images/logo_white.png') ?>" alt="...">
-						<p style="font-size: 15px;">Treasury Portal</p>
+						<p style="font-size: 15px;">Treasury Portal 2.0</p>
 					</div>
 					
 					<form id="login-form" role="form">
