@@ -68,21 +68,46 @@
 							</a>
 						</li> 
 					</ul>
-					<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'aging') ? 'active' : ''; ?>">
-						<a href="<?php echo base_url('receivables/aging/summary');?>">
-							<i class="fa fa-paste"></i> <span>Accounts Receivable Aging</span>
-						</a>
-					</li>
-					<li class="<?php echo ($this->uri->segment(1) == 'payables' AND $this->uri->segment(2) == 'check_writer') ? 'active' : ''; ?>">
-						<a href="<?php echo base_url('payables/check_writer/generate');?>">
-							<i class="fa fa-edit"></i> <span>Check Writer</span>
-						</a>
-					</li>
-					<li class="<?php echo ($this->uri->segment(1) == 'reports' AND $this->uri->segment(2) == 'dashboard') ? 'active' : ''; ?>">
-						<a href="<?php echo base_url('reports/dashboard');?>">
-							<i class="fa fa-bar-chart"></i> <span>Reports</span>
-						</a>
-					</li>
+				</li>
+				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
+					<a href="#">
+						<i class="fa fa-file-text-o"></i> <span>Check Warehousing</span>
+						<span class="pull-right-container">
+							<i class="fa fa-angle-left pull-right"></i>
+						</span>
+					</a>
+					<ul class="treeview-menu">
+						<li class="<?php echo ($this->uri->segment(3) == 'entry') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/entry'); ?> ">
+								<i class="fa fa-circle-o"></i>New Entry
+							</a>
+						</li> 
+						<li class="<?php echo ($this->uri->segment(3) == 'credit_hold_releasing') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/credit_hold_releasing'); ?> ">
+								<i class="fa fa-circle-o"></i>Credit Hold Releasing
+							</a>
+						</li> 
+						<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/pdc'); ?> ">
+								<i class="fa fa-circle-o"></i>Approved PDCs
+							</a>
+						</li> 
+					</ul>
+				</li>
+				<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'aging') ? 'active' : ''; ?>">
+					<a href="<?php echo base_url('receivables/aging/summary');?>">
+						<i class="fa fa-paste"></i> <span>Accounts Receivable Aging</span>
+					</a>
+				</li>
+				<li class="<?php echo ($this->uri->segment(1) == 'payables' AND $this->uri->segment(2) == 'check_writer') ? 'active' : ''; ?>">
+					<a href="<?php echo base_url('payables/check_writer/generate');?>">
+						<i class="fa fa-edit"></i> <span>Check Writer</span>
+					</a>
+				</li>
+				<li class="<?php echo ($this->uri->segment(1) == 'reports' AND $this->uri->segment(2) == 'dashboard') ? 'active' : ''; ?>">
+					<a href="<?php echo base_url('reports/dashboard');?>">
+						<i class="fa fa-bar-chart"></i> <span>Reports</span>
+					</a>
 				</li>
 			</ul><!-- /.sidebar-menu -->
 	</section>
