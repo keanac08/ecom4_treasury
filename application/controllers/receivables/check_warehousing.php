@@ -124,6 +124,11 @@ class Check_warehousing extends CI_Controller {
 		$total_amount_due = 0;
 		foreach($rows as $row){
 			
+			if($check_id == 0){
+				$check_number = $row->CHECK_NUMBER;
+				$check_bank = $row->CHECK_BANK;
+			}
+			
 			if($check_id == 0 OR $check_id != $row->CHECK_ID){
 				
 				if($check_id != 0){
@@ -256,7 +261,7 @@ class Check_warehousing extends CI_Controller {
         $pdf->AddPage('P', 'A4');
 		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
-        $pdf->Output("pdc.pdf",'I');
+        $pdf->Output(strtoupper($check_bank . ' ' . $check_number).".pdf",'I');
 		
 	}
 }
