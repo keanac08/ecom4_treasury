@@ -36,7 +36,7 @@ class Login extends CI_Controller {
 					'tre_portal_firstname' => $data[0]->FIRST_NAME,
 					'tre_portal_middlename' => $data[0]->MIDDLE_NAME,
 					'tre_portal_lastname' => $data[0]->LAST_NAME,
-					'tre_portal_fullname' => utf8_decode(camelcase( $data[0]->FIRST_NAME . ' ' . $data[0]->LAST_NAME)),
+					'tre_portal_fullname' => html_entity_decode(htmlentities(camelcase( $data[0]->FIRST_NAME . ' ' . $data[0]->LAST_NAME))),
 					'tre_portal_division' => $data[0]->DIVISION,
 					'tre_portal_department' => $data[0]->DEPARTMENT,
 					'tre_portal_section' => $data[0]->SECTION,
