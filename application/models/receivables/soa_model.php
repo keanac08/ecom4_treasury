@@ -87,6 +87,7 @@ class Soa_model extends CI_Model {
 					   soa.trx_number      transaction_number,
 					   soa.trx_date        transaction_date,
 					   soa.cs_number,
+					   msib.attribute9 sales_model,
 					   soa.payment_term,
 					   soa.delivery_date,
 					   soa.due_date,
@@ -106,9 +107,14 @@ class Soa_model extends CI_Model {
 					FROM IPC.IPC_INVOICE_DETAILS soa
 					 LEFT JOIN ra_customer_trx_all rcta
 						ON soa.customer_trx_id = rcta.customer_trx_id
+				     LEFT JOIN mtl_serial_numbers msn
+						ON msn.serial_number = rcta.attribute3
+					 LEFT JOIN mtl_system_items_b msib
+						ON msib.inventory_item_id = msn.inventory_item_id
+						AND msib.organization_id = msn.current_organization_id
 					 LEFT JOIN oe_order_headers_all ooha
 						ON rcta.interface_header_attribute1 = to_char(ooha.order_number) 
-					 LEFT JOIN
+				     LEFT JOIN
 						(SELECT applied_customer_trx_id,
 										applied_payment_schedule_id,
 										SUM (amount_applied) paid_amount
