@@ -230,7 +230,7 @@ class Check_warehousing_model extends CI_Model {
 		return $data->result();
 	}
 	
-	public function new_release_lines($cs_number){
+	public function new_release_lines($line_ids){
 	
 		$sql = "INSERT INTO OE_HOLD_RELEASES (hold_release_id,
 						creation_date,
