@@ -51,9 +51,9 @@ class Check_warehousing extends CI_Controller {
 			$i++;
 		}
 		
-		//~ $line_ids = $this->input->post('line_ids');
-		//~ $line_ids = implode(',', $line_ids);
-		//~ $data = $this->check_warehousing_model->new_release_lines($line_ids);
+		$line_ids = $this->input->post('line_ids');
+		$line_ids = implode(',', $line_ids);
+		$data = $this->check_warehousing_model->new_release_lines($line_ids);
 
 	}
 	
@@ -210,8 +210,6 @@ class Check_warehousing extends CI_Controller {
 				<tr>
 					<td colspan="7">&nbsp;</td>
 				</tr>';
-		
-
 		
 		$html = '<table border="0" style="padding: 3px;">
 					<tr>
