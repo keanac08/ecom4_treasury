@@ -71,7 +71,7 @@
 				</li>
 				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 					<a href="#">
-						<i class="fa fa-file-text-o"></i> <span>Check Warehousing</span>
+						<i class="fa fa-list-alt"></i> <span>Check Warehousing</span>
 						<span class="pull-right-container">
 							<i class="fa fa-angle-left pull-right"></i>
 						</span>
