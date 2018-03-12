@@ -88,7 +88,7 @@ if(!empty($result)){
 				<div class="form-group">
 					<div class="col-lg-7 col-lg-offset-5">
 						<button <?php echo $ctr == 1 ? 'disabled':''; ?> type="button" class="btn btn-danger" name="save">Save</button>
-						<a href="<?php echo base_url();?>receivables/check_warehousing/entry" class="btn btn-default">Cancel</a>
+						<a href="<?php echo base_url();?>receivables/check_warehousing/entry" class="btn btn-default">Clear</a>
 					</div>
 				</div>
 			</fieldset>
@@ -178,7 +178,7 @@ if(!empty($result)){
 									confirmButtonColor: '#DD6B55'
 								}).then(function() {
 									window.open('<?php echo base_url();?>receivables/check_warehousing/pdc_details_pdf/'+data, '_blank');
-									location.reload();
+									//~ location.reload();
 									//~ location.href = '<?php echo base_url();?>receivables/check_warehousing/entry';
 								});
 							}
