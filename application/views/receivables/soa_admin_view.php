@@ -53,8 +53,12 @@ $this->load->helper('date_helper');
 			</div>
 			<div class="nav-tabs-custom tab-danger">
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#detailed" data-toggle="tab" aria-expanded="true">Detailed SOA</a></li>
-					<li class=""><a href="#summary" data-toggle="tab" aria-expanded="false">SOA Summary & Customer Details</a></li>
+<!--
+					<li class="active"><a href="#summary" data-toggle="tab" aria-expanded="false">SOA Summary & Customer Details</a></li>
+-->
+					<li class="active"><a href="#summary" data-toggle="tab" aria-expanded="false">Summary</a></li>
+					<li class=""><a href="#detailed" data-toggle="tab" aria-expanded="true">Detailed SOA</a></li>
+					
 					<?php 
 					if(!empty($customer_details)){
 					?>
@@ -67,7 +71,7 @@ $this->load->helper('date_helper');
 					?>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane active" id="detailed">
+					<div class="tab-pane" id="detailed">
 						<div class="row">
 							<div class="col-md-9">
 								<h5><span class="label label-warning">&nbsp;</span> Past Due Receivables</h5>
@@ -272,14 +276,15 @@ $this->load->helper('date_helper');
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="summary">
+					<div class="tab-pane active" id="summary">
 						<div class="row">
 							<div class="col-md-7">
 								<table class="table">
 									<thead>
 										<th>&nbsp;</th>
+										<th>&nbsp;</th>
 										<th class="text-center">Total Invoice Count</th>
-										<th class="text-right">Total Invoice Amount</th>
+										<th class="text-right">Total Invoice Balance</th>
 									</thead>
 									<tbody>
 										<tr class="text-blue text-bold info">
@@ -293,6 +298,12 @@ $this->load->helper('date_helper');
 											<td>Total Current Receivables</td>
 											<td class="text-center"><?php echo $current_count; ?></td>
 											<td class="text-right"><?php echo amount($current); ?></td>
+										</tr>
+										<tr class="text-yellow text-bold warning">
+											<td><span class="label label-warning">&nbsp;</span></td>
+											<td>Total Past Due Receivables</td>
+											<td class="text-center"><?php echo $past_due_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
@@ -329,12 +340,6 @@ $this->load->helper('date_helper');
 											<td class="padding-l-30"> Over 120 Days</td>
 											<td class="text-center"><?php echo $past_due_over_120_count; ?></td>
 											<td class="text-right"><?php echo amount($past_due_over_120); ?></td>
-										</tr>
-										<tr class="text-yellow text-bold warning">
-											<td><span class="label label-warning">&nbsp;</span></td>
-											<td>Total Past Due Receivables</td>
-											<td class="text-center"><?php echo $past_due_count; ?></td>
-											<td class="text-right"><?php echo amount($past_due); ?></td>
 										</tr>
 										<tr class="text-red text-bold danger">
 											<td>&nbsp;</td>
