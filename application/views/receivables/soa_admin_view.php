@@ -339,26 +339,22 @@ $this->load->helper('date_helper');
 										<h3 class="box-title">Customer Details</h3>
 									</div>
 									<div class="box-body">
-										<strong>Party Name</strong>
+										<strong>Customer Name</strong>
 										<p class="text-muted">
 											<?php echo (!isset($customer_details->PARTY_NAME) OR $customer_details->PARTY_NAME == NULL) ? '-' : $customer_details->CUSTOMER_ID . ' - ' .$customer_details->PARTY_NAME; ?>
 										</p>
-										
 										<strong>Account Name</strong>
 										<p class="text-muted">
 											<?php echo (!isset($customer_details->ACCOUNT_NAME) OR $customer_details->ACCOUNT_NAME == NULL) ? '-' : $customer_details->ACCOUNT_NUMBER . ' - ' .$customer_details->ACCOUNT_NAME; ?>										</p>
-										
 										<strong>Customer Address</strong>
 										<p class="text-muted">
 											<?php echo (!isset($customer_details->ADDRESS) OR $customer_details->ADDRESS == NULL) ? '-' : $customer_details->ADDRESS; ?>
 										</p>
-										
 										<strong>Profile Class</strong>
 										<p class="text-muted">
 											<?php echo (!isset($customer_details->PROFILE_CLASS) OR $customer_details->PROFILE_CLASS == NULL)  ? '-' : $customer_details->PROFILE_CLASS_ID . ' - ' . $customer_details->PROFILE_CLASS; ?>
 											<input type="hidden" name="profile_class" value="<?php echo @$customer_details->PROFILE_CLASS; ?>">
 										</p>
-										
 									</div>
 								</div>
 							</div>
