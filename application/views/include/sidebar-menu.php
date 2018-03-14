@@ -69,6 +69,11 @@
 						</li> 
 					</ul>
 				</li>
+				<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'aging') ? 'active' : ''; ?>">
+					<a href="<?php echo base_url('receivables/aging/summary');?>">
+						<i class="fa fa-paste"></i> <span>Accounts Receivable Aging</span>
+					</a>
+				</li>
 				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 					<a href="#">
 						<i class="fa fa-list-alt"></i> <span>Check Warehousing</span>
@@ -93,11 +98,6 @@
 							</a>
 						</li> 
 					</ul>
-				</li>
-				<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'aging') ? 'active' : ''; ?>">
-					<a href="<?php echo base_url('receivables/aging/summary');?>">
-						<i class="fa fa-paste"></i> <span>Accounts Receivable Aging</span>
-					</a>
 				</li>
 				<li class="<?php echo ($this->uri->segment(1) == 'payables' AND $this->uri->segment(2) == 'check_writer') ? 'active' : ''; ?>">
 					<a href="<?php echo base_url('payables/check_writer/generate');?>">

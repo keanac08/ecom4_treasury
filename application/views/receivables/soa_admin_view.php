@@ -144,45 +144,100 @@ $this->load->helper('date_helper');
 									$current_count = 0;
 									$past_due_count = 0;
 									
+									$past_due_01_15_wht = 0;
+									$past_due_16_30_wht = 0;
+									$past_due_31_60_wht = 0;
+									$past_due_61_90_wht = 0;
+									$past_due_91_120_wht = 0;
+									$past_due_over_120_wht = 0;
+									$contingent_wht = 0;
+									$current_wht = 0;
+									$past_due_wht = 0;
+									
 									foreach($soa_detailed as $row){
 										
 										if($row->INVOICE_ID != NULL){
 											
 											if($row->DELIVERY_DATE == NULL){
-												$contingent += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$contingent += $row->BALANCE;
+												}
+												else{
+													$contingent_wht += $row->BALANCE;
+												}
 												$contingent_count++;
 											}
 											else if($row->DAYS_OVERDUE == 0){
-												$current += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$current += $row->BALANCE;
+												}
+												else{
+													$current_wht += $row->BALANCE;
+												}
 												$current_count++;
 											}
 											else if($row->DAYS_OVERDUE > 0 AND $row->DAYS_OVERDUE <= 15){
-												$past_due_01_15 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_01_15 += $row->BALANCE;
+												}
+												else{
+													$past_due_01_15_wht += $row->BALANCE;
+												}
 												$past_due_01_15_count++;
 											}
 											else if($row->DAYS_OVERDUE > 15 AND $row->DAYS_OVERDUE <= 30){
-												$past_due_16_30 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_16_30 += $row->BALANCE;
+												}
+												else{
+													$past_due_16_30_wht += $row->BALANCE;
+												}
 												$past_due_16_30_count++;
 											}
 											else if($row->DAYS_OVERDUE > 30 AND $row->DAYS_OVERDUE <= 60){
-												$past_due_31_60 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_31_60 += $row->BALANCE;
+												}
+												else{
+													$past_due_31_60_wht += $row->BALANCE;
+												}
 												$past_due_31_60_count++;
 											}
 											else if($row->DAYS_OVERDUE > 60 AND $row->DAYS_OVERDUE <= 90){
-												$past_due_61_90 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_61_90 += $row->BALANCE;
+												}
+												else{
+													$past_due_61_90_wht += $row->BALANCE;
+												}
 												$past_due_61_90_count++;
 											}
 											else if($row->DAYS_OVERDUE > 90 AND $row->DAYS_OVERDUE <= 120){
-												$past_due_91_120 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_91_120 += $row->BALANCE;
+												}
+												else{
+													$past_due_91_120_wht += $row->BALANCE;
+												}
 												$past_due_91_120_count++;
 											}
 											else if($row->DAYS_OVERDUE > 120){
-												$past_due_over_120 += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due_over_120 += $row->BALANCE;
+												}
+												else{
+													$past_due_over_120_wht += $row->BALANCE;
+												}
 												$past_due_over_120_count++;
 											}
 											
 											if($row->DAYS_OVERDUE > 0){
-												$past_due += $row->BALANCE;
+												if($row->BALANCE - $row->WHT_AMOUNT > 1){
+													$past_due += $row->BALANCE;
+												}
+												else{
+													$past_due_wht += $row->BALANCE;
+												}
 												$past_due_count++;
 											}
 
@@ -278,103 +333,129 @@ $this->load->helper('date_helper');
 					</div>
 					<div class="tab-pane active" id="summary">
 						<div class="row">
-							<div class="col-md-7">
+							<div class="col-md-3">
+								<div class="box box-danger" style="margin-top: 36px;">
+									<div class="box-header with-border">
+										<h3 class="box-title">Customer Details</h3>
+									</div>
+									<div class="box-body">
+										<strong>Party Name</strong>
+										<p class="text-muted">
+											<?php echo (!isset($customer_details->PARTY_NAME) OR $customer_details->PARTY_NAME == NULL) ? '-' : $customer_details->CUSTOMER_ID . ' - ' .$customer_details->PARTY_NAME; ?>
+										</p>
+										
+										<strong>Account Name</strong>
+										<p class="text-muted">
+											<?php echo (!isset($customer_details->ACCOUNT_NAME) OR $customer_details->ACCOUNT_NAME == NULL) ? '-' : $customer_details->ACCOUNT_NUMBER . ' - ' .$customer_details->ACCOUNT_NAME; ?>										</p>
+										
+										<strong>Customer Address</strong>
+										<p class="text-muted">
+											<?php echo (!isset($customer_details->ADDRESS) OR $customer_details->ADDRESS == NULL) ? '-' : $customer_details->ADDRESS; ?>
+										</p>
+										
+										<strong>Profile Class</strong>
+										<p class="text-muted">
+											<?php echo (!isset($customer_details->PROFILE_CLASS) OR $customer_details->PROFILE_CLASS == NULL)  ? '-' : $customer_details->PROFILE_CLASS_ID . ' - ' . $customer_details->PROFILE_CLASS; ?>
+											<input type="hidden" name="profile_class" value="<?php echo @$customer_details->PROFILE_CLASS; ?>">
+										</p>
+										
+									</div>
+								</div>
+							</div>
+							<div class="col-md-9">
 								<table class="table">
 									<thead>
 										<th>&nbsp;</th>
 										<th>&nbsp;</th>
-										<th class="text-center">Total Invoice Count</th>
-										<th class="text-right">Total Invoice Balance</th>
+										<th class="text-center">Invoice Count</th>
+										<th class="text-right">WHT Balance</th>
+										<th class="text-right">Amount Due</th>
+										<th class="text-right">Invoice Balance</th>
 									</thead>
 									<tbody>
 										<tr class="text-blue text-bold info">
 											<td><span class="label label-primary">&nbsp;</span></td>
 											<td>Total Contingent Receivables</td>
 											<td class="text-center"><?php echo $contingent_count; ?></td>
+											<td class="text-right"><?php echo amount($contingent_wht); ?></td>
 											<td class="text-right"><?php echo amount($contingent); ?></td>
+											<td class="text-right"><?php echo amount($contingent + $contingent_wht); ?></td>
 										</tr>
 										<tr class="text-success text-bold success">
 											<td><span class="label label-success">&nbsp;</span></td>
 											<td>Total Current Receivables</td>
 											<td class="text-center"><?php echo $current_count; ?></td>
+											<td class="text-right"><?php echo amount($current_wht); ?></td>
 											<td class="text-right"><?php echo amount($current); ?></td>
+											<td class="text-right"><?php echo amount($current_wht + $current); ?></td>
 										</tr>
 										<tr class="text-yellow text-bold warning">
 											<td><span class="label label-warning">&nbsp;</span></td>
 											<td>Total Past Due Receivables</td>
 											<td class="text-center"><?php echo $past_due_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due); ?></td>
+											<td class="text-right"><?php echo amount($past_due + $past_due_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30">0 - 15 Days</td>
 											<td class="text-center"><?php echo $past_due_01_15_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_01_15_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_01_15); ?></td>
+											<td class="text-right"><?php echo amount($past_due_01_15 + $past_due_01_15_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30">16 - 30 Days</td>
 											<td class="text-center"><?php echo $past_due_16_30_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_16_30_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_16_30); ?></td>
+											<td class="text-right"><?php echo amount($past_due_16_30 + $past_due_16_30_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30">31 - 60 Days</td>
 											<td class="text-center"><?php echo $past_due_31_60_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_31_60_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_31_60); ?></td>
+											<td class="text-right"><?php echo amount($past_due_31_60 + $past_due_31_60_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30">61 - 90 Days</td>
 											<td class="text-center"><?php echo $past_due_61_90_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_61_90_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_61_90); ?></td>
+											<td class="text-right"><?php echo amount($past_due_61_90 + $past_due_61_90_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30">91 - 120 Days</td>
 											<td class="text-center"><?php echo $past_due_91_120_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_91_120_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_91_120); ?></td>
+											<td class="text-right"><?php echo amount($past_due_91_120 + $past_due_91_120_wht); ?></td>
 										</tr>
 										<tr class="text-yellow">
 											<td>&nbsp;</td>
 											<td class="padding-l-30"> Over 120 Days</td>
 											<td class="text-center"><?php echo $past_due_over_120_count; ?></td>
+											<td class="text-right"><?php echo amount($past_due_over_120_wht); ?></td>
 											<td class="text-right"><?php echo amount($past_due_over_120); ?></td>
+											<td class="text-right"><?php echo amount($past_due_over_120 + $past_due_over_120_wht); ?></td>
 										</tr>
 										<tr class="text-red text-bold danger">
-											<td>&nbsp;</td>
+											<td><span class="label label-danger">&nbsp;</span></td>
 											<td>Total Receivables</td>
 											<td class="text-center"><?php echo $contingent_count + $current_count + $past_due_count; ?></td>
+											<td class="text-right"><?php echo amount($contingent_wht + $current_wht + $past_due_wht); ?></td>
 											<td class="text-right"><?php echo amount($contingent + $current + $past_due); ?></td>
+											<td class="text-right"><?php echo amount($contingent + $current + $past_due + $contingent_wht + $current_wht + $past_due_wht); ?></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							<?php 
-							if(!empty($customer_details)){
-							?>
-							<div class="col-md-5">
-								<div style="margin-top: 35px;"></div>
-								<div class="callout callout-success">
-									<h4>Customer Details</h4>
-									
-									<strong>Customer Name</strong>
-									<p class=""><?php echo $customer_details->PARTY_NAME == NULL ? '-' : $customer_details->CUSTOMER_ID . ' - ' .$customer_details->PARTY_NAME; ?></p>
-
-									<strong>Account Name</strong>
-									<p class=""><?php echo $customer_details->ACCOUNT_NAME == NULL ? '-' : $customer_details->ACCOUNT_NUMBER . ' - ' .$customer_details->ACCOUNT_NAME; ?></p>
-
-									<strong>Customer Address</strong>
-									<p class=""><?php echo $customer_details->ADDRESS == NULL ? '-' : $customer_details->ADDRESS; ?></p>
-
-									<strong>Profile Class</strong>
-									<p class=""><?php echo $customer_details->PROFILE_CLASS == NULL ? '-' : $customer_details->PROFILE_CLASS_ID . ' - ' . $customer_details->PROFILE_CLASS; ?></p>
-									<input type="hidden" name="profile_class" value="<?php echo $customer_details->PROFILE_CLASS; ?>">
-								</div>
-							</div>
-							<?php 
-							}
-							?>
 						</div>
 					</div>
 				</div>
