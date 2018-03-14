@@ -74,22 +74,35 @@ class Check_warehousing_model extends CI_Model {
 		return $data->result();
 	}
 	
-	public function get_approved_pdc(){
+	public function get_approved_pdc($from_date, $to_date){
+		
+		$from_date = ($from_date == NULL)? date('01-M-y'):date('d-M-y', strtotime($from_date));
+		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
+		$params = array($from_date, $to_date);
 		
 		$sql = " SELECT DISTINCT pdc.check_id,
 							  pdc.check_number,
 							  pdc.check_bank,
 							  pdc.check_date,
-							  pdc.check_amount
+							  pdc.check_amount,
+							  app_pdc.date_approved,
+							  app_pdc.date_deposit
 				FROM ipc.ipc_treasury_pdc pdc
 					 LEFT JOIN ipc.ipc_treasury_pdc_units unit
 						ON pdc.check_id = unit.check_id
 					 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
 						ON pdc.check_id = app_pdc.check_id
 			   WHERE app_pdc.check_id IS NOT NULL
-			ORDER BY pdc.check_id";
-		$data = $this->oracle->query($sql);
+			   AND pdc.check_date between ? AND ?
+			ORDER BY app_pdc.date_approved DESC";
+		$data = $this->oracle->query($sql, $params);
 		return $data->result();
+	}
+	
+	public function update_check_deposit_date($check_id, $deposit_date){
+		
+		$sql = "UPDATE ipc.ipc_treasury_approved_pdc set date_deposit = ? WHERE check_id = ?";
+		$this->oracle->query($sql, array($deposit_date, $check_id));
 	}
 	
 	public function get_last_pdc_header_id(){
@@ -263,7 +276,6 @@ class Check_warehousing_model extends CI_Model {
 				SET attribute20 = 'Y',
 				attribute19 = to_char(sysdate, 'MM/DD/YYYY HH24:MI:SS')
 				WHERE LINE_ID IN (".$line_ids.")";
-		
 		$this->oracle->query($sql);
 	}
 	
@@ -275,6 +287,63 @@ class Check_warehousing_model extends CI_Model {
 						cs_number)
 					VALUES(?,?,?)";
 		$this->oracle->query($sql, array($check_id, $line_id, $cs_number));
+	}
+	
+	public function get_approved_check_unit_details($check_id){
+	
+		$sql = "SELECT
+					pdc.check_id, 
+					pdc.check_number,
+					pdc.check_bank, 
+					pdc.check_amount, 
+					pdc.check_date, 
+						CASE WHEN trx_number IS NULL THEN
+							oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value
+						ELSE
+							ROUND (rctla.invoice_amount - rctla.wht_amount, 2)
+						END
+					amount_due,
+					NVL(rcta.trx_number, '-') trx_number,
+					msn.serial_number cs_number,
+					msib.attribute9 sales_model,
+					NVL(hcaa.account_name, hca.account_name) account_name
+					FROM ipc.ipc_treasury_pdc pdc
+					LEFT JOIN ipc.ipc_treasury_pdc_units pdcu
+						ON pdc.check_id = pdcu.check_id
+					LEFT JOIN mtl_serial_numbers msn
+						ON pdcu.cs_number = msn.serial_number
+					LEFT JOIN mtl_system_items_b msib
+						ON msn.inventory_item_id = msib.inventory_item_id
+						AND msn.current_organization_id = msib.organization_id
+					LEFT JOIN mtl_reservations mr
+						ON msn.reservation_id = mr.reservation_id
+					LEFT JOIN oe_order_lines_all oola
+						ON oola.line_id = mr.demand_source_line_id
+					LEFT JOIN  oe_order_headers_all ooha
+						ON oola.header_id = ooha.header_id
+					LEFT JOIN hz_cust_accounts_all hcaa
+						ON ooha.sold_to_org_id = hcaa.cust_account_id
+					LEFT JOIN ra_customer_trx_all rcta
+						ON msn.serial_number = rcta.attribute3
+					LEFT JOIN
+					 ( SELECT customer_trx_id,
+							   MAX (warehouse_id)                         warehouse_id,
+							   MAX (inventory_item_id)                    inventory_item_id,
+							   MAX (quantity_invoiced)                    quantity_invoiced,
+							   MAX (INTERFACE_LINE_ATTRIBUTE2)            order_type,
+							   SUM (LINE_RECOVERABLE)                     net_amount,
+							   SUM (TAX_RECOVERABLE)                      vat_amount,
+							   SUM (LINE_RECOVERABLE) + SUM (TAX_RECOVERABLE) invoice_amount,
+							   SUM (LINE_RECOVERABLE) * .01               wht_amount
+						  FROM ra_customer_trx_lines_all
+						 WHERE line_type = 'LINE'
+					  GROUP BY customer_trx_id) rctla
+						ON rcta.customer_trx_id = rctla.customer_trx_id
+					LEFT JOIN hz_cust_accounts hca
+						ON rcta.sold_to_customer_id = hca.cust_account_id
+					WHERE pdc.check_id = ?";
+		$data = $this->oracle->query($sql, $check_id);
+		return $data->result();
 	
 	}
 	

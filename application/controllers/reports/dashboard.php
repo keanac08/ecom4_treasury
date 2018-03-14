@@ -12,7 +12,7 @@ class Dashboard extends CI_Controller {
 	public function index(){
 		
 		//~ echo $this->session->tre_portal_user_id;die('--');
-		
+		//~ echo $this->session->tre_portal_user_type;
 		$data['content'] = 'reports/reports_dashboard_view';
 		$data['title'] = 'Reports Dashboard';
 		$data['head_title'] = 'Treasury | Reports Dashboard';

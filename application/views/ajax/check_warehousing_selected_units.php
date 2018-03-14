@@ -64,7 +64,7 @@ if(!empty($result)){
 				<div class="form-group">
 					<label for="inputEmail" class="col-lg-5 control-label">Check Number</label>
 					<div class="col-lg-7">
-						<input required autofocus="autofocus" type="text" class="form-control" name="check_number" value=""/>
+						<input required autofocus="autofocus" type="number" class="form-control" name="check_number" value=""/>
 					</div>
 				</div>
 				<div class="form-group">

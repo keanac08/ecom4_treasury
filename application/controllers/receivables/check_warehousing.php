@@ -11,11 +11,14 @@ class Check_warehousing extends CI_Controller {
 	
 	public function pdc(){
 		
+		$data['from_date'] = $this->input->post('from_date');
+		$data['to_date'] = $this->input->post('to_date');
+		
 		$data['content'] = 'receivables/check_warehousing_pdc_view';
 		$data['title'] = 'Check Warehousing';
 		$data['head_title'] = 'Treasury | Check Warehousing';
 		
-		$data['result'] = $this->check_warehousing_model->get_approved_pdc();
+		$data['result'] = $this->check_warehousing_model->get_approved_pdc($data['from_date'], $data['to_date']);
 		
 		$this->load->view('include/template',$data);
 	}
@@ -105,6 +108,25 @@ class Check_warehousing extends CI_Controller {
 		$this->check_warehousing_model->new_pdc_units_header($header_id->LAST_ID, $cs_numbers);
 		
 		echo $header_id->LAST_ID;
+	}
+	
+	public function approved_check_unit_details_ajax(){
+		
+		$data['result'] =  $this->check_warehousing_model->get_approved_check_unit_details($this->input->post('check_id'));
+		$data['check_number'] = $this->input->post('check_number');
+		$data['check_bank'] = $this->input->post('check_bank');
+		echo $this->load->view('ajax/approved_check_unit_details_view',$data,true);
+		
+	}
+	
+	public function deposit_date_entry_ajax(){
+		
+		
+		$this->load->helper('date_helper');
+		
+		$check_id = $this->input->post('check_id');
+		$deposit_date = $this->input->post('deposit_date');
+		$this->check_warehousing_model->update_check_deposit_date($check_id, oracle_date($deposit_date));
 	}
 	
 	public function pdc_details_pdf(){

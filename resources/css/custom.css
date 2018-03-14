@@ -29,6 +29,16 @@ a:focus{
 	font-size: 90%;
 }
 
+.modal .modal-footer {
+    background-color: #ffffff !important;
+}
+
+.modal .modal-footer {
+    border-color: #ccc;
+    padding: 10px !important;
+    padding-right: 15px !important;
+}
+
 /* DATETIME PICKER */
 
 .bootstrap-datetimepicker-widget table td.today::before {

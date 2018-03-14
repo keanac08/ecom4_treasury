@@ -8,7 +8,6 @@ function excel_date($date){
 	return ($date != NULL) ? date('Y-m-d', strtotime($date)) : NULL;
 }
 
-
 function oracle_date($date){
 	return ($date != NULL) ? date('d-M-y', strtotime($date)) : NULL;
 }
