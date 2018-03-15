@@ -71,6 +71,24 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function search(){
+		
+		$data['content'] = 'receivables/check_warehousing_search_view';
+		$data['title'] = 'Check Warehousing <small> Search</small>';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		if($this->input->post('q') != NULL){
+			$data['q'] = $this->input->post('q');
+			$data['results'] = $this->check_warehousing_model->get_unit_check_details($this->input->post('q'));
+			//~ print_r($data['results']);
+		}
+		else{
+			$data['q'] = NULL;
+		}
+		
+		$this->load->view('include/template',$data);
+	}
+	
 	public function ajax_search_cs_number(){
 		
 		$cs_numbers = explode(',', $this->input->post('cs_numbers'));

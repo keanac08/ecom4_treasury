@@ -345,7 +345,8 @@ $this->load->helper('date_helper');
 										</p>
 										<strong>Account Name</strong>
 										<p class="text-muted">
-											<?php echo (!isset($customer_details->ACCOUNT_NAME) OR $customer_details->ACCOUNT_NAME == NULL) ? '-' : $customer_details->ACCOUNT_NUMBER . ' - ' .$customer_details->ACCOUNT_NAME; ?>										</p>
+											<?php echo (!isset($customer_details->ACCOUNT_NAME) OR $customer_details->ACCOUNT_NAME == NULL) ? '-' : $customer_details->ACCOUNT_NUMBER . ' - ' .$customer_details->ACCOUNT_NAME; ?>										
+										</p>
 										<strong>Customer Address</strong>
 										<p class="text-muted">
 											<?php echo (!isset($customer_details->ADDRESS) OR $customer_details->ADDRESS == NULL) ? '-' : $customer_details->ADDRESS; ?>

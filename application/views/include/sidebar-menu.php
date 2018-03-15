@@ -97,6 +97,11 @@
 								<i class="fa fa-circle-o"></i>Approved PDCs
 							</a>
 						</li> 
+						<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/search'); ?> ">
+								<i class="fa fa-circle-o"></i>Search
+							</a>
+						</li> 
 					</ul>
 				</li>
 				<li class="<?php echo ($this->uri->segment(1) == 'payables' AND $this->uri->segment(2) == 'check_writer') ? 'active' : ''; ?>">

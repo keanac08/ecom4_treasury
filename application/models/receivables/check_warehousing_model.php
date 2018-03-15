@@ -449,4 +449,62 @@ class Check_warehousing_model extends CI_Model {
 		$data = $this->oracle->query($sql, $check_id);
 		return $data->result();
 	}
+	
+	public function get_unit_check_details($q){
+	
+		$sql = "SELECT
+					pdc.check_id, 
+					pdc.check_number,
+					pdc.check_bank, 
+					pdc.check_amount, 
+					pdc.check_date, 
+						CASE WHEN trx_number IS NULL THEN
+							oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value
+						ELSE
+							ROUND (rctla.invoice_amount - rctla.wht_amount, 2)
+						END
+					amount_due,
+					NVL(rcta.trx_number, '-') trx_number,
+					msn.serial_number cs_number,
+					msib.attribute9 sales_model,
+					NVL(hcaa.account_name, hca.account_name) account_name
+					FROM ipc.ipc_treasury_pdc pdc
+					LEFT JOIN ipc.ipc_treasury_pdc_units pdcu
+						ON pdc.check_id = pdcu.check_id
+					LEFT JOIN mtl_serial_numbers msn
+						ON pdcu.cs_number = msn.serial_number
+					LEFT JOIN mtl_system_items_b msib
+						ON msn.inventory_item_id = msib.inventory_item_id
+						AND msn.current_organization_id = msib.organization_id
+					LEFT JOIN mtl_reservations mr
+						ON msn.reservation_id = mr.reservation_id
+					LEFT JOIN oe_order_lines_all oola
+						ON oola.line_id = mr.demand_source_line_id
+					LEFT JOIN  oe_order_headers_all ooha
+						ON oola.header_id = ooha.header_id
+					LEFT JOIN hz_cust_accounts_all hcaa
+						ON ooha.sold_to_org_id = hcaa.cust_account_id
+					LEFT JOIN ra_customer_trx_all rcta
+						ON msn.serial_number = rcta.attribute3
+					LEFT JOIN
+					 ( SELECT customer_trx_id,
+							   MAX (warehouse_id)                         warehouse_id,
+							   MAX (inventory_item_id)                    inventory_item_id,
+							   MAX (quantity_invoiced)                    quantity_invoiced,
+							   MAX (INTERFACE_LINE_ATTRIBUTE2)            order_type,
+							   SUM (LINE_RECOVERABLE)                     net_amount,
+							   SUM (TAX_RECOVERABLE)                      vat_amount,
+							   SUM (LINE_RECOVERABLE) + SUM (TAX_RECOVERABLE) invoice_amount,
+							   SUM (LINE_RECOVERABLE) * .01               wht_amount
+						  FROM ra_customer_trx_lines_all
+						 WHERE line_type = 'LINE'
+					  GROUP BY customer_trx_id) rctla
+						ON rcta.customer_trx_id = rctla.customer_trx_id
+					LEFT JOIN hz_cust_accounts hca
+						ON rcta.sold_to_customer_id = hca.cust_account_id
+					WHERE to_char(pdcu.cs_number) = ? OR to_char(pdc.check_id) = ? OR to_char(pdc.check_number) = ?";
+		$data = $this->oracle->query($sql, array($q,$q,$q));
+		return $data->result();
+	
+	}
 }
