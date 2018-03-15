@@ -50,7 +50,7 @@ $this->load->helper('date_helper');
 		<div class="col-md-3">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h3 class="box-title">Check Details</h3>
+					<h3 class="box-title">Approved Check Details</h3>
 				</div>
 				<div class="box-body">
 					<strong>Check ID</strong>

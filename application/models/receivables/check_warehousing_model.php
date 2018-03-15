@@ -507,4 +507,20 @@ class Check_warehousing_model extends CI_Model {
 		return $data->result();
 	
 	}
+	
+	public function get_unit_check_details_excel($from, $to){
+	
+		$sql = "SELECT DISTINCT pdc.check_id,
+						pdc.check_number,
+						pdc.check_bank,
+						to_char(pdc.check_date,'YYYY-MM-DD') check_date,
+						pdc.check_amount,
+						to_char(apdc.date_approved,'YYYY-MM-DD') date_approved
+		  FROM ipc.ipc_treasury_approved_pdc apdc
+			   LEFT JOIN ipc.ipc_treasury_pdc pdc ON apdc.check_id = pdc.check_id
+		 WHERE pdc.check_date BETWEEN ? AND ?";
+		$data = $this->oracle->query($sql, array($from, $to));
+		return $data->result_array();
+	
+	}
 }

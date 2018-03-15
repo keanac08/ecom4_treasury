@@ -71,6 +71,12 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function collection_forecast_modal(){
+
+		$data[] = '';
+		echo $this->load->view('reports/collection_forecast_view',$data, true);
+	}
+	
 	public function search(){
 		
 		$data['content'] = 'receivables/check_warehousing_search_view';
