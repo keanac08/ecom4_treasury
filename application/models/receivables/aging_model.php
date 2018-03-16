@@ -185,11 +185,11 @@ class Aging_Model extends CI_Model {
 						wht_amount_php,
 						balance_php,
 						TO_CHAR(last_payment_date,'YYYY-MM-DD') last_payment_date,
-						CASE WHEN  wht_amount_php - balance_php > 1
-							THEN wht_amount_php
+						CASE WHEN  (balance_php - wht_amount_php) < 1
+							THEN balance_php
 							ELSE 0
 						END cwt_balance,
-						CASE WHEN  wht_amount_php - balance_php < 1
+						CASE WHEN  (balance_php - wht_amount_php) >= 1
 							THEN balance_php
 							ELSE 0
 						END amount_due_balance,
