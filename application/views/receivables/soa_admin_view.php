@@ -372,7 +372,9 @@ $this->load->helper('date_helper');
 									<tbody>
 										<tr class="text-blue text-bold info">
 											<td><span class="label label-primary">&nbsp;</span></td>
-											<td>Total Contingent Receivables</td>
+											<td>
+												<?php echo ($sales_type == 'vehicle' OR $sales_type == 'fleet') ? 'Total Unpulledout Receivables':'Total Undelivered Receivables'?>
+											</td>
 											<td class="text-center"><?php echo $contingent_count; ?></td>
 											<td class="text-right"><?php echo amount($contingent_wht); ?></td>
 											<td class="text-right"><?php echo amount($contingent); ?></td>
