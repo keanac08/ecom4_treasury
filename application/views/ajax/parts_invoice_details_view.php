@@ -8,74 +8,10 @@ $this->load->helper('number_helper');
 </div>
 <div class="modal-body">
 	<div class="row">
-		<div class="col-sm-12">
-			<h3 class="page-header">Header Details</h3>
-		</div>
-		<div class="col-sm-3">
-			<strong>Invoice Number</strong>
-			<p class="text-muted"><?php echo nvl($header->TRX_NUMBER); ?></p>
-			<strong>Invoice Date</strong>
-			<p class="text-muted"><?php echo nvl($header->TRX_DATE); ?></p>
-			<strong>Cutomer PO Number</strong>
-			<p class="text-muted"><?php echo nvl($header->PO_NUMBER); ?></p>
-		</div>
-		<div class="col-sm-3">
-			<strong>Order Number</strong>
-			<p class="text-muted"><?php echo nvl($header->ORDER_NUMBER); ?></p>
-			<strong>Order Date</strong>
-			<p class="text-muted"><?php echo nvl($header->ORDERED_DATE); ?></p>
-			<strong>Order Type</strong>
-			<p class="text-muted"><?php echo nvl($header->ORDER_TYPE); ?></p>
-		</div>
 		
-		<div class="col-sm-6">
-			<table class="table table-condensed table-striped">
-				<tr>
-					<td><strong>Currency</strong></td>
-					<td class="text-right"><?php echo $header->CURRENCY != 'PHP' ?  $header->CURRENCY .' ('.$header->EXCHANGE_RATE.') ':$header->CURRENCY; ?></td>
-				</tr>
-				<tr>
-					<td><strong>Net Amount</strong></td>
-					<td class="text-right"><?php echo amount($header->TOTAL_NET_AMOUNT); ?></td>
-				</tr>
-				<tr>
-					<td><strong>Vat Amount</strong></td>
-					<td class="text-right"><?php echo amount($header->TOTAL_VAT_AMOUNT); ?></td>
-				</tr>
-				<tr>
-					<td style="font-size: 120%;"><strong>Transaction Amount</strong></td>
-					<td style="font-size: 120%;" class="text-right">
-						<strong>
-								<?php echo amount($header->INVOICE_AMOUNT); ?>
-						</strong>
-					</td>
-				</tr>
-				<tr>
-					<td><strong>WHT Amount</strong></td>
-					<td class="text-right"><?php echo amount($header->TOTAL_NET_AMOUNT * .01); ?></td>
-				</tr>
-				<tr>
-					<td><strong>Amount Due</strong></td>
-					<td class="text-right"><?php echo amount($header->INVOICE_AMOUNT - ($header->TOTAL_NET_AMOUNT * .01)); ?></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td><strong>Paid Amount</strong></td>
-					<td class="text-right"><?php echo amount($header->PAID_AMOUNT + (-1 * $header->ADJUSTED_AMOUNT)); ?></td>
-				</tr>
-				<tr>
-					<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>
-					<td style="font-size: 110%;" class="text-right text-danger"><strong><?php echo amount($header->BALANCE); ?></strong></td>
-				</tr>
-			</table>
-		</div>
 	</div> 
 	<div class="row">
 		<div class="col-sm-12">
-			<h3 class="page-header">Line Details</h3>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
@@ -124,6 +60,72 @@ $this->load->helper('number_helper');
 					</tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="col-sm-6">
+				<strong>Invoice Number</strong>
+				<p class="text-muted"><?php echo nvl($header->TRX_NUMBER); ?></p>
+				<strong>Invoice Date</strong>
+				<p class="text-muted"><?php echo nvl($header->TRX_DATE); ?></p>
+				<strong>Cutomer PO Number</strong>
+				<p class="text-muted"><?php echo nvl($header->PO_NUMBER); ?></p>
+			</div>
+			<div class="col-sm-6">
+				<strong>Order Number</strong>
+				<p class="text-muted"><?php echo nvl($header->ORDER_NUMBER); ?></p>
+				<strong>Order Date</strong>
+				<p class="text-muted"><?php echo nvl($header->ORDERED_DATE); ?></p>
+				<strong>Order Type</strong>
+				<p class="text-muted"><?php echo nvl($header->ORDER_TYPE); ?></p>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="well well-sm">
+				<table class="table table-condensed table-striped">
+					<tr>
+						<td><strong>Currency</strong></td>
+						<td class="text-right"><?php echo $header->CURRENCY != 'PHP' ?  $header->CURRENCY .' ('.$header->EXCHANGE_RATE.') ':$header->CURRENCY; ?></td>
+					</tr>
+					<tr>
+						<td><strong>Net Amount</strong></td>
+						<td class="text-right"><?php echo amount($header->TOTAL_NET_AMOUNT); ?></td>
+					</tr>
+					<tr>
+						<td><strong>Vat Amount</strong></td>
+						<td class="text-right"><?php echo amount($header->TOTAL_VAT_AMOUNT); ?></td>
+					</tr>
+					<tr>
+						<td style="font-size: 120%;"><strong>Transaction Amount</strong></td>
+						<td style="font-size: 120%;" class="text-right">
+							<strong>
+									<?php echo amount($header->INVOICE_AMOUNT); ?>
+							</strong>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>WHT Amount</strong></td>
+						<td class="text-right"><?php echo amount($header->TOTAL_NET_AMOUNT * .01); ?></td>
+					</tr>
+					<tr>
+						<td><strong>Amount Due</strong></td>
+						<td class="text-right"><?php echo amount($header->INVOICE_AMOUNT - ($header->TOTAL_NET_AMOUNT * .01)); ?></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><strong>Paid Amount</strong></td>
+						<td class="text-right"><?php echo amount($header->PAID_AMOUNT + (-1 * $header->ADJUSTED_AMOUNT)); ?></td>
+					</tr>
+					<tr>
+						<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>
+						<td style="font-size: 110%;" class="text-right text-danger"><strong><?php echo amount($header->BALANCE); ?></strong></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

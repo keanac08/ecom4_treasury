@@ -10,7 +10,6 @@ $this->load->helper('number_helper');
 	<div class="row">
 		
 		<div class="col-sm-3">
-			<p class="lead">Transaction Details</p>
 			<strong>Invoice Number</strong>
 			<p class="text-muted"><?php echo nvl($data->TRX_NUMBER); ?></p>
 			<strong>Invoice Date</strong>
@@ -25,7 +24,6 @@ $this->load->helper('number_helper');
 			<p class="text-muted"><?php echo nvl($data->PO_NUMBER); ?></p>
 		</div>
 		<div class="col-sm-3">
-			<p class="lead">Unit Details</p>
 			<strong>CS Number</strong>
 			<p class="text-muted"><?php echo nvl($data->CS_NUMBER); ?></p>
 			<strong>Chassis Number</strong>
@@ -39,50 +37,51 @@ $this->load->helper('number_helper');
 			<strong>WB Number</strong>
 			<p class="text-muted"><?php echo nvl($data->WB_NUMBER); ?></p>
 		</div>
-		<div class="col-sssm-offset-1 col-sm-6">
-			<p class="lead">Amount Details</p>
-			<table class="table table-condensed table-striped">
-				<tr>
-					<td><strong>Currency</strong></td>
-					<td class="text-right"><?php echo $data->CURRENCY != 'PHP' ?  $data->CURRENCY .' ('.$data->EXCHANGE_RATE.') ':$data->CURRENCY; ?></td>
-				</tr>
-				<tr>
-					<td><strong>Net Amount</strong></td>
-					<td class="text-right"><?php echo amount($data->NET_AMOUNT); ?></td>
-				</tr>
-				<tr>
-					<td><strong>Vat Amount</strong></td>
-					<td class="text-right"><?php echo amount($data->VAT_AMOUNT); ?></td>
-				</tr>
-				<tr>
-					<td style="font-size: 120%;"><strong>Transaction Amount</strong></td>
-					<td style="font-size: 120%;" class="text-right">
-						<strong>
-								<?php echo amount($data->INVOICE_AMOUNT); ?>
-						</strong>
-					</td>
-				</tr>
-				<tr>
-					<td><strong>WHT Amount</strong></td>
-					<td class="text-right"><?php echo amount($data->NET_AMOUNT * .01); ?></td>
-				</tr>
-				<tr>
-					<td><strong>Amount Due</strong></td>
-					<td class="text-right"><?php echo amount($data->INVOICE_AMOUNT - ($data->NET_AMOUNT * .01)); ?></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td><strong>Paid Amount</strong></td>
-					<td class="text-right"><?php echo amount($data->PAID_AMOUNT + (-1 * $data->ADJUSTED_AMOUNT)); ?></td>
-				</tr>
-				<tr>
-					<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>
-					<td style="font-size: 110%;" class="text-right text-danger"><strong><?php echo amount($data->BALANCE); ?></strong></td>
-				</tr>
-			</table>
+		<div class="col-sm-6">
+			<div class="well well-sm">
+				<table class="table table-condensed table-striped">
+					<tr>
+						<td><strong>Currency</strong></td>
+						<td class="text-right"><?php echo $data->CURRENCY != 'PHP' ?  $data->CURRENCY .' ('.$data->EXCHANGE_RATE.') ':$data->CURRENCY; ?></td>
+					</tr>
+					<tr>
+						<td><strong>Net Amount</strong></td>
+						<td class="text-right"><?php echo amount($data->NET_AMOUNT); ?></td>
+					</tr>
+					<tr>
+						<td><strong>Vat Amount</strong></td>
+						<td class="text-right"><?php echo amount($data->VAT_AMOUNT); ?></td>
+					</tr>
+					<tr>
+						<td style="font-size: 120%;"><strong>Transaction Amount</strong></td>
+						<td style="font-size: 120%;" class="text-right">
+							<strong>
+									<?php echo amount($data->INVOICE_AMOUNT); ?>
+							</strong>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>WHT Amount</strong></td>
+						<td class="text-right"><?php echo amount($data->NET_AMOUNT * .01); ?></td>
+					</tr>
+					<tr>
+						<td><strong>Amount Due</strong></td>
+						<td class="text-right"><?php echo amount($data->INVOICE_AMOUNT - ($data->NET_AMOUNT * .01)); ?></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><strong>Paid Amount</strong></td>
+						<td class="text-right"><?php echo amount($data->PAID_AMOUNT + (-1 * $data->ADJUSTED_AMOUNT)); ?></td>
+					</tr>
+					<tr>
+						<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>
+						<td style="font-size: 110%;" class="text-right text-danger"><strong><?php echo amount($data->BALANCE); ?></strong></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div> 
 </div>
