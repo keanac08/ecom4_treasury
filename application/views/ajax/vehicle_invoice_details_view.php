@@ -10,14 +10,14 @@ $this->load->helper('number_helper');
 	<div class="row">
 		
 		<div class="col-sm-3">
-			<br />
-			<strong>Transaction Number</strong>
+			<p class="lead">Transaction Details</p>
+			<strong>Invoice Number</strong>
 			<p class="text-muted"><?php echo nvl($data->TRX_NUMBER); ?></p>
-			<strong>Transaction Date</strong>
+			<strong>Invoice Date</strong>
 			<p class="text-muted"><?php echo nvl($data->TRX_DATE); ?></p>
 			<strong>Order Number</strong>
 			<p class="text-muted"><?php echo nvl($data->ORDER_NUMBER); ?></p>
-			<strong>Ordered Date</strong>
+			<strong>Order Date</strong>
 			<p class="text-muted"><?php echo nvl($data->ORDERED_DATE); ?></p>
 			<strong>Order Type</strong>
 			<p class="text-muted"><?php echo nvl($data->ORDER_TYPE); ?></p>
@@ -25,7 +25,7 @@ $this->load->helper('number_helper');
 			<p class="text-muted"><?php echo nvl($data->PO_NUMBER); ?></p>
 		</div>
 		<div class="col-sm-3">
-			<br />
+			<p class="lead">Unit Details</p>
 			<strong>CS Number</strong>
 			<p class="text-muted"><?php echo nvl($data->CS_NUMBER); ?></p>
 			<strong>Chassis Number</strong>
@@ -40,6 +40,7 @@ $this->load->helper('number_helper');
 			<p class="text-muted"><?php echo nvl($data->WB_NUMBER); ?></p>
 		</div>
 		<div class="col-sssm-offset-1 col-sm-6">
+			<p class="lead">Amount Details</p>
 			<table class="table table-condensed table-striped">
 				<tr>
 					<td><strong>Currency</strong></td>
@@ -74,12 +75,8 @@ $this->load->helper('number_helper');
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td><strong>Adjustment</strong></td>
-					<td class="text-right"><?php echo amount($data->ADJUSTED_AMOUNT); ?></td>
-				</tr>
-				<tr>
 					<td><strong>Paid Amount</strong></td>
-					<td class="text-right"><?php echo amount($data->PAID_AMOUNT); ?></td>
+					<td class="text-right"><?php echo amount($data->PAID_AMOUNT + (-1 * $data->ADJUSTED_AMOUNT)); ?></td>
 				</tr>
 				<tr>
 					<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>

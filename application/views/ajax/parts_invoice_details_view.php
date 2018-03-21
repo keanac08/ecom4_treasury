@@ -12,9 +12,9 @@ $this->load->helper('number_helper');
 			<h3 class="page-header">Header Details</h3>
 		</div>
 		<div class="col-sm-3">
-			<strong>Transaction Number</strong>
+			<strong>Invoice Number</strong>
 			<p class="text-muted"><?php echo nvl($header->TRX_NUMBER); ?></p>
-			<strong>Transaction Date</strong>
+			<strong>Invoice Date</strong>
 			<p class="text-muted"><?php echo nvl($header->TRX_DATE); ?></p>
 			<strong>Cutomer PO Number</strong>
 			<p class="text-muted"><?php echo nvl($header->PO_NUMBER); ?></p>
@@ -22,7 +22,7 @@ $this->load->helper('number_helper');
 		<div class="col-sm-3">
 			<strong>Order Number</strong>
 			<p class="text-muted"><?php echo nvl($header->ORDER_NUMBER); ?></p>
-			<strong>Ordered Date</strong>
+			<strong>Order Date</strong>
 			<p class="text-muted"><?php echo nvl($header->ORDERED_DATE); ?></p>
 			<strong>Order Type</strong>
 			<p class="text-muted"><?php echo nvl($header->ORDER_TYPE); ?></p>
@@ -63,12 +63,8 @@ $this->load->helper('number_helper');
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td><strong>Adjustment</strong></td>
-					<td class="text-right"><?php echo amount($header->ADJUSTED_AMOUNT); ?></td>
-				</tr>
-				<tr>
 					<td><strong>Paid Amount</strong></td>
-					<td class="text-right"><?php echo amount($header->PAID_AMOUNT); ?></td>
+					<td class="text-right"><?php echo amount($header->PAID_AMOUNT + (-1 * $header->ADJUSTED_AMOUNT)); ?></td>
 				</tr>
 				<tr>
 					<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>

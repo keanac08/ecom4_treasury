@@ -343,7 +343,7 @@ class Soa_model extends CI_Model {
 					apsa.amount_adjusted adjusted_amount,
 					apsa.invoice_currency_code currency,
 					apsa.exchange_rate,
-					CASE apsa.status WHEN 'OP' THEN 'Open' else'Closed' end status,
+					CASE apsa.status WHEN 'OP' THEN 'Open' else 'Closed' end status,
 					ooha.order_number,
 					to_char(ooha.ordered_date,'MM/DD/YYYY') ordered_date, 
 					ottl.description order_type,
