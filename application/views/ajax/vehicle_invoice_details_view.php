@@ -8,7 +8,6 @@ $this->load->helper('number_helper');
 </div>
 <div class="modal-body">
 	<div class="row">
-		
 		<div class="col-sm-3">
 			<strong>Invoice Number</strong>
 			<p class="text-muted"><?php echo nvl($data->TRX_NUMBER); ?></p>
@@ -74,7 +73,7 @@ $this->load->helper('number_helper');
 					</tr>
 					<tr>
 						<td><strong>Paid Amount</strong></td>
-						<td class="text-right"><?php echo amount($data->PAID_AMOUNT + (-1 * $data->ADJUSTED_AMOUNT)); ?></td>
+						<td class="text-right"><?php echo amount($data->PAID_AMOUNT + (-1 * ($data->ADJUSTED_AMOUNT + $data->CREDITED_AMOUNT))); ?></td>
 					</tr>
 					<tr>
 						<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>

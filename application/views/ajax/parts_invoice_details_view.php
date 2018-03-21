@@ -118,7 +118,7 @@ $this->load->helper('number_helper');
 					</tr>
 					<tr>
 						<td><strong>Paid Amount</strong></td>
-						<td class="text-right"><?php echo amount($header->PAID_AMOUNT + (-1 * $header->ADJUSTED_AMOUNT)); ?></td>
+						<td class="text-right"><?php echo amount($header->PAID_AMOUNT + ( -1 * ($header->ADJUSTED_AMOUNT + $header->CREDITED_AMOUNT))); ?></td>
 					</tr>
 					<tr>
 						<td style="font-size: 110%;" class="text-danger"><strong>Balance</strong></td>
