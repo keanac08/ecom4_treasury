@@ -20,8 +20,9 @@ class Receivables_excel extends CI_Controller {
 		$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(4));
 		$as_of_date =  $as_of_date->format('m/d/Y');
 		$profile_class_id = $this->uri->segment(5);
+		$customer_id = $this->uri->segment(6);
 		
-		$rows = $this->aging_model->get_receivables_summary_excel(date('d-M-y', strtotime($as_of_date)), $profile_class_id);
+		$rows = $this->aging_model->get_receivables_summary_excel(date('d-M-y', strtotime($as_of_date)), $profile_class_id, $customer_id);
 
 		$writer = new XLSXWriter();
 		

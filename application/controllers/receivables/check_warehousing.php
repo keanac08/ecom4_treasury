@@ -23,6 +23,20 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function customer_check_list(){
+		
+		$data['from_date'] = $this->input->post('from_date');
+		$data['to_date'] = $this->input->post('to_date');
+		
+		$data['content'] = 'receivables/check_warehousing_pdc_customer_view';
+		$data['title'] = 'Check Warehousing';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		$data['result'] = $this->check_warehousing_model->get_customer_pdc($data['from_date'], $data['to_date'], $this->session->tre_portal_customer_id);
+		
+		$this->load->view('include/template',$data);
+	}
+	
 	public function credit_hold_releasing(){
 
 		$data['content']    = 'receivables/credit_hold_releasing_view';
@@ -71,6 +85,37 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function customer_entry(){
+		
+		//~ echo $this->session->tre_portal_customer_id;
+		
+		$data['content'] = 'receivables/check_warehousing_customer_entry_view';
+		$data['title'] = 'Check Warehousing <small>Check Encoding</small>';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		$data['results'] = $this->check_warehousing_model->get_tagged_per_customer($this->session->tre_portal_customer_id);
+		
+		$this->load->view('include/template',$data);
+	}
+	
+	public function customer_entry_2(){
+		
+		$data['content'] = 'receivables/check_warehousing_customer_entry2_view';
+		$data['title'] = 'Check Warehousing <small>Check Encoding</small>';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $this->input->post('cs_numbers'))).'\'';
+		$cs_numbers = STRTOUPPER($cs_numbers);
+		
+		$data['result'] = $this->check_warehousing_model->get_tagged_units($cs_numbers);
+		$data['cs_numbers'] = $cs_numbers;
+		
+		$this->load->view('include/template',$data);
+		//~ echo '<pre>';
+		//~ print_r($data['result']);
+		//~ echo '</pre>';
+	}
+	
 	public function collection_forecast_modal(){
 
 		$data[] = '';
@@ -115,7 +160,8 @@ class Check_warehousing extends CI_Controller {
 					$this->input->post('check_number'),
 					$this->input->post('check_bank'),
 					oracle_date($this->input->post('check_date')),
-					$this->input->post('check_amount')
+					$this->input->post('check_amount'),
+					$this->session->tre_portal_customer_id
 				);
 				
 		//~ insert check header
@@ -128,8 +174,19 @@ class Check_warehousing extends CI_Controller {
 		$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $cs_numbers)).'\'';
 		$cs_numbers = STRTOUPPER($cs_numbers);
 		
+		if($this->session->tre_portal_customer_id == NULL){
+			$cs_numbers = explode(',', $this->input->post('cs_numbers'));
+			$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $cs_numbers)).'\'';
+			$cs_numbers = STRTOUPPER($cs_numbers);
+		}
+		else{
+			$cs_numbers = $this->input->post('cs_numbers');
+		}
+		
 		//~ insert check tagged units
 		$this->check_warehousing_model->new_pdc_units_header($header_id->LAST_ID, $cs_numbers);
+		
+		//~ echo $header_id->LAST_ID . ' ' . $cs_numbers;
 		
 		echo $header_id->LAST_ID;
 	}
@@ -140,6 +197,15 @@ class Check_warehousing extends CI_Controller {
 		$data['check_number'] = $this->input->post('check_number');
 		$data['check_bank'] = $this->input->post('check_bank');
 		echo $this->load->view('ajax/approved_check_unit_details_view',$data,true);
+		
+	}
+	
+	public function customer_check_unit_details_ajax(){
+		
+		$data['result'] =  $this->check_warehousing_model->get_approved_check_unit_details($this->input->post('check_id'));
+		$data['check_number'] = $this->input->post('check_number');
+		$data['check_bank'] = $this->input->post('check_bank');
+		echo $this->load->view('ajax/customer_check_unit_details_view',$data,true);
 		
 	}
 	

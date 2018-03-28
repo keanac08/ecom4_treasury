@@ -87,4 +87,24 @@ class Transaction_model extends CI_Model {
 		$data = $this->oracle->query($sql,$customer_name);
 		return $data->result();
 	}
+	
+	public function get_customer($customer_id){
+		
+		$sql = "SELECT  hcca.cust_account_id customer_id,
+						CASE
+						  WHEN hcca.account_name IS NOT NULL
+						  THEN
+							 hp.party_name || ' - ' || hcca.account_name
+						  ELSE
+							 hp.party_name
+					   END
+						  customer_name
+				  FROM hz_cust_accounts_all hcca
+					   LEFT JOIN hz_parties hp ON hcca.party_id = hp.party_id
+				 WHERE 1 = 1 
+					AND  hcca.cust_account_id = ?";
+				 
+		$data = $this->oracle->query($sql,$customer_id);
+		return $data->result();
+	}
 }

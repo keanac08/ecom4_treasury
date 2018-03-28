@@ -181,13 +181,15 @@ class Invoice_details_model extends CI_Model {
 						ON apsa.customer_trx_id = rcta.customer_trx_id
 					LEFT JOIN (SELECT rctl.customer_trx_id,
 									MAX(rctl.quantity_invoiced) qty,
-									MAX(rctl.line_number) line_number,
+									MAX(oola.line_number) line_number,
 									MAX(msib.segment1) part_no,
 									MAX(CASE WHEN interface_line_attribute11 = 0 THEN msib.description ELSE NULL END) part_description,
 									SUM(rctl.unit_selling_price) unit_selling_price,
 									SUM(rctl.line_recoverable) net_amount,
 									SUM(rctl.tax_recoverable) vat_amount
 							FROM ra_customer_trx_lines_all rctl
+							LEFT JOIN oe_order_lines_all oola
+							ON rctl.INTERFACE_LINE_ATTRIBUTE6 = oola.line_id
 							LEFT JOIN mtl_system_items_b msib
 							ON rctl.inventory_item_id = msib.inventory_item_id
 							and rctl.warehouse_id = msib.organization_id

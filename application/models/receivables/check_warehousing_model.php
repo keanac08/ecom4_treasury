@@ -99,6 +99,29 @@ class Check_warehousing_model extends CI_Model {
 		return $data->result();
 	}
 	
+	public function get_customer_pdc($from_date, $to_date, $customer_id){
+		
+		$from_date = ($from_date == NULL)? date('01-M-y'):date('d-M-y', strtotime($from_date));
+		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
+		$params = array($from_date, $to_date, $customer_id);
+		
+		$sql = "SELECT DISTINCT pdc.check_id,
+							  pdc.check_number,
+							  pdc.check_bank,
+							  pdc.check_date,
+							  pdc.check_amount,
+							  pdc.date_created
+				FROM ipc.ipc_treasury_pdc pdc
+					 LEFT JOIN ipc.ipc_treasury_pdc_units unit
+						ON pdc.check_id = unit.check_id
+				WHERE 1 = 1
+			   AND pdc.check_date between ? AND ?
+			   AND pdc.customer_id = ?
+			ORDER BY pdc.date_created DESC";
+		$data = $this->oracle->query($sql, $params);
+		return $data->result();
+	}
+	
 	public function update_check_deposit_date($check_id, $deposit_date){
 		
 		$sql = "UPDATE ipc.ipc_treasury_approved_pdc set date_deposit = ? WHERE check_id = ?";
@@ -118,8 +141,9 @@ class Check_warehousing_model extends CI_Model {
 					check_number,
 					check_bank,
 					check_date,
-					check_amount)
-				VALUES (?,?,?,?)";
+					check_amount,
+					customer_id)
+				VALUES (?,?,?,?,?)";
 		$this->oracle->query($sql, $params);
 	}
 	
@@ -522,5 +546,49 @@ class Check_warehousing_model extends CI_Model {
 		$data = $this->oracle->query($sql, array($from, $to));
 		return $data->result_array();
 	
+	}
+	
+	public function get_tagged_per_customer($customer_id){
+		
+		$sql = "SELECT 
+					ooha.header_id,
+					ooha.order_number,
+					oola.line_number,
+					ooha.ordered_date,
+					hcaa.account_name,
+					hcaa.cust_account_id customer_id,
+					mr.reservation_id,
+					msn.serial_number cs_number,
+					msib.attribute9 sales_model,
+					msib.attribute8 body_color,
+					--oola.unit_selling_price net_amount,
+					--oola.tax_value vat_amount,
+					oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value amount_due
+				FROM oe_order_headers_all ooha
+				INNER JOIN oe_order_lines_all oola
+					ON ooha.header_id = oola.header_id
+				LEFT JOIN ipc.ipc_order_return ret
+					ON oola.line_id = ret.line_id
+				LEFT JOIN oe_order_holds_all hold
+					ON  oola.line_id = hold.line_id
+				LEFT JOIN mtl_reservations mr
+					ON oola.line_id = mr.demand_source_line_id
+				LEFT JOIN mtl_serial_numbers msn
+					ON  mr.reservation_id = msn.reservation_id
+				LEFT JOIN mtl_system_items_b msib
+					ON msn.inventory_item_id = msib.inventory_item_id
+					AND msn.current_organization_id = msib.organization_id
+				LEFT JOIN hz_cust_accounts_all hcaa
+					ON ooha.sold_to_org_id = hcaa.cust_account_id
+				WHERE 1 = 1
+					AND ret.line_id IS NULL
+					AND NVL (hold.released_flag, NVL (oola.attribute20, 'N')) = 'N'
+					AND ooha.flow_status_code IN ('ENTERED','BOOKED')
+					AND ooha.order_type_id NOT IN (1150,1151)
+					AND ooha.ship_from_org_id = 121
+					AND ooha.sold_to_org_id = 15096";
+
+		$data = $this->oracle->query($sql, $customer_id);
+		return $data->result();
 	}
 }

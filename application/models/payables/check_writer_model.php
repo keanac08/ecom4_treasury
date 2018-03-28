@@ -154,7 +154,7 @@ class Check_writer_model extends CI_Model {
 					REPLACE(REPLACE(REGEXP_REPLACE(TRANSLATE(max(sup.vendor_name), ' ,''/-.', ' '), ' {2,}', ' ' ),'&','AND'),'Ñ','N') payee_name2,
 					CASE WHEN  sum(aip.amount) > 1000000 THEN 'Production related supplies' ELSE '' END particulars,
 					'ISUZU'               authorized_collector,
-					''               payee_or_collector
+					'1'               payee_or_collector
 				 FROM ap_checks_all ac
 					LEFT JOIN ce_payment_documents cpd
 						ON ac.payment_document_id = cpd.payment_document_id

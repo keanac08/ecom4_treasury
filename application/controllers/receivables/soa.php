@@ -13,30 +13,43 @@ class Soa extends CI_Controller {
 		
 		$this->load->helper('profile_class_helper');
 		
+		$sales_type = $this->uri->segment(4);
+		$profile_class_ids = get_profile_class_ids($sales_type);
+		
 		if($this->uri->segment(6)){
 			$customer_id = $this->uri->segment(6) / 101403;
 			$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(7));
 			$as_of_date =  $as_of_date->format('m/d/Y');
 		}
 		else{
-			$customer_id = $this->input->post('customer_id') != NULL ? $this->input->post('customer_id') : 0;
 			$as_of_date = $this->input->post('as_of_date') != NULL ? $this->input->post('as_of_date') : date('m/d/Y');
+			
+			if($this->session->tre_portal_user_type == 'Administrator'){
+				$customer_id = $this->input->post('customer_id') != NULL ? $this->input->post('customer_id') : 0;
+			}
+			else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+				$customer_id = $this->session->tre_portal_customer_id;
+			}
 		}
 		
-		$sales_type = $this->uri->segment(4);
-		$profile_class_ids = get_profile_class_ids($sales_type);
+		$rows = $this->soa_model->get_customer_details($customer_id, $profile_class_ids);
+		if(empty($rows)){
+			$customer_id = 0;
+		}
+		else{
+			$data['customer_details'] = $rows;
+		}
+		
+		$data['customer_details'] = $this->soa_model->get_customer_details($customer_id, $profile_class_ids);
 		
 		$data['customer_id'] = $customer_id;
 		$data['as_of_date'] = $as_of_date;
-		
 		$data['sales_type'] = $sales_type;
+		
 		$data['content']    = 'receivables/soa_admin_view';
 		$data['head_title'] = 'Treasury | SOA';
 		$data['title'] = 'Statement of Account<small>' . UCWORDS($sales_type) . ' Transaction</small>';
-		
 		$data['soa_detailed'] = $this->soa_model->get_soa_per_customer($customer_id, $profile_class_ids, date('d-M-y', strtotime($as_of_date)));
-		$data['customer_details'] = $this->soa_model->get_customer_details($customer_id, $profile_class_ids);
-		
 		$this->load->view('include/template',$data);
 	}
 	

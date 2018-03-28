@@ -45,6 +45,18 @@ $this->load->helper('profile_class_helper');
 				</div>
 			</div>
 			<div class="box box-danger">
+				<?php 
+				if($customer_id != NULL){
+				?>
+				<div class="box-header with-border">
+					<h6 class="box-title">&nbsp;</h6>
+					<div class="box-tools pull-right" style="margin-top: 5px;">
+						<a class="text-success" target="_blank" data-toggle="tooltip" data-placement="top" title="Excel" href="<?php echo base_url("reports/receivables_excel/index/".str_replace('/', '', $as_of_date)."/NULL/".$customer_id); ?>" class=""><i class="fa fa-file-excel-o"></i></a>
+					</div>
+				</div>
+				<?php 
+				}
+				?>
 				<div class="box-body">
 					<table class="table table-hover">
 						<thead >
@@ -145,42 +157,64 @@ $this->load->helper('profile_class_helper');
 			
 			$('#myForm').submit();
         });
-        
-        $('select.select2').on('select2:select', function (e) {
-			
-			var data = e.params.data;
-			customer_id = data['id'];
-			customer_name = data['text'];
-			as_of_date = $('#datetimepicker input').val();
-			
-			$('input[name=customer_id]').val(customer_id);
-			$('input[name=customer_name]').val(customer_name);
-			$('input[name=as_of_date]').val(as_of_date);
-			
-			$('#myForm').submit();
-		});
-
-		$("select.select2").select2({
-			width: '100%',
-			  ajax: {
-				url: "ajax_customer_list",
-				dataType: 'json',
-				type: 'GET',
-				delay: 250,
-				data: function (params) {
-				  return {
-					q: params.term // search term
-				  };
-				},
-				processResults: function (data, page) {
-				  return {
-					results: data  
-				  };
-				},
-				cache: true
-			  },
-			  minimumInputLength: 3
-		});
-	});
+    });
 </script>
+<?php
+if($this->session->tre_portal_user_type == 'Administrator'){ 
+?>
+	<script>
+		$(document).ready(function() {
+		  
+			$('select.select2').on('select2:select', function (e) {
+				
+				var data = e.params.data;
+				customer_id = data['id'];
+				customer_name = data['text'];
+				as_of_date = $('#datetimepicker input').val();
+				
+				$('input[name=customer_id]').val(customer_id);
+				$('input[name=customer_name]').val(customer_name);
+				$('input[name=as_of_date]').val(as_of_date);
+				
+				$('#myForm').submit();
+			});
+
+			$("select.select2").select2({
+				width: '100%',
+				  ajax: {
+					url: "ajax_customer_list",
+					dataType: 'json',
+					type: 'GET',
+					delay: 250,
+					data: function (params) {
+					  return {
+						q: params.term // search term
+					  };
+					},
+					processResults: function (data, page) {
+					  return {
+						results: data  
+					  };
+					},
+					cache: true
+				  },
+				  minimumInputLength: 3
+			});
+		});
+	</script>
+<?php 
+}
+else if($this->session->tre_portal_user_type == 'Dealer Admin'){ 
+?>
+	<script>
+		$(document).ready(function() {
+			$("select.select2").select2({
+				width: '100%'
+			});
+			$('select.select2').select2("enable",false);
+		});
+	</script>
+<?php 
+}
+?>
 

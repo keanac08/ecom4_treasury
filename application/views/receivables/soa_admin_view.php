@@ -26,7 +26,7 @@ $this->load->helper('date_helper');
 									}
 									else{
 									?>
-									<option value="0" selected="selected">Select Customer . . .</option>
+									<option value="0" selected="selected"><?php echo $this->session->tre_portal_user_type == 'Administrator' ? 'Select Customer . . .':'';?></option>
 									<?php 
 									}
 									?>
@@ -475,39 +475,73 @@ $this->load->helper('date_helper');
 </div>
 
 
+<script src="<?php echo base_url('resources/plugins/select2/dist/js/select2.full.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/moment/js/moment.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js');?>"></script>
-<script src="<?php echo base_url('resources/plugins/select2/dist/js/select2.full.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/floatThead/floatThead.min.js');?>"></script>
-
+<?php
+if($this->session->tre_portal_user_type == 'Administrator'){ 
+?>
+	<script>
+		$(document).ready(function() {
+			var sales_type = $('input[name=sales_type]').val();
+			$("select.select2").select2({
+				width: '100%',
+				  ajax: {
+					url: "<?php echo base_url(); ?>receivables/soa/ajax_customers_per_profile",
+					dataType: 'json',
+					type: 'POST',
+					delay: 250,
+					data: function (params) {
+					  return {
+						q: params.term,
+						sales_type: sales_type
+					  };
+					},
+					processResults: function (data, page) {
+					  return {
+						results: data  
+					  };
+					},
+					cache: true
+				  },
+				  minimumInputLength: 3
+			});
+			
+			$('select.select2').on('select2:select', function (e) {
+				
+				var data = e.params.data;
+				customer_id = data['id'];
+				customer_name = data['text'];
+				as_of_date = $('#datetimepicker input').val();
+				
+				$('input[name=customer_id]').val(customer_id);
+				$('input[name=customer_name]').val(customer_name);
+				$('input[name=as_of_date]').val(as_of_date);
+				
+				$('#myForm').submit();
+			});
+		});
+	</script>
+<?php 
+}
+else if($this->session->tre_portal_user_type == 'Dealer Admin'){ 
+?>
+	<script>
+		$(document).ready(function() {
+			$("select.select2").select2({
+				width: '100%'
+			});
+			$('select.select2').select2("enable",false);
+		});
+	</script>
+<?php 
+}
+?>
 <script>
 	$(document).ready(function() {
 		
 		$('[data-toggle="tooltip"]').tooltip(); 
-		
-		var sales_type = $('input[name=sales_type]').val();
-		$("select.select2").select2({
-			width: '100%',
-			  ajax: {
-				url: "<?php echo base_url(); ?>receivables/soa/ajax_customers_per_profile",
-				dataType: 'json',
-				type: 'POST',
-				delay: 250,
-				data: function (params) {
-				  return {
-					q: params.term,
-					sales_type: sales_type
-				  };
-				},
-				processResults: function (data, page) {
-				  return {
-					results: data  
-				  };
-				},
-				cache: true
-			  },
-			  minimumInputLength: 3
-		});
 		
 		$('#datetimepicker').datetimepicker({
 			//~ debug:true,
@@ -529,20 +563,7 @@ $this->load->helper('date_helper');
 			
 			$('#myForm').submit();
         });
-        
-        $('select.select2').on('select2:select', function (e) {
-			
-			var data = e.params.data;
-			customer_id = data['id'];
-			customer_name = data['text'];
-			as_of_date = $('#datetimepicker input').val();
-			
-			$('input[name=customer_id]').val(customer_id);
-			$('input[name=customer_name]').val(customer_name);
-			$('input[name=as_of_date]').val(as_of_date);
-			
-			$('#myForm').submit();
-		});
+       
 		
 		$('table#table_soa').floatThead();
 		

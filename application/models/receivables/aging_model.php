@@ -8,8 +8,8 @@ class Aging_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 
-	public function get_receivables_aging($as_of_date){
-	
+	public function get_receivables_aging($as_of_date, $customer_id = NULL){
+		
 		$sql = "SELECT profile_class_id,
 						CASE WHEN profile_class_id IS NULL THEN 'Total' ELSE MAX(profile_class_name) END profile_class,
 						SUM(CASE WHEN days_overdue = 0 AND delivery_date IS NOT NULL THEN balance ELSE 0 END) current_receivables,
@@ -154,10 +154,11 @@ class Aging_Model extends CI_Model {
 		return $data->result();
 	}
 	
-	public function get_receivables_summary_excel($as_of_date, $profile_class_id){
+	public function get_receivables_summary_excel($as_of_date, $profile_class_id, $customer_id){
 		
-		$and = $profile_class_id != NULL ? 'AND soa.profile_class_id = ' . $profile_class_id: '';
-		
+		$and = ($profile_class_id != 'NULL' AND $profile_class_id != NULL) ? 'AND soa.profile_class_id = ' . $profile_class_id: '';
+		$and2 = $customer_id != NULL ? 'AND soa.customer_id = ' . $customer_id: '';
+
 		$sql = "SELECT customer_id,
 						customer_name,
 						account_name,
@@ -292,10 +293,10 @@ class Aging_Model extends CI_Model {
 							 LEFT JOIN hz_cust_profile_classes hcpc
 								ON soa.profile_class_id = hcpc.profile_class_id
 							 WHERE     1 = 1
-								 ".$and."
+								 ".$and. " " .$and2."
 								 AND soa.trx_date <= '".$as_of_date."'
 								 AND soa.invoice_amount + (NVL(adj.adjustment_amount,0) * NVL(soa.EXCHANGE_RATE, 1)) - (NVL (araa.paid_amount , 0) * NVL(soa.EXCHANGE_RATE, 1)) > 1)";
-			
+			//~ echo $sql;die();
 		$data = $this->oracle->query($sql);
 		return $data->result_array();	
 	}

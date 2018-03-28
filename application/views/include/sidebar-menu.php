@@ -13,7 +13,7 @@
 		</div>
 		<form action="<?php echo base_url('search/invoice_details'); ?>" method="get" class="sidebar-form">
 			<div class="input-group">
-				<input type="text" name="q" class="form-control" placeholder="Search...">
+				<input type="text" name="q" class="form-control" placeholder="Search Invoice...">
 				<span class="input-group-btn">
 					<button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
 					</button>
@@ -61,18 +61,30 @@
 								<i class="fa fa-circle-o"></i>Powertrain
 							</a>
 						</li> 
+						<?php 
+						if($this->session->tre_portal_user_type == 'Administrator'){
+						?>
 						<li class="<?php echo ($this->uri->segment(4) == 'employee') ? 'active' : ''; ?>" >
 							<a href="<?php echo base_url('receivables/soa/admin/employee'); ?> ">
 								<i class="fa fa-circle-o"></i>Employee
 							</a>
 						</li> 
+						<?php 
+						}
+						?>
 					</ul>
 				</li>
+				<?php 
+				if($this->session->tre_portal_user_type == 'Administrator'){
+				?>
 				<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'aging') ? 'active' : ''; ?>">
 					<a href="<?php echo base_url('receivables/aging/summary');?>">
 						<i class="fa fa-paste"></i> <span>Accounts Receivable Aging</span>
 					</a>
 				</li>
+				<?php 
+				}
+				?>
 				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 					<a href="#">
 						<i class="fa fa-list-alt"></i> <span>Check Warehousing</span>
@@ -81,6 +93,9 @@
 						</span>
 					</a>
 					<ul class="treeview-menu">
+						<?php 
+						if($this->session->tre_portal_user_type == 'Administrator'){
+						?>
 						<li class="<?php echo ($this->uri->segment(3) == 'entry') ? 'active' : ''; ?>" >
 							<a href="<?php echo base_url('receivables/check_warehousing/entry'); ?> ">
 								<i class="fa fa-circle-o"></i>New Entry
@@ -101,13 +116,36 @@
 								<i class="fa fa-circle-o"></i>Search
 							</a>
 						</li> 
+						<?php 
+						}
+						else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+						?>
+						<li class="<?php echo ($this->uri->segment(3) == 'customer_entry') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/customer_entry'); ?> ">
+								<i class="fa fa-circle-o"></i>New Entry
+							</a>
+						</li> 
+						<li class="<?php echo ($this->uri->segment(3) == 'customer_check_list') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/customer_check_list'); ?> ">
+								<i class="fa fa-circle-o"></i>Check List
+							</a>
+						</li> 
+						<?php 
+						}
+						?>
 					</ul>
 				</li>
+				<?php 
+				if($this->session->tre_portal_user_type == 'Administrator'){
+				?>
 				<li class="<?php echo ($this->uri->segment(1) == 'payables' AND $this->uri->segment(2) == 'check_writer') ? 'active' : ''; ?>">
 					<a href="<?php echo base_url('payables/check_writer/generate');?>">
 						<i class="fa fa-edit"></i> <span>Check Writer</span>
 					</a>
 				</li>
+				<?php 
+				}
+				?>
 				<li class="<?php echo ($this->uri->segment(1) == 'reports' AND $this->uri->segment(2) == 'dashboard') ? 'active' : ''; ?>">
 					<a href="<?php echo base_url('reports/dashboard');?>">
 						<i class="fa fa-bar-chart"></i> <span>Reports</span>

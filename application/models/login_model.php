@@ -20,6 +20,7 @@ class Login_model extends CI_Model {
 						tab.division,
 						tab.department,
 						tab.section,
+						tab.customer_id,
 						tab.source_id,
 						ut.user_type_name
 					FROM (SELECT usr.user_id,
@@ -30,6 +31,7 @@ class Login_model extends CI_Model {
 								ppf.attribute2 division,
 								ppf.attribute3 department,
 								ppf.attribute4 section,
+								NULL customer_id,
 								1 source_id
 							FROM fnd_user usr LEFT JOIN per_all_people_f ppf
 								   ON usr.employee_id = ppf.person_id
@@ -45,6 +47,7 @@ class Login_model extends CI_Model {
 								   ud.division,
 								   ud.department,
 								   ud.section,
+								   u.customer_id,
 								   2 source_id
 							  FROM ipc_portal.users u
 								   LEFT JOIN ipc_portal.user_details ud ON u.user_id = ud.user_id

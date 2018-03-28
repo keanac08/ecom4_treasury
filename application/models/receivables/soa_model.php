@@ -213,9 +213,14 @@ class Soa_model extends CI_Model {
 		return $data->result();
 	}
 	
-	public function get_customer_details($customer_id, $profile_class_ids){
+	public function get_customer_details($customer_id, $profile_class_ids = NULL){
 		
-		$and = ' AND hcpc.profile_class_id IN ('.$profile_class_ids.')';
+		//~ if($profile_class_ids != NULL){
+			$and = ' AND hcpc.profile_class_id IN ('.$profile_class_ids.')';
+		//~ }
+		//~ else{
+			//~ $and = '';
+		//~ }
 		
 		$sql = "SELECT DISTINCT
 						hca.cust_account_id customer_id,

@@ -16,8 +16,18 @@ class Transaction extends CI_Controller {
 		$data['title']      = 'Transaction Summary<small>Per Customer</small>';
 		
 		$as_of_date_orig = $this->input->post('as_of_date');
-		$customer_id = $this->input->post('customer_id');
-		$customer_name = $this->input->post('customer_name');
+		
+		
+		if($this->session->tre_portal_user_type == 'Administrator'){
+			$customer_id = $this->input->post('customer_id');
+			$customer_name = $this->input->post('customer_name');
+		}
+		else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+			$customer_id = $this->session->tre_portal_customer_id;
+			$rows = $this->transaction_model->get_customer($customer_id);
+			$customer_name = $rows[0]->CUSTOMER_NAME;
+			$this->session->set_userdata('tre_portal_customer_name', $customer_name);
+		}
 		
 		if($as_of_date_orig != NULL){
 			$as_of_date1 =  date('d-M-y', strtotime($as_of_date_orig));

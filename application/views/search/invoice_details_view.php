@@ -216,7 +216,7 @@
 											
 											<th>#</th>
 											<th>Part Number</th>
-											<th class="text-center">Line Number</th>
+											<th class="text-center">Order Line</th>
 											<th>Part Desciption</th>
 											<th class="text-center">Qty</th>
 											<th class="text-right">Unit Selling Price</th>
