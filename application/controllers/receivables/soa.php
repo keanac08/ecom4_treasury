@@ -114,6 +114,7 @@ class Soa extends CI_Controller {
 									'EXCHANGE_RATE' => $row->EXCHANGE_RATE,
 									'TOTAL_NET_AMOUNT' => $row->TOTAL_NET_AMOUNT,
 									'TOTAL_VAT_AMOUNT' => $row->TOTAL_VAT_AMOUNT,
+									'CREDITED_AMOUNT' => $row->CREDITED_AMOUNT,
 									'INVOICE_AMOUNT' => $row->INVOICE_AMOUNT,
 									'ADJUSTED_AMOUNT' => $row->ADJUSTED_AMOUNT,
 									'PAID_AMOUNT' => $row->PAID_AMOUNT,
