@@ -345,7 +345,7 @@
 											<td colspan="6">&nbsp;</td>
 										</tr>
 										<tr>
-											<td class="text-right" colspan="5"><strong>Total Amount Applied : </strong></td>
+											<td class="text-right" colspan="5"><strong>Total Paid Amount: </strong></td>
 											<td class="text-right"><strong><?php echo amount($total_amount); ?></strong></td>
 										</tr>
 									</tbody>

@@ -8,19 +8,20 @@ class Aging_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 
-	public function get_receivables_aging($as_of_date, $customer_id = NULL){
+	public function get_receivables_aging($as_of_date){
+		
+		$and = '';
+		if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
+			$this->load->helper('profile_class_helper');
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
+			$and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';
+		}
 		
 		$sql = "SELECT profile_class_id,
 						CASE WHEN profile_class_id IS NULL THEN 'Total' ELSE MAX(profile_class_name) END profile_class,
 						SUM(CASE WHEN days_overdue = 0 AND delivery_date IS NOT NULL THEN balance ELSE 0 END) current_receivables,
 						SUM(CASE WHEN delivery_date IS NULL THEN balance ELSE 0 END) contingent_receivables,
 						SUM(CASE WHEN days_overdue > 0 THEN balance ELSE 0 END) past_due,
-						--SUM(CASE WHEN days_overdue between 1 AND 15 then balance else 0 end) past_due_0_15,
-						--SUM(CASE WHEN days_overdue between 16 AND 30 then balance else 0 end) past_due_16_30,
-						--SUM(CASE WHEN days_overdue between 31 AND 60 then balance else 0 end) past_due_31_60,
-						--SUM(CASE WHEN days_overdue between 61 AND 90 then balance else 0 end) past_due_61_90,
-						--SUM(CASE WHEN days_overdue between 91 AND 120 then balance else 0 end) past_due_91_120,
-						--SUM(CASE WHEN days_overdue > 120 then balance else 0 end) past_due_over_120,
 						SUM(balance) total
 								FROM (
 									SELECT      
@@ -63,6 +64,7 @@ class Aging_Model extends CI_Model {
 									 LEFT JOIN hz_cust_profile_classes hcpc
 										ON soa.profile_class_id = hcpc.profile_class_id
 									 WHERE     1 = 1
+										 ".$and."
 										 AND soa.trx_date <= '".$as_of_date."'
 										 )
 								WHERE balance > 1
@@ -156,9 +158,20 @@ class Aging_Model extends CI_Model {
 	
 	public function get_receivables_summary_excel($as_of_date, $profile_class_id, $customer_id){
 		
-		$and = ($profile_class_id != 'NULL' AND $profile_class_id != NULL) ? 'AND soa.profile_class_id = ' . $profile_class_id: '';
-		$and2 = $customer_id != NULL ? 'AND soa.customer_id = ' . $customer_id: '';
-
+		$and = '';
+		$and2 = '';
+		
+		if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin'))){
+			$and = ($profile_class_id != 'NULL' AND $profile_class_id != NULL) ? 'AND soa.profile_class_id = ' . $profile_class_id: '';
+			$and2 = $customer_id != NULL ? 'AND soa.customer_id = ' . $customer_id: '';
+		}
+		else if(in_array($this->session->tre_portal_user_type, array('IPC Parts'))){
+			$this->load->helper('profile_class_helper');
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
+			$and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';
+			$and2 = $customer_id != NULL ? 'AND soa.customer_id = ' . $customer_id: '';
+		}
+		
 		$sql = "SELECT customer_id,
 						customer_name,
 						account_name,

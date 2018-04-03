@@ -24,7 +24,7 @@ class Soa extends CI_Controller {
 		else{
 			$as_of_date = $this->input->post('as_of_date') != NULL ? $this->input->post('as_of_date') : date('m/d/Y');
 			
-			if($this->session->tre_portal_user_type == 'Administrator'){
+			if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
 				$customer_id = $this->input->post('customer_id') != NULL ? $this->input->post('customer_id') : 0;
 			}
 			else if($this->session->tre_portal_user_type == 'Dealer Admin'){

@@ -82,6 +82,28 @@ function get_profile_class_ids($sales_type){
 	return $profile_class_id;
 }
 
+function get_user_access($user_type){
+	
+	switch ($user_type){
+		case 'IPC Parts':
+			$profile_class_id = '1042,1044,1046,1049,1050';
+			break;
+		case 'IPC Vehicle':
+			$profile_class_id = '1043';
+			break;
+		case 'IPC Fleet':
+			$profile_class_id = '1040,1045';
+			break;
+		case 'IPC Vehicle-Fleet':
+			$profile_class_id = '1043,1040,1045';
+			break;
+		 default:
+			$profile_class_id = 0;
+	} 
+
+	return $profile_class_id;
+}
+
 
 
 

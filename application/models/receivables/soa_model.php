@@ -21,6 +21,7 @@ class Soa_model extends CI_Model {
 						MAX (soa.profile_class_id) profile_class_id,
 						MAX (soa.payment_term)     payment_term,
 						MAX (soa.delivery_date)    delivery_date,
+						MAX(checks.check_bank) || ' ' || MAX(checks.check_number) check_no,
 						MAX (ooha.attribute3) fleet_name,
 						MAX (ooha.cust_po_number) cust_po_number,
 						due_date,
@@ -61,6 +62,16 @@ class Soa_model extends CI_Model {
 							GROUP BY payment_schedule_id, customer_trx_id) adj
 						ON soa.customer_trx_id = adj.customer_trx_id
 							AND soa.payment_schedule_id = adj.payment_schedule_id
+					 LEFT JOIN (SELECT DISTINCT  pdc.check_number,
+											   pdc.check_bank,
+											  unit.cs_number
+								FROM ipc.ipc_treasury_pdc pdc
+									 LEFT JOIN ipc.ipc_treasury_pdc_units unit
+										ON pdc.check_id = unit.check_id
+									 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+										ON pdc.check_id = app_pdc.check_id
+							   WHERE app_pdc.check_id IS NOT NULL) checks
+						ON soa.cs_number = checks.cs_number
 					 WHERE     1 = 1
 						 AND soa.trx_date <= '".$as_of_date."'
 						 AND soa.customer_id = ?
@@ -83,6 +94,7 @@ class Soa_model extends CI_Model {
 					   hcpc.name           profile_class,
 					   ooha.attribute3 fleet_name,
 					   ooha.cust_po_number,
+					   MAX(checks.check_bank) || ' ' || MAX(checks.check_number) check_no,
 					   soa.customer_trx_id transaction_id,
 					   soa.trx_number      transaction_number,
 					   soa.trx_date        transaction_date,
@@ -143,6 +155,16 @@ class Soa_model extends CI_Model {
 					   LEFT JOIN hz_cust_profile_classes hcpc
 						  ON hzp.profile_class_id = hcpc.profile_class_id
 					   LEFT JOIN hz_parties hp ON hcaa.party_id = hp.party_id
+					   LEFT JOIN (SELECT DISTINCT  pdc.check_number,
+											   pdc.check_bank,
+											  unit.cs_number
+								FROM ipc.ipc_treasury_pdc pdc
+									 LEFT JOIN ipc.ipc_treasury_pdc_units unit
+										ON pdc.check_id = unit.check_id
+									 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+										ON pdc.check_id = app_pdc.check_id
+							   WHERE app_pdc.check_id IS NOT NULL) checks
+						ON soa.cs_number = checks.cs_number
 					 WHERE     1 = 1
 						AND soa.trx_date <= '".$as_of_date."'
 						AND soa.customer_id = ?

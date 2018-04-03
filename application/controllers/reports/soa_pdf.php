@@ -158,7 +158,7 @@ class Soa_pdf extends CI_Controller {
 							<td width="65" align="right">'.amount($row->WHT_AMOUNT).'</td>
 							<td width="85" align="right">'.amount($row->BALANCE).'</td>
 							<td width="80" align="center">'.$row->DAYS_OVERDUE.'</td>
-							<td width="' . ($pdc_number == 1 ? 70:1) . '" align="center">' . ($pdc_number == 1 ? '':'') . '</td>
+							<td width="' . ($pdc_number == 1 ? 70:1) . '" align="center">' . ($pdc_number == 1 ? $row->CHECK_NO:'') . '</td>
 							<td width="' . ($cust_po_number == 1 ? 100:1) . '" align="center">' . ($cust_po_number == 1 ? $row->CUST_PO_NUMBER:'') . '</td>
 							<td width="' . ($fleet_name == 1 ? 205:1) . '" align="left">' . ($fleet_name == 1 ? $row->FLEET_NAME:'') . '</td>
 						</tr>

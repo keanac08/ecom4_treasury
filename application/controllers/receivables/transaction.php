@@ -11,21 +11,36 @@ class Transaction extends CI_Controller {
 	
 	public function per_customer(){
 		
+		//~ echo '<pre>';
+		//~ print_r($this->session->userdata);
+		//~ echo '</pre>';
+		
 		$data['content']    = 'receivables/transactions_per_customer_view';
 		$data['head_title'] = 'Treasury | Home';
 		$data['title']      = 'Transaction Summary<small>Per Customer</small>';
 		
 		$as_of_date_orig = $this->input->post('as_of_date');
 		
-		
-		if($this->session->tre_portal_user_type == 'Administrator'){
+		if(in_array($this->session->tre_portal_user_type, array('Administrator'))){
+			$customer_id = $this->input->post('customer_id');
+			$customer_name = $this->input->post('customer_name');
+			$profile_class_id = NULL;
+		}
+		else if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle', 'IPC Fleet'))){
+			
+			$profile_class_id = NULL;$this->load->helper('profile_class_helper');
+			
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
 			$customer_id = $this->input->post('customer_id');
 			$customer_name = $this->input->post('customer_name');
 		}
 		else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+			
 			$customer_id = $this->session->tre_portal_customer_id;
 			$rows = $this->transaction_model->get_customer($customer_id);
 			$customer_name = $rows[0]->CUSTOMER_NAME;
+			$profile_class_id = NULL;
+			
 			$this->session->set_userdata('tre_portal_customer_name', $customer_name);
 		}
 		
@@ -42,7 +57,7 @@ class Transaction extends CI_Controller {
 		$data['customer_id'] = $customer_id;
 		$data['customer_name'] = $customer_name;
 		
-		$data['results'] = $this->transaction_model->get_summary_per_customer($customer_id, $as_of_date1);
+		$data['results'] = $this->transaction_model->get_summary_per_customer($customer_id, $as_of_date1, $profile_class_id);
 
 		$this->load->view('include/template',$data);
 	}
@@ -52,7 +67,20 @@ class Transaction extends CI_Controller {
 		$q = strtolower('%'.$this->input->get('q').'%');
 		
 		$return_arr = array();
-		$data =  $this->transaction_model->get_customers($q);
+		
+		if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
+			$this->load->helper('profile_class_helper');
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
+			
+		}
+		else{
+			$profile_class_id = NULL;
+		}
+		
+		//~ echo $profile_class_id;
+		
+		$data =  $this->transaction_model->get_customers($q, $profile_class_id);
+		
 		foreach($data as $row){
 			$row_array = array(
 							'id'=>$row->CUSTOMER_ID,

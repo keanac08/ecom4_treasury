@@ -80,7 +80,7 @@ class Check_warehousing_model extends CI_Model {
 		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
 		$params = array($from_date, $to_date);
 		
-		$sql = " SELECT DISTINCT pdc.check_id,
+		$sql = "SELECT DISTINCT pdc.check_id,
 							  pdc.check_number,
 							  pdc.check_bank,
 							  pdc.check_date,

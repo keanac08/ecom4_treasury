@@ -160,7 +160,7 @@ $this->load->helper('profile_class_helper');
     });
 </script>
 <?php
-if($this->session->tre_portal_user_type == 'Administrator'){ 
+if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){ 
 ?>
 	<script>
 		$(document).ready(function() {

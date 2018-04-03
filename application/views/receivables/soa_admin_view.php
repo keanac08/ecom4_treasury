@@ -26,7 +26,7 @@ $this->load->helper('date_helper');
 									}
 									else{
 									?>
-									<option value="0" selected="selected"><?php echo $this->session->tre_portal_user_type == 'Administrator' ? 'Select Customer . . .':'';?></option>
+									<option value="0" selected="selected"><?php echo in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet')) ? 'Select Customer . . .':'';?></option>
 									<?php 
 									}
 									?>
@@ -259,7 +259,7 @@ $this->load->helper('date_helper');
 												<?php 
 												if(in_array($sales_type, array('vehicle', 'fleet'))){ 
 												?>
-												<td class="text-center">-</td>
+												<td class="text-center"><?php echo $row->CHECK_NO; ?></td>
 												<?php 
 												}
 												else if(in_array($sales_type, array('parts'))){
@@ -480,7 +480,7 @@ $this->load->helper('date_helper');
 <script src="<?php echo base_url('resources/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/floatThead/floatThead.min.js');?>"></script>
 <?php
-if($this->session->tre_portal_user_type == 'Administrator'){ 
+if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){ 
 ?>
 	<script>
 		$(document).ready(function() {
