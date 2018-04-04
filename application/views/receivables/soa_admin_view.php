@@ -76,7 +76,7 @@ $this->load->helper('date_helper');
 							<div class="col-md-9">
 								<h5><span class="label label-warning">&nbsp;</span> Past Due Receivables</h5>
 								<h5><span class="label label-success">&nbsp;</span> Current Receivables</h5>
-								<h5><span class="label label-primary"> &nbsp;</span> Contingent Receivables</h5>
+								<h5><span class="label label-primary"> &nbsp;</span> <?php echo ($sales_type == 'vehicle' OR $sales_type == 'fleet') ? 'Unpulledout':'Undelivered'?> Receivables</h5>
 							</div>
 							<div class="col-md-3">
 								<div class="input-group">

@@ -63,7 +63,7 @@ $this->load->helper('profile_class_helper');
 							<tr>
 								<th class="text-left">&nbsp;&nbsp;</th>
 								<th class="text-left">Profile Class</th>
-								<th class="text-right info text-info">Contingent Receivables</th>
+								<th class="text-right info text-info">Unpulledout Receivables</th>
 								<th class="text-right success text-success">Current Receivables</th>
 								<th class="text-right warning text-yellow">Past Due Receivables</th>
 								<th class="text-right danger text-red">Total Receivables</th>
