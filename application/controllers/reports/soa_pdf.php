@@ -15,11 +15,11 @@ class Soa_pdf extends CI_Controller {
 		
 		$sales_type = $this->uri->segment(4);
 		
-		if(in_array($sales_type, array('others','employee'))){
-			$orientation = 'P';
+		if(in_array($sales_type, array('fleet'))){
+			$orientation = 'L';
 		}
 		else{
-			$orientation = 'L';
+			$orientation = 'P';
 		}
 		
 		$this->pdf($orientation);
@@ -54,26 +54,26 @@ class Soa_pdf extends CI_Controller {
 			$cs_number = 1;
 			$pdc_number = 1;
 			$th = '<td width="70" align="center">PDC<br />Number</td><td width="1"></td>';
-			$width = '765';
+			$width = '675';
 			
 			if(in_array($sales_type, array('fleet'))){ 
-				$width = '970';
+				$width = '870';
 				$fleet_name = 1;
-				$th = '<td width="70" align="center">PDC<br />Number</td><td width="205" align="center">Fleet Name</td>';
+				$th = '<td width="60" align="center">PDC<br />Number</td><td width="195" align="center">Fleet<br />Name</td>';
 			}
 		}
 		else if(in_array($sales_type, array('parts'))){ 
-			$width = '725';
+			$width = '645';
 			$cust_po_number = 1;
-			$th = '<td width="100" align="center">Cust Po<br />Number</td><td width="1"></td>';
+			$th = '<td width="90" align="center">Cust Po<br />Number</td><td width="1"></td>';
 		}
 
-		$html = '<table border="0" style="font-size: 10px;padding: 2px">
+		$html = '<table border="0" style="font-size: 8px;padding: 1px">
 					<tbody>
 						<tr>
-							<td width="'.($width-330).'" style="font-size: 13px;">Statement of Account (' . camelcase($sales_type) . ')</td>
+							<td width="'.($width-330).'" style="font-size: 10px;">Statement of Account (' . camelcase($sales_type) . ')</td>
 							<td rowspan="5" width="320" align="right">
-								<table border="1" style="font-size: 10px;padding: 3px">
+								<table border="1" style="font-size: 8px;padding: 3px">
 									<tr>
 										<td width="320" colspan="2" align="center">Transaction Summary as of '.$as_of_date.'</td>
 									</tr>
@@ -100,7 +100,7 @@ class Soa_pdf extends CI_Controller {
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td align="left" style="font-size: 12px;">' . $customer->CUSTOMER_ID . ' - ' . $customer->CUSTOMER_NAME . ' </td>
+							<td align="left" style="font-size: 9px;">' . $customer->CUSTOMER_ID . ' - ' . $customer->CUSTOMER_NAME . ' </td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -113,29 +113,26 @@ class Soa_pdf extends CI_Controller {
 						</tr>
 					</tbody>
 				</table>
-				<table border="0" style="font-size: 10px;padding: 2px">
+				<table border="0" style="font-size: 8px;padding: 2px">
 					<tbody>
 						<tr style="font-weight: bold;">
-							<td width="' . ($cs_number == 1 ? 70:1) . '" align="center">' . ($cs_number == 1 ? 'CS<br />Number':'') . '</td>
-							<td width="80" align="center">Invoice<br />Number</td>
-							<td width="80" align="center">Invoice<br />Date</td>
-							<td width="80" align="center">Pullout<br />Date</td>
-							<td width="70" align="center">Payment<br />Terms</td>
-							<td width="85" align="center">Invoice<br />Amount</td>
-							<td width="65" align="center">WHT<br />Amount</td>
-							<td width="85" align="center">Balance</td>
-							<td width="80" align="center">Days<br />Overdue</td>
+							<td width="' . ($cs_number == 1 ? 60:1) . '" align="center">' . ($cs_number == 1 ? 'CS<br />Number':'') . '</td>
+							<td width="70" align="center">Invoice<br />Number</td>
+							<td width="70" align="center">Invoice<br />Date</td>
+							<td width="70" align="center">' . ($cs_number == 1 ? 'Pullout':'Delivery') . '<br />Date</td>
+							<td width="60" align="center">Payment<br />Terms</td>
+							<td width="75" align="right">Invoice<br />Amount</td>
+							<td width="55" align="right">WHT<br />Amount</td>
+							<td width="75" align="right">&nbsp;<br />Balance</td>
+							<td width="70" align="center">Days<br />Overdue</td>
 							'.$th.'
 						</tr>
-					</tbody>
-				</table>
-				<table border="0">
-					<tbody>
 						<tr>
 							<td style="border-bottom: 1px solid #333;" width="'.$width.'" align="center"></td>
 						</tr>
 					</tbody>
-				</table>';
+				</table>
+				';
 					
 		$this->pdf->writeHTML($html, true, false, true, false, '');
 		
@@ -144,23 +141,23 @@ class Soa_pdf extends CI_Controller {
 		foreach($rows as $row){
 			if($row->INVOICE_ID != NULL){
 				if($ctr == 0){
-					$html = '<table border="0" style="font-size: 10px;padding: 2px">
+					$html = '<table border="0" style="font-size: 8px;padding: 2px">
 								<tbody>';
 					
 				}
 				$html .= '<tr>
-							<td width="' . ($cs_number == 1 ? 70:1) . '" align="center">' . ($cs_number == 1 ? $row->CS_NUMBER:'') . '</td>
-							<td width="80" align="center">'.$row->INVOICE_NO.'</td>
-							<td width="80" align="center">'.short_date($row->INVOICE_DATE).'</td>
-							<td width="80" align="center">'.short_date($row->DELIVERY_DATE).'</td>
-							<td width="70" align="center">'.$row->PAYMENT_TERM.'</td>
-							<td width="85" align="right">'.amount($row->TRANSACTION_AMOUNT).'</td>
-							<td width="65" align="right">'.amount($row->WHT_AMOUNT).'</td>
-							<td width="85" align="right">'.amount($row->BALANCE).'</td>
-							<td width="80" align="center">'.$row->DAYS_OVERDUE.'</td>
+							<td width="' . ($cs_number == 1 ? 60:1) . '" align="center">' . ($cs_number == 1 ? $row->CS_NUMBER:'') . '</td>
+							<td width="70" align="center">'.$row->INVOICE_NO.'</td>
+							<td width="70" align="center">'.short_date($row->INVOICE_DATE).'</td>
+							<td width="70" align="center">'.short_date($row->DELIVERY_DATE).'</td>
+							<td width="60" align="center">'.$row->PAYMENT_TERM.'</td>
+							<td width="75" align="right">'.amount($row->TRANSACTION_AMOUNT).'</td>
+							<td width="55" align="right">'.amount($row->WHT_AMOUNT).'</td>
+							<td width="75" align="right">'.amount($row->BALANCE).'</td>
+							<td width="70" align="center">'.$row->DAYS_OVERDUE.'</td>
 							<td width="' . ($pdc_number == 1 ? 70:1) . '" align="center">' . ($pdc_number == 1 ? $row->CHECK_NO:'') . '</td>
-							<td width="' . ($cust_po_number == 1 ? 100:1) . '" align="center">' . ($cust_po_number == 1 ? $row->CUST_PO_NUMBER:'') . '</td>
-							<td width="' . ($fleet_name == 1 ? 205:1) . '" align="left">' . ($fleet_name == 1 ? $row->FLEET_NAME:'') . '</td>
+							<td width="' . ($cust_po_number == 1 ? 90:1) . '" align="center">' . ($cust_po_number == 1 ? $row->CUST_PO_NUMBER:'') . '</td>
+							<td width="' . ($fleet_name == 1 ? 195:1) . '" align="left">' . ($fleet_name == 1 ? $row->FLEET_NAME:'') . '</td>
 						</tr>
 					';
 				$ctr++;
@@ -168,12 +165,12 @@ class Soa_pdf extends CI_Controller {
 			else if(($row->INVOICE_ID == NULL AND $row->DUE_DATE != NULL) OR($row->INVOICE_ID == NULL AND $row->DUE_DATE == NULL AND $row->DELIVERY_DATE == NULL)){
 				
 				$subtotal = ($row->DELIVERY_DATE == NULL ? 'Subtotal' : ($row->DAYS_OVERDUE > 0 ? 'Subtotal Past Due':'Subtotal Due'));
-				$html .= '<tr style="font-weight: bold;background-color: #F1F1F1;">
-							<td colspan="5" width="' . ($cs_number == 1 ? 380:310) . '"  align="center">'.$subtotal.' - '.short_date($row->DUE_DATE).'</td>
-							<td width="85" align="right">'.amount($row->TRANSACTION_AMOUNT).'</td>
-							<td width="65" align="right">'.amount($row->WHT_AMOUNT).'</td>
-							<td width="85" align="right">'.amount($row->BALANCE).'</td>
-							<td colspan="4" width="' . ($cs_number == 1 ? $width-615:$width-545) . '">&nbsp;</td>
+				$html .= '<tr style="font-weight: bold;background-color: #DDDDDD;">
+							<td colspan="5" width="' . ($cs_number == 1 ? 330:271) . '"  align="center">'.$subtotal.' - '.short_date($row->DUE_DATE).'</td>
+							<td width="75" align="right">'.amount($row->TRANSACTION_AMOUNT).'</td>
+							<td width="55" align="right">'.amount($row->WHT_AMOUNT).'</td>
+							<td width="75" align="right">'.amount($row->BALANCE).'</td>
+							<td colspan="4" width="' . ($cs_number == 1 ? $width-535:$width-482) . '">&nbsp;</td>
 						</tr>
 					</tbody>
 				</table>';
