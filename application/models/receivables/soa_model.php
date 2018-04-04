@@ -94,7 +94,7 @@ class Soa_model extends CI_Model {
 					   hcpc.name           profile_class,
 					   ooha.attribute3 fleet_name,
 					   ooha.cust_po_number,
-					   MAX(checks.check_bank) || ' ' || MAX(checks.check_number) check_no,
+					   checks.check_bank || ' ' || checks.check_number check_no,
 					   soa.customer_trx_id transaction_id,
 					   soa.trx_number      transaction_number,
 					   soa.trx_date        transaction_date,
