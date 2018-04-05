@@ -9,10 +9,10 @@ $this->load->helper('date_helper');
 		<div class="col-md-12">
 			<div class="box box-danger">
 				<div class="box-header">
-					<h3 class="box-title">Select Reserved Units for Check Tagging</h3>
+					<h3 class="box-title">Request for Invoice</h3>
 				</div>
 				<div class="row">
-					<form id="nextForm" action="customer_entry_2" method="post">
+					<form id="nextForm" action="../customer_entry_2" method="post">
 						
 					<form>
 				</div>
@@ -31,28 +31,49 @@ $this->load->helper('date_helper');
 								<th>CS Number</th>
 								<th>Sales Model</th>
 								<th>Body Color</th>
-								<th>Order Number</th>
-								<th>Line Number</th>
-								<th>Ordered Date</th>
+								<th>Order Type</th>
+								<th>Payment Terms</th>
+								<th>Reserved Date</th>
+								<th>Aging</th>
 								<th class="text-right">Amount</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php 
 							foreach($results as $row){
+								$include = 0;
+								if($type == 'vehicle'){
+									if($row->ORDER_TYPE == 'Vehicle ' AND $row->PAYMENT_TERMS == '0 Day'){
+										$include = 1;
+									}
+								}
+								else if($type == 'vehicle_terms'){
+									if($row->ORDER_TYPE == 'Vehicle ' AND $row->PAYMENT_TERMS != '0 Day'){
+										$include = 1;
+									}
+								}
+								else if($type == 'fleet'){
+									if($row->ORDER_TYPE == 'Fleet '){
+										$include = 1;
+									}
+								}
+								
 								if($row->CS_NUMBER != NULL){
-								?>
-								<tr>
-									<td><input type="checkbox" name="cs_numbers[]" class="cs_checkbox" value="<?php echo $row->CS_NUMBER; ?>"></td>
-									<td><?php echo $row->CS_NUMBER; ?></td>
-									<td><?php echo $row->SALES_MODEL; ?></td>
-									<td><?php echo $row->BODY_COLOR; ?></td>
-									<td><?php echo $row->ORDER_NUMBER; ?></td>
-									<td><?php echo $row->LINE_NUMBER; ?></td>
-									<td><?php echo short_date($row->ORDERED_DATE); ?></td>
-									<td class="text-right"><?php echo amount($row->AMOUNT_DUE); ?></td>
-								</tr>
-								<?php 
+									if($include == 1){
+										?>
+										<tr>
+											<td><input type="checkbox" name="cs_numbers[]" class="cs_checkbox" value="<?php echo $row->CS_NUMBER; ?>"></td>
+											<td><?php echo $row->CS_NUMBER; ?></td>
+											<td><?php echo $row->SALES_MODEL; ?></td>
+											<td><?php echo $row->BODY_COLOR; ?></td>
+											<td><?php echo $row->ORDER_TYPE; ?></td>
+											<td><?php echo $row->PAYMENT_TERMS; ?></td>
+											<td><?php echo short_date($row->RESERVED_DATE); ?></td>
+											<td><?php echo $row->AGING; ?></td>
+											<td class="text-right"><?php echo amount($row->AMOUNT_DUE); ?></td>
+										</tr>
+										<?php 
+									}
 								}
 							}
 							?>

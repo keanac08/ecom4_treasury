@@ -131,7 +131,7 @@
 				
 				<?php 
 				//~ RECEIVABLES AGING -------------------------------------------------------------------------------
-				if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin'))){
+				if(in_array($this->session->tre_portal_user_type, array('Administrator'))){
 				?>
 					<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 						<a href="#">
@@ -141,48 +141,58 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<?php 
-							if($this->session->tre_portal_user_type == 'Administrator'){
-							?>
-								<li class="<?php echo ($this->uri->segment(3) == 'entry') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/entry'); ?> ">
-										<i class="fa fa-circle-o"></i>New Entry
-									</a>
-								</li> 
-								<li class="<?php echo ($this->uri->segment(3) == 'credit_hold_releasing') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/credit_hold_releasing'); ?> ">
-										<i class="fa fa-circle-o"></i>Credit Hold Releasing
-									</a>
-								</li> 
-								<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/pdc'); ?> ">
-										<i class="fa fa-circle-o"></i>Approved PDCs
-									</a>
-								</li> 
-								<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/search'); ?> ">
-										<i class="fa fa-circle-o"></i>Search
-									</a>
-								</li> 
-							<?php 
-							}
-							else if($this->session->tre_portal_user_type == 'Dealer Admin'){
-							?>
-								<li class="<?php echo ($this->uri->segment(3) == 'customer_entry') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/customer_entry'); ?> ">
-										<i class="fa fa-circle-o"></i>New Entry
-									</a>
-								</li> 
-								<li class="<?php echo ($this->uri->segment(3) == 'customer_check_list') ? 'active' : ''; ?>" >
-									<a href="<?php echo base_url('receivables/check_warehousing/customer_check_list'); ?> ">
-										<i class="fa fa-circle-o"></i>Check List
-									</a>
-								</li> 
-							<?php 
-							}
-							?>
+							<li class="<?php echo ($this->uri->segment(3) == 'entry') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/check_warehousing/entry'); ?> ">
+									<i class="fa fa-circle-o"></i>New Entry
+								</a>
+							</li> 
+							<li class="<?php echo ($this->uri->segment(3) == 'credit_hold_releasing') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/check_warehousing/credit_hold_releasing'); ?> ">
+									<i class="fa fa-circle-o"></i>Credit Hold Releasing
+								</a>
+							</li> 
+							<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/check_warehousing/pdc'); ?> ">
+									<i class="fa fa-circle-o"></i>Approved PDCs
+								</a>
+							</li> 
+							<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/check_warehousing/search'); ?> ">
+									<i class="fa fa-circle-o"></i>Search
+								</a>
+							</li> 
 						</ul>
 					</li>
+				<?php 
+				}
+				else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+				?>
+				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
+					<a href="#">
+						<i class="fa fa-truck"></i> <span>Reserved Units</span>
+						<span class="pull-right-container">
+							<i class="fa fa-angle-left pull-right"></i>
+						</span>
+					</a>
+					<ul class="treeview-menu">
+						<li class="treeview <?php echo (in_array($this->uri->segment(3),array('customer_entry','customer_entry_2'))) ? 'active' : ''; ?>" >
+							<a  href=""><i class="fa fa-circle-o"></i> Request for Invoice
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li class="<?php echo ($this->uri->segment(3) == 'customer_entry' && $this->uri->segment(4) == 'vehicle') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/check_warehousing/customer_entry/vehicle'); ?> "><i class="fa fa-circle-o"></i> Vehicle</a></li>
+								<li class="<?php echo ($this->uri->segment(3) == 'customer_entry' && $this->uri->segment(4) == 'vehicle_terms') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/check_warehousing/customer_entry/vehicle_terms'); ?> "><i class="fa fa-circle-o"></i> Vehicle w/ Terms</a></li>
+								<li class="<?php echo ($this->uri->segment(3) == 'customer_entry' && $this->uri->segment(4) == 'fleet') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/check_warehousing/customer_entry/fleet'); ?> "><i class="fa fa-circle-o"></i> Fleet</a></li>
+							</ul>
+						</li> 
+						<li class="<?php echo ($this->uri->segment(3) == 'customer_check_list') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('receivables/check_warehousing/customer_check_list'); ?> ">
+								<i class="fa fa-circle-o"></i>For Invoice
+							</a>
+						</li> 
+					</ul>
 				<?php 
 				}
 				?>

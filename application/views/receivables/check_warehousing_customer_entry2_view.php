@@ -93,9 +93,7 @@ $this->load->helper('date_helper');
 										<div class="form-group">
 											<div class="col-lg-7 col-lg-offset-5">
 												<button <?php echo $ctr == 1 ? 'disabled':''; ?> type="button" class="btn btn-danger" name="save">Save</button>
-<!--
-												<a href="<?php echo base_url();?>receivables/check_warehousing/entry" class="btn btn-default">Clear</a>
--->
+												<a href="<?php echo base_url();?>receivables/check_warehousing/customer_entry/vehicle" class="btn btn-default">Cancel</a>
 											</div>
 										</div>
 									</fieldset>

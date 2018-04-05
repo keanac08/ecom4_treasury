@@ -550,6 +550,21 @@ class Check_warehousing_model extends CI_Model {
 	
 	public function get_tagged_per_customer($customer_id){
 		
+		//~ if($type == 'vehicle'){
+			//~ $and = " AND ooha.order_type_id IN (1121,1122) 
+					//~ AND oola.payment_term_id = 1000";
+		//~ }
+		//~ else if($type == 'vehicle_terms'){
+			//~ $and = " AND ooha.order_type_id IN (1121,1122)
+					//~ AND oola.payment_term_id != 1000";
+		//~ }
+		//~ else if($type == 'fleet'){
+			//~ $and = " AND ooha.order_type_id IN (1124,1241)";
+		//~ }
+		//~ else{
+			//~ $and = "";
+		//~ }
+		
 		$sql = "SELECT 
 					ooha.header_id,
 					ooha.order_number,
@@ -561,12 +576,20 @@ class Check_warehousing_model extends CI_Model {
 					msn.serial_number cs_number,
 					msib.attribute9 sales_model,
 					msib.attribute8 body_color,
+					rt.name payment_terms,
+					msn.d_attribute20 reserved_date,
+					 NVL(substr(ottl.description, 1, instr(ottl.description,' ')), ottl.description) order_type,
+					trunc(sysdate - msn.d_attribute20) aging,
 					--oola.unit_selling_price net_amount,
 					--oola.tax_value vat_amount,
 					oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value amount_due
 				FROM oe_order_headers_all ooha
 				INNER JOIN oe_order_lines_all oola
 					ON ooha.header_id = oola.header_id
+				INNER JOIN ra_terms_tl rt
+					ON oola.payment_term_id = rt.term_id
+				INNER JOIN oe_transaction_types_tl ottl
+					ON ooha.order_type_id = ottl.transaction_type_id
 				LEFT JOIN ipc.ipc_order_return ret
 					ON oola.line_id = ret.line_id
 				LEFT JOIN oe_order_holds_all hold
@@ -586,7 +609,8 @@ class Check_warehousing_model extends CI_Model {
 					AND ooha.flow_status_code IN ('ENTERED','BOOKED')
 					AND ooha.order_type_id NOT IN (1150,1151)
 					AND ooha.ship_from_org_id = 121
-					AND ooha.sold_to_org_id = 15096";
+					AND ooha.sold_to_org_id = ?
+				ORDER BY aging DESC, reserved_date";//echo $sql;
 
 		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();

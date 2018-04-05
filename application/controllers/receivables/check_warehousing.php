@@ -89,9 +89,23 @@ class Check_warehousing extends CI_Controller {
 		
 		//~ echo $this->session->tre_portal_customer_id;
 		
+		$type = $this->uri->segment(4);
+		
 		$data['content'] = 'receivables/check_warehousing_customer_entry_view';
-		$data['title'] = 'Check Warehousing <small>Check Encoding</small>';
+		$data['title'] = 'Reserved Units';
 		$data['head_title'] = 'Treasury | Check Warehousing';
+		$data['type'] = $type;
+		
+		if($type == 'vehicle'){
+			$data['subtitle'] = 'Vehicle';
+		}
+		else if($type == 'vehicle_terms'){
+			$data['subtitle'] = 'Vehicle w/ Terms';
+		}
+		else if($type == 'fleet'){
+			$data['subtitle'] = 'Fleet';
+		}
+		
 		
 		$data['results'] = $this->check_warehousing_model->get_tagged_per_customer($this->session->tre_portal_customer_id);
 		
@@ -101,7 +115,7 @@ class Check_warehousing extends CI_Controller {
 	public function customer_entry_2(){
 		
 		$data['content'] = 'receivables/check_warehousing_customer_entry2_view';
-		$data['title'] = 'Check Warehousing <small>Check Encoding</small>';
+		$data['title'] = 'Reserved Units';
 		$data['head_title'] = 'Treasury | Check Warehousing';
 		
 		$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $this->input->post('cs_numbers'))).'\'';
