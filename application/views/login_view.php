@@ -39,7 +39,7 @@
 						</div>
 						
 						<div class="form-group">
-							<input type="text" class="form-control" id="p_username" placeholder="Username">
+							<input autofocus type="text" class="form-control" id="p_username" placeholder="Username">
 						</div>
 						<div class="form-group">
 							<input type="password" class="form-control" id="p_password" placeholder="Password">
