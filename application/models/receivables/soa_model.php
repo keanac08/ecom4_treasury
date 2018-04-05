@@ -76,7 +76,7 @@ class Soa_model extends CI_Model {
 						 AND soa.trx_date <= '".$as_of_date."'
 						 AND soa.customer_id = ?
 						 ".$and."
-						  AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 1
+						  AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 GROUP BY ROLLUP (soa.due_date, soa.customer_trx_id)
 					 ORDER BY due_Date nulls last";
 		
@@ -169,7 +169,7 @@ class Soa_model extends CI_Model {
 						AND soa.trx_date <= '".$as_of_date."'
 						AND soa.customer_id = ?
 						".$and."
-						AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 1
+						AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 ORDER BY due_Date nulls last"; 
 		
 		$data = $this->oracle->query($sql, $customer_id);
@@ -229,7 +229,7 @@ class Soa_model extends CI_Model {
 							AND soa.trx_date <= '".$as_of_date."'
 							AND soa.customer_id = ?
 							".$and."
-							AND (soa.invoice_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 1)";
+							AND (soa.invoice_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0)";
 		
 		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();

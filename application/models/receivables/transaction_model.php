@@ -65,7 +65,7 @@ class Transaction_model extends CI_Model {
 							 AND soa.trx_date <= '".$as_of_date."'
 							 AND soa.customer_id = ?
 							 )
-					WHERE balance > 1
+					WHERE balance > 0
 						 GROUP BY ROLLUP (profile_class_id)";
 		
 		$data = $this->oracle->query($sql,$customer_id);

@@ -67,7 +67,7 @@ class Aging_Model extends CI_Model {
 										 ".$and."
 										 AND soa.trx_date <= '".$as_of_date."'
 										 )
-								WHERE balance > 1
+								WHERE balance > 0
 									 GROUP BY ROLLUP (profile_class_id)";
 		$data = $this->oracle->query($sql);
 		return $data->result();
@@ -141,7 +141,7 @@ class Aging_Model extends CI_Model {
 										 AND soa.trx_date <= '".$as_of_date."'
 										 AND soa.profile_class_id = ?
 										 )
-								WHERE balance > 1
+								WHERE balance > 0
 									 GROUP BY ROLLUP (customer_id)";
 		$data = $this->oracle->query($sql, $profile_class_id);
 		return $data->result();
@@ -308,7 +308,7 @@ class Aging_Model extends CI_Model {
 							 WHERE     1 = 1
 								 ".$and. " " .$and2."
 								 AND soa.trx_date <= '".$as_of_date."'
-								 AND soa.invoice_amount + (NVL(adj.adjustment_amount,0) * NVL(soa.EXCHANGE_RATE, 1)) - (NVL (araa.paid_amount , 0) * NVL(soa.EXCHANGE_RATE, 1)) > 1)";
+								 AND soa.invoice_amount + (NVL(adj.adjustment_amount,0) * NVL(soa.EXCHANGE_RATE, 1)) - (NVL (araa.paid_amount , 0) * NVL(soa.EXCHANGE_RATE, 1)) > 0)";
 			//~ echo $sql;die();
 		$data = $this->oracle->query($sql);
 		return $data->result_array();	
