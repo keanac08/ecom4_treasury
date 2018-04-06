@@ -27,7 +27,18 @@
 								<td><?php echo sprintf('REP-%05d', $row->REPORT_ID); ?></td>
 								<td><?php echo $row->NAME; ?></td>
 								<td><?php echo $row->TYPE; ?></td>
+								<?php 
+								if($row->ACTION == 'modal'){
+								?>
 								<td width="10%" align="center"><a href="#" data-link="<?php echo $row->LINK; ?>" class="btn btn-xs btn-<?php echo $row->TYPE == 'Excel' ? 'success':'danger'; ?> btn_dr_modal"><i class="fa <?php echo $row->TYPE == 'Excel' ? 'fa-file-excel-o':'fa-file-pdf-o'; ?>"></i></a></td>
+								<?php 
+								}
+								else if($row->ACTION == 'direct'){
+								?>
+								<td width="10%" align="center"><a target="_blank" href="<?php echo $row->LINK; ?>" class="btn btn-xs btn-<?php echo $row->TYPE == 'Excel' ? 'success':'danger'; ?> btn_dr_modal"><i class="fa <?php echo $row->TYPE == 'Excel' ? 'fa-file-excel-o':'fa-file-pdf-o'; ?>"></i></a></td>
+								<?php 
+								}
+								?>
 							</tr>
 							</tr>
 						<?php 

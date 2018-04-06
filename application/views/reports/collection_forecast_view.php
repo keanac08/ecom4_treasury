@@ -5,11 +5,11 @@
 	</div>
 	<div class="modal-body">
 		<div class="form-group">
-			<label>Due Date From</label>
+			<label>Check Date From</label>
 			<input type="text" class="form-control" id="date_from" name="from_date" required>
 		</div>
 		<div class="form-group">
-			<label>Due Date To</label>
+			<label>Check Date To</label>
 			<input type="text" class="form-control" id="date_to" name="to_date" required>
 		</div>
 	</div>
