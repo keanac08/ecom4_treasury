@@ -20,7 +20,7 @@ class Invoice_details extends CI_Controller {
 		//~ $q = '40200027949';
 		//~ $q = '40300014985';
 		
-		$q = $this->input->get('q');
+		$q = strtoupper($this->input->get('q'));
 		
 		
 		$data['title'] = 'Search Result for "' . $q . '"';
