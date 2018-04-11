@@ -45,7 +45,7 @@ $this->load->helper('profile_class_helper');
 							?>
 								<tr style="<?php echo ($row->CUSTOMER_ID == NULL) ? 'background-color: #f1f1f1;font-weight: bold;' : '';?>" >
 									<td><a target="blank" class="btn btn-danger btn-xs <?php echo ($row->CUSTOMER_ID == NULL) ? 'hidden':''; ?>" 
-												href="<?php echo base_url(); ?>receivables/soa/admin/<?php echo get_sales_type($row->PROFILE_CLASS_ID); ?>/<?php echo $row->PROFILE_CLASS_ID; ?>/<?php echo $row->CUSTOMER_ID * 101403; ?>/<?php echo date('mdY', strtotime($as_of_date)); ?>">
+												href="<?php echo base_url(); ?>receivables/soa/admin/<?php echo get_sales_type($row->PROFILE_CLASS_ID); ?>/<?php echo $row->PROFILE_CLASS_ID; ?>/<?php echo ($row->CUSTOMER_ID * 101403); ?>/<?php echo date('mdY', strtotime($as_of_date)); ?>">
 												<i class="glyphicon glyphicon-chevron-right"></i>
 											</a>
 										</td>
