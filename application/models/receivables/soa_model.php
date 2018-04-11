@@ -465,15 +465,76 @@ class Soa_model extends CI_Model {
 							WHERE rctl.line_type = 'LINE'
 							GROUP BY RCTL.customer_trx_id, rctl.inventory_item_id) rctla
 						  ON rcta.customer_trx_id = rctla.customer_trx_id
-					LEFT JOIN mtl_serial_numbers msn
-						ON rcta.attribute3 = msn.serial_number
-					LEFT JOIN mtl_system_items_b msib
-						ON msn.inventory_item_id = msib.inventory_item_id
-						AND msn.current_organization_id = msib.organization_id
 					LEFT JOIN oe_order_headers_all ooha
 						ON rcta.interface_header_attribute1 = to_char(ooha.order_number) 
 					LEFT JOIN oe_transaction_types_tl ottl
 						ON ooha.order_type_id = ottl.transaction_type_id
+				WHERE apsa.customer_trx_id = ?
+				ORDER BY rctla.line_number";
+				 
+		$data = $this->oracle->query($sql,$customer_trx_id);
+		return $data->result();
+	}
+	
+	public function get_others_invoice_details($customer_trx_id){
+		
+		$sql = "SELECT 
+					apsa.customer_trx_id,
+					apsa.trx_number, 
+					to_char(apsa.trx_date,'MM/DD/YYYY') trx_date, 
+					apsa.amount_due_original invoice_amount,
+					apsa.amount_due_remaining balance,
+					apsa.amount_line_items_original total_net_amount,
+					apsa.tax_original total_vat_amount,
+					'' part_no,
+					 ROUND (CASE
+                         WHEN SUBSTR (apsa.trx_number, 1, 3) = '521'
+						 OR apsa.trx_number IN ('1926',
+										   '1932',
+										   '1927',
+										   '1873',
+										   '1890',
+										   '1894',
+										   '1899',
+										   '1930',
+										   '1925',
+										   '1931')
+                            THEN
+                               (apsa.amount_line_items_original) * .02
+                            ELSE
+                               (apsa.amount_line_items_original) * .01
+                         END,
+                         2) wht_amount,
+                    '' order_number,
+					'' ordered_date, 
+					'' order_type,
+					'' po_number,
+					apsa.amount_applied paid_amount,
+					apsa.amount_adjusted adjusted_amount,
+					 apsa.amount_credited credited_amount,
+					apsa.invoice_currency_code currency,
+					apsa.exchange_rate,
+					CASE apsa.status WHEN 'OP' THEN 'Open' else'Closed' end status,
+					rctla.qty,
+					rctla.line_number,
+					rctla.part_description,
+					rctla.unit_selling_price,
+					rctla.net_amount,
+					rctla.vat_amount
+				FROM ar_payment_schedules_all apsa
+					LEFT JOIN ra_customer_trx_all rcta
+						ON apsa.customer_trx_id = rcta.customer_trx_id
+					LEFT JOIN (SELECT rctl.customer_trx_id,
+									MAX(rctl.quantity_invoiced) qty,
+									MAX(rctl.line_number) line_number,
+									MAX(description) part_description,
+									SUM(rctl.unit_selling_price) unit_selling_price,
+									SUM(rctl.line_recoverable) net_amount,
+									SUM(rctl.tax_recoverable) vat_amount
+							FROM ra_customer_trx_lines_all rctl
+							WHERE rctl.line_type = 'LINE'
+							GROUP BY RCTL.customer_trx_id, rctl.inventory_item_id) rctla
+						  ON rcta.customer_trx_id = rctla.customer_trx_id
 				WHERE apsa.customer_trx_id = ?
 				ORDER BY rctla.line_number";
 				 

@@ -83,7 +83,12 @@ class Soa extends CI_Controller {
 			echo $this->load->view('ajax/vehicle_invoice_details_view',$data,true);
 		}
 		else{
-			$rows =  $this->soa_model->get_parts_invoice_details($customer_trx_id);
+			if($profile_class == 'Dealers-Others' OR $profile_class == 'Other Customers'){
+				$rows =  $this->soa_model->get_others_invoice_details($customer_trx_id);
+			}
+			else{	
+				$rows =  $this->soa_model->get_parts_invoice_details($customer_trx_id);
+			}
 			
 			$x = 0;
 			$net_amount = 0;
@@ -126,7 +131,17 @@ class Soa extends CI_Controller {
 			}
 			$data['lines'] = $lines;
 			
-			echo $this->load->view('ajax/parts_invoice_details_view',$data,true);
+			//~ echo '<pre>';
+			//~ print_r($lines);
+			//~ echo '</pre>';
+			
+			if($profile_class == 'Dealers-Others' OR $profile_class == 'Other Customers'){
+				echo $this->load->view('ajax/others_invoice_details_view',$data,true);
+			}
+			else{	
+				echo $this->load->view('ajax/parts_invoice_details_view',$data,true);
+			}
+			
 		}
 		
 		
