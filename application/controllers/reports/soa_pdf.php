@@ -179,7 +179,7 @@ class Soa_pdf extends CI_Controller {
 			}
 		}
 		
-		$this->pdf->Output('test', 'I');
+		$this->pdf->Output('soa.pdf', 'I');
 		
 	}
 	
