@@ -108,6 +108,7 @@ class Transaction_model extends CI_Model {
 					LEFT JOIN hz_cust_profile_classes hcpc
 						ON hzp.profile_class_id = hcpc.profile_class_id
 					WHERE 1 = 1 
+						AND hca.status = 'A'
 						".$and."
 						AND  lower(hp.party_name || ' - ' || hca.account_name) like ?";
 				 
@@ -129,7 +130,8 @@ class Transaction_model extends CI_Model {
 				  FROM hz_cust_accounts_all hcca
 					   LEFT JOIN hz_parties hp ON hcca.party_id = hp.party_id
 				 WHERE 1 = 1 
-					AND  hcca.cust_account_id = ?";
+					AND  hcca.cust_account_id = ?
+					AND hcca.status = 'A'";
 				 
 		$data = $this->oracle->query($sql,$customer_id);
 		return $data->result();
