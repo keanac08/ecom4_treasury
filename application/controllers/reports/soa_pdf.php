@@ -25,6 +25,8 @@ class Soa_pdf extends CI_Controller {
 		$this->pdf($orientation);
 		$this->load->helper('number_helper');
 		$this->load->helper('date_helper');
+		$this->load->helper('profile_class_helper');
+		$this->load->helper('string_helper');
 	
 		$customer_id = $this->uri->segment(6) / 101403;
 		$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(7));
