@@ -73,34 +73,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'oracle';
 $query_builder = TRUE;
 
-$prod = "(DESCRIPTION=
-			(ADDRESS=
-				(PROTOCOL=TCP)
-				(HOST=172.16.1.63)
-				(PORT=1521)
+$prod = "(DESCRIPTION =
+			(ADDRESS_LIST =
+				(ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.1.86)(PORT = 1521))
 			)
-			(CONNECT_DATA=
-				(SERVICE_NAME=PROD)
+			(CONNECT_DATA =
+				(SERVICE_NAME = PROD)
 			)
 		)";
-		
-$target_date = strtotime('2018-04-09');
 
-$current_date = strtotime(date('Y-m-d'));
-
-if ($current_date >= $target_date)
-{
-	// EBS
-	$prod = "(DESCRIPTION =
-				(ADDRESS_LIST =
-					(ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.1.86)(PORT = 1521))
-				)
-				(CONNECT_DATA =
-					(SERVICE_NAME = PROD)
-				)
-			)";
-}
-		
 $db['oracle']['hostname'] = $prod;
 $db['oracle']['username'] = 'apps';
 $db['oracle']['password'] = 'apps';
