@@ -116,6 +116,7 @@
 						
 					</ul>
 				</li>
+				
 				<?php 
 				//~ RECEIVABLES AGING -------------------------------------------------------------------------------
 				if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
@@ -130,7 +131,30 @@
 				?>
 				
 				<?php 
-				//~ RECEIVABLES AGING -------------------------------------------------------------------------------
+				//~ Credit Line Monitoring -------------------------------------------------------------------------------
+				if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts'))){
+				?>
+					<li class="treeview <?php  echo ($this->uri->segment(2) == 'credit_line' AND $this->uri->segment(3) == 'monitoring') ? 'active' : ''; ?>">
+						<a href="#">
+							<i class="fa fa-credit-card"></i> <span>Credit Line Monitoring</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li class="<?php echo ($this->uri->segment(4) == 'parts') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/credit_line/monitoring/parts'); ?> ">
+									<i class="fa fa-circle-o"></i>Parts
+								</a>
+							</li> 
+						</ul>
+					</li>
+				<?php 
+				}
+				?>
+				
+				<?php 
+				//~ CHECK WAREHOUSING -------------------------------------------------------------------------------
 				if(in_array($this->session->tre_portal_user_type, array('Administrator'))){
 				?>
 					<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
