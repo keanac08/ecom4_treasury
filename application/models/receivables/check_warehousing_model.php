@@ -579,7 +579,11 @@ class Check_warehousing_model extends CI_Model {
 					rt.name payment_terms,
 					msn.d_attribute20 reserved_date,
 					 NVL(substr(ottl.description, 1, instr(ottl.description,' ')), ottl.description) order_type,
-					trunc(sysdate - msn.d_attribute20) aging,
+					-- trunc(sysdate - msn.d_attribute20) aging2,
+					(select count(*) - 1
+                        from ipc_calendars_view
+                        where DATE_TIME_START between	trunc(msn.d_attribute20) and  trunc(sysdate)
+                        and DAY_OF_WEEK_SDESC not in ('SUN','SAT'))  aging,
 					--oola.unit_selling_price net_amount,
 					--oola.tax_value vat_amount,
 					oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value amount_due

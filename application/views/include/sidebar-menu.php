@@ -193,14 +193,14 @@
 				?>
 				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 					<a href="#">
-						<i class="fa fa-truck"></i> <span>Reserved Units</span>
+						<i class="fa fa-truck"></i> <span>Tagged Units</span>
 						<span class="pull-right-container">
 							<i class="fa fa-angle-left pull-right"></i>
 						</span>
 					</a>
 					<ul class="treeview-menu">
 						<li class="treeview <?php echo (in_array($this->uri->segment(3),array('customer_entry','customer_entry_2'))) ? 'active' : ''; ?>" >
-							<a  href=""><i class="fa fa-circle-o"></i> Request for Invoice
+							<a  href=""><i class="fa fa-circle-o"></i>New Request for Invoice
 								<span class="pull-right-container">
 									<i class="fa fa-angle-left pull-right"></i>
 								</span>
@@ -213,7 +213,7 @@
 						</li> 
 						<li class="<?php echo ($this->uri->segment(3) == 'customer_check_list') ? 'active' : ''; ?>" >
 							<a href="<?php echo base_url('receivables/check_warehousing/customer_check_list'); ?> ">
-								<i class="fa fa-circle-o"></i>For Invoice
+								<i class="fa fa-circle-o"></i>Requests for Invoice
 							</a>
 						</li> 
 					</ul>

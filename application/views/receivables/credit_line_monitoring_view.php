@@ -48,7 +48,7 @@
 					</table>
 				</div>
 				<div class="box-footer text-right">
-					
+				
 				</div>
 			</div>
 		</div>
@@ -72,7 +72,7 @@
 			//~ 'bSort' : false
 			 "order": []
 		});
-
+		
 		$('body').on('click','a.btn_dr_modal',function(){
 			v_link = $(this).data('link');
 			$.ajax({

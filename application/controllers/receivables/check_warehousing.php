@@ -29,8 +29,8 @@ class Check_warehousing extends CI_Controller {
 		$data['to_date'] = $this->input->post('to_date');
 		
 		$data['content'] = 'receivables/check_warehousing_pdc_customer_view';
-		$data['title'] = 'Check Warehousing';
-		$data['head_title'] = 'Treasury | Check Warehousing';
+		$data['title'] = 'Requests for Invoice';
+		$data['head_title'] = 'Treasury | Tagged Units';
 		
 		$data['result'] = $this->check_warehousing_model->get_customer_pdc($data['from_date'], $data['to_date'], $this->session->tre_portal_customer_id);
 		
@@ -92,7 +92,7 @@ class Check_warehousing extends CI_Controller {
 		$type = $this->uri->segment(4);
 		
 		$data['content'] = 'receivables/check_warehousing_customer_entry_view';
-		$data['title'] = 'Reserved Units';
+		$data['title'] = 'Tagged Units';
 		$data['head_title'] = 'Treasury | Check Warehousing';
 		$data['type'] = $type;
 		
@@ -115,7 +115,7 @@ class Check_warehousing extends CI_Controller {
 	public function customer_entry_2(){
 		
 		$data['content'] = 'receivables/check_warehousing_customer_entry2_view';
-		$data['title'] = 'Reserved Units';
+		$data['title'] = 'Tagged Units';
 		$data['head_title'] = 'Treasury | Check Warehousing';
 		
 		$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $this->input->post('cs_numbers'))).'\'';
