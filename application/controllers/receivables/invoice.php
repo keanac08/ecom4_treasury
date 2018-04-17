@@ -12,6 +12,12 @@ class Invoice extends CI_Controller{
 		echo $this->load->view('reports/vehicle_invoice_by_due_date_view',$data, true);
 	}
 	
+	public function invoice_modal(){
+
+		$data[] = '';
+		echo $this->load->view('reports/invoices_view',$data, true);
+	}
+	
 	public function vehicle_by_due_date_form(){
 		
 		$data['content'] = 'reports/vehicle_invoice_by_due_date_view';
