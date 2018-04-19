@@ -165,7 +165,7 @@ class Aging_Model extends CI_Model {
 			$and = ($profile_class_id != 'NULL' AND $profile_class_id != NULL) ? 'AND soa.profile_class_id = ' . $profile_class_id: '';
 			$and2 = $customer_id != NULL ? 'AND soa.customer_id = ' . $customer_id: '';
 		}
-		else if(in_array($this->session->tre_portal_user_type, array('IPC Parts'))){
+		else if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
 			$this->load->helper('profile_class_helper');
 			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
 			$and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';
