@@ -131,6 +131,19 @@
 				?>
 				
 				<?php 
+				//~ RECEIPT -------------------------------------------------------------------------------
+				if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin'))){
+				?>
+					<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'receipt') ? 'active' : ''; ?>">
+						<a href="<?php echo base_url('receivables/receipt/search');?>">
+							<i class="fa fa-file-text-o"></i> <span>Receipt</span>
+						</a>
+					</li>
+				<?php 
+				}
+				?>
+				
+				<?php 
 				//~ Credit Line Monitoring -------------------------------------------------------------------------------
 				if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts'))){
 				?>

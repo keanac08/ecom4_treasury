@@ -6,10 +6,10 @@ $this->load->helper('number_helper');
 </div>
 <div class="modal-body">
 	<div class="row">
-		
-	</div> 
-	<div class="row">
 		<div class="col-sm-12">
+			<?php 
+			if(!empty($result)){
+			?>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
@@ -34,6 +34,12 @@ $this->load->helper('number_helper');
 					?>
 					</tbody>
 			</table>
+			<?php
+			}
+			else{
+				echo 'No results found...';
+			}
+			?>
 		</div>
 	</div>
 <div class="modal-footer">

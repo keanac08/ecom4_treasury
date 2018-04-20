@@ -59,6 +59,15 @@ $data .= '<tr class="primary">
 					<strong>Unapplied Amount</strong>
 					<p class="text-muted"><?php echo amount($header->RECEIPT_AMOUNT - $total_amount_applied); ?></p>
 				</div>
+				<?php 
+				if($header->RECEIPT_AMOUNT - $total_amount_applied < 1 AND $header->RECEIPT_AMOUNT - $total_amount_applied > -1){
+				?>
+				<div class="box-footer text-right">
+					<a target="_blank" class="btn btn-danger" href="<?php echo base_url('reports/collection_receipt_pdf/index/'.$header->CASH_RECEIPT_ID)?>">Print Receipt</a>
+				</div>
+				<?php 
+				}
+				?>
 			</div>
 		</div>
 		<div class="col-md-8" style="min-height:400px;">

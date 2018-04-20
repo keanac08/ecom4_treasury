@@ -13,7 +13,7 @@ class Collection_receipt_pdf extends CI_Controller {
 	
 	public function index(){
 		
-		$receipt_id = 65189;
+		$receipt_id = $this->uri->segment(4);
 		
 		//~ $n = 214324231432.43;
 		//~ $whole = floor($n);      // 1

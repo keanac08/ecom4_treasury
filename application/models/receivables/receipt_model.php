@@ -182,6 +182,8 @@ class Receipt_Model extends CI_Model {
 	
 	public function get_receipt_id($search_key){
 		
+		$and = $this->session->tre_portal_customer_id == NULL ? '':' AND acra.pay_from_customer = ' . $this->session->tre_portal_customer_id;
+		
 		$sql = "SELECT DISTINCT araa.cash_receipt_id receipt_id,
 					   acra.doc_sequence_value receipt_number,
 					   acra.amount             receipt_amount
@@ -192,6 +194,7 @@ class Receipt_Model extends CI_Model {
 						  ON araa.applied_customer_trx_id = rcta.customer_trx_id
 				 WHERE     1 = 1
 					   AND araa.display = 'Y'
+					   ".$and."
 					   AND (rcta.trx_number = ? OR rcta.attribute3 = ? OR acra.doc_sequence_value = ?)
 					   AND araa.cash_receipt_id IS NOT NULL";
 				
