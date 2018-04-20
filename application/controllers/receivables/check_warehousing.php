@@ -64,12 +64,16 @@ class Check_warehousing extends CI_Controller {
 		
 		$i = 0;
 		while($i < count($line_ids)){
-			$this->check_warehousing_model->new_approved_pdc($check_ids[$i], $line_ids[$i], $cs_numbers[$i]);
+			if($line_ids[$i] != NULL){
+				$this->check_warehousing_model->new_approved_pdc($check_ids[$i], $line_ids[$i], $cs_numbers[$i]);
+			}
 			$i++;
 		}
 		
 		$line_ids = $this->input->post('line_ids');
+		$line_ids = array_filter($line_ids);
 		$line_ids = implode(',', $line_ids);
+		//~ echo $line_ids;
 		$data = $this->check_warehousing_model->new_release_lines($line_ids);
 
 	}
