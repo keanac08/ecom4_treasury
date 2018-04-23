@@ -253,32 +253,31 @@ class Soa_model extends CI_Model {
 								hp.party_name
 						END
 						  customer_name,
-						 hca.cust_account_id customer_id,
 						 hca.account_number,
 						 hca.account_name,
 						 hp.party_name,
 						 hcpc.profile_class_id,
 						 hcpc.name         profile_class,
-						 CASE hp.address1
+						 CASE hl.address1
 							WHEN 'DEALERS-PARTS'
 							THEN
-								  hp.address2
+								  hl.address2
 							   || ' '
-							   || hp.address3
+							   || hl.address3
 							   || ' '
-							   || hp.address4
+							   || hl.address4
 							   || ' '
-							   || hp.city
+							   || hl.city
 							ELSE
-								  hp.address1
+								  hl.address1
 							   || ' '
-							   || hp.address2
+							   || hl.address2
 							   || ' '
-							   || hp.address3
+							   || hl.address3
 							   || ' '
-							   || hp.address4
+							   || hl.address4
 							   || ' '
-							   || hp.city
+							   || hl.city
 						 END
 							address,
 							hcpc.profile_class_id
@@ -291,6 +290,12 @@ class Soa_model extends CI_Model {
 						 LEFT JOIN hz_cust_profile_classes hcpc
 							ON hzp.profile_class_id = hcpc.profile_class_id
 						 LEFT JOIN hz_parties hp ON hca.party_id = hp.party_id
+						  LEFT JOIN hz_cust_acct_sites_all hcas
+							 ON hca.cust_account_id = hcas.cust_account_id
+						  LEFT JOIN hz_party_sites hps
+							 ON hps.party_site_id = hcas.party_site_id
+						  LEFT JOIN hz_locations hl 
+							ON hl.location_id = hps.location_id
 				   WHERE     1 = 1
 						 AND aps.class IN ('INV', 'DM')
 						 AND aps.status = 'OP'
