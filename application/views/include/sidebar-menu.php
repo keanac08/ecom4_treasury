@@ -136,7 +136,7 @@
 				?>
 					<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'receipt') ? 'active' : ''; ?>">
 						<a href="<?php echo base_url('receivables/receipt/search');?>">
-							<i class="fa fa-file-text-o"></i> <span>Receipt</span>
+							<i class="fa fa-file-text-o"></i> <span><?php echo $this->session->tre_portal_user_type == 'Dealer Admin' ? 'Payment':'Collection'?> Receipt</span>
 						</a>
 					</li>
 				<?php 
