@@ -32,7 +32,7 @@ $this->load->helper('number_helper');
 								<th class="text-center">&nbsp;</th>
 								<th class="text-left">Profile ID</th>
 								<th class="text-center">Profile Class</th>
-								<th class="text-center info text-info">Contingent Receivables</th>
+								<th class="text-center info text-info">Unpulledout Receivables</th>
 								<th class="text-center success text-success">Current Receivables</th>
 								<th class="text-center warning text-yellow">Past Due Receivables</th>
 								<th class="text-center danger text-red">Total Receivables</th>
