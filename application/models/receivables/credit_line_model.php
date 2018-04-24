@@ -28,7 +28,8 @@ class Credit_line_model extends CI_Model {
 				   EXPOSURE_OPEN_SO_ONHOLD + EXPOSURE_OPEN_SO_NOT_ONHOLD EXPOSURE_OPEN_SO,
 				   TOTAL_EXPOSURE,
 				   AVAILABLE_CREDIT_LIMIT
-				FROM IPC_PARTS_CREDIT_MONITORING_V";
+				FROM IPC_PARTS_CREDIT_MONITORING_V
+				ORDER BY AVAILABLE_CREDIT_LIMIT ASC";
 		
 		$data = $this->oracle->query($sql);
 		return $data->result();
