@@ -12,7 +12,7 @@ class Check_warehousing_model extends CI_Model {
 	
 	public function get_tagged_units($cs_numbers){
 
-		$sql = "SELECT distinct
+		$sql = "SELECT
 					ooha.header_id,
 					ooha.order_number,
 					oola.line_number,
@@ -66,6 +66,7 @@ class Check_warehousing_model extends CI_Model {
 					AND ret.line_id IS NULL
 					AND NVL (hold.released_flag, NVL (oola.attribute20, 'N')) = 'N'
 					AND msn.serial_number IS NOT NULL
+					AND hold.hold_release_id IS NULL
 					AND msn.serial_number IN (".$cs_numbers.")
 					--and ooha.order_number = '3010035319'
 					ORDER BY due_date asc nulls last";
