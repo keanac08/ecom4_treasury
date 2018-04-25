@@ -12,7 +12,7 @@ class Check_warehousing_model extends CI_Model {
 	
 	public function get_tagged_units($cs_numbers){
 
-		$sql = "SELECT
+		$sql = "SELECT distinct
 					ooha.header_id,
 					ooha.order_number,
 					oola.line_number,
