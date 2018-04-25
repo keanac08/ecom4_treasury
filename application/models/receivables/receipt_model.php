@@ -115,7 +115,6 @@ class Receipt_Model extends CI_Model {
 		return $data->result();
 	}
 	
-
 	public function get_collection_receipts_lines($receipt_id){
 		
 		$sql = "SELECT trx_number,
@@ -175,6 +174,23 @@ class Receipt_Model extends CI_Model {
 					apsa.amount_due_remaining,
 					hca.account_name,
 					hca.cust_account_id)"; 
+					
+		$sql = "SELECT 
+				   araa.cash_receipt_id,
+				   apsa.trx_number,
+				   rcta.attribute3 cs_number,
+				   araa.amount_applied,
+				   apsa.amount_due_original invoice_amount,
+				   apsa.amount_due_remaining balance_payable,
+				   ROUND ( (apsa.amount_due_original / 1.12) * .01, 2) wht_amount
+			  FROM AR_RECEIVABLE_APPLICATIONS_all araa
+				   LEFT JOIN AR_RECEIVABLES_TRX_ALL arta
+					  ON araa.receivables_trX_id = arta.receivables_trX_id
+				   LEFT JOIN ar_payment_schedules_all apsa
+					  ON araa.APPLIED_PAYMENT_SCHEDULE_ID = apsa.PAYMENT_SCHEDULE_ID
+				   LEFT JOIN ra_customer_trx_all rcta
+					  ON apsa.customer_trx_id = rcta.customer_trx_id
+			 WHERE 1 = 1 AND araa.cash_receipt_id = ? AND araa.display = 'Y'"; //773225 test receipt
 		
 		$data = $this->oracle->query($sql, $receipt_id);
 		return $data->result();

@@ -4,27 +4,45 @@ $this->load->helper('null_helper');
 
 $data = '';
 $total_amount_applied = 0;
+$total_amount_applied_2 = 0;
 $total_balance_payable = 0;
+$total_invoice_amount = 0;
+$total_wht_amount = 0;
+$negative_amount_applied = 0;
 foreach($lines as $line){
-	$data .= '<tr>
-				<td class="text-center">'.$line->TRX_NUMBER.'</td>
-				<td class="text-center">'.$line->CS_NUMBER.'</td>
-				<td class="text-right">'.amount($line->AMOUNT_APPLIED).'</td>
-				<td class="text-right">'.amount($line->BALANCE_PAYABLE).'</td>
-			</tr>';
-	$total_amount_applied += $line->AMOUNT_APPLIED;
-	$total_balance_payable += $line->BALANCE_PAYABLE;
+	if($line->AMOUNT_APPLIED > 0){
+		$data .= '<tr>
+					<td class="text-center">'.$line->TRX_NUMBER.'</td>
+					<td class="text-center">'.$line->CS_NUMBER.'</td>
+					<td class="text-right">'.amount($line->INVOICE_AMOUNT).'</td>
+					<td class="text-right">'.amount($line->AMOUNT_APPLIED).'</td>
+					<td class="text-right">'.amount($line->WHT_AMOUNT).'</td>
+					<td class="text-right">'.amount($line->BALANCE_PAYABLE).'</td>
+				</tr>';
+		$total_amount_applied += $line->AMOUNT_APPLIED;
+		$total_balance_payable += $line->BALANCE_PAYABLE;
+		$total_invoice_amount += $line->INVOICE_AMOUNT;
+		$total_wht_amount += $line->WHT_AMOUNT;
+	}
+	else{
+		$negative_amount_applied += $line->AMOUNT_APPLIED;
+	}
+	$total_amount_applied_2 += $line->AMOUNT_APPLIED;
 }
 $data .= '<tr class="primary">
 			<td colspan="2" class="text-center"><strong>Total</strong></td>
+			<td class="text-right"><strong>'.amount($total_invoice_amount).'</strong></td>
 			<td class="text-right"><strong>'.amount($total_amount_applied).'</strong></td>
+			<td class="text-right"><strong>'.amount($total_wht_amount).'</strong></td>
 			<td class="text-right"><strong>'.amount($total_balance_payable).'</strong></td>
 		</tr>';
+
+$wht_amount = $negative_amount_applied * -1 > 0 ? $negative_amount_applied : 0;
 
 ?>
 <section class="content">
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="box box-danger">
 				<div class="box-header with-border">
 					<h6 class="box-title">Search : </h6>
@@ -41,7 +59,7 @@ $data .= '<tr class="primary">
 			</div>
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h6 class="box-title">Header Details</h6>
+					<h6 class="box-title">Receipt Details</h6>
 				</div>
 				<div class="box-body">
 					<strong>Receipt Number</strong>
@@ -53,14 +71,17 @@ $data .= '<tr class="primary">
 					<strong>Receipt Amount</strong>
 					<p class="text-muted"><?php echo amount($header->RECEIPT_AMOUNT);?></p>
 					
+					<strong>WHT Amount</strong>
+					<p class="text-muted"><?php echo $negative_amount_applied * -1 > 0 ?  amount($negative_amount_applied * -1):'0.00'; ?></p>
+					
 					<strong>Applied Amount</strong>
 					<p class="text-muted"><?php echo amount($total_amount_applied); ?></p>
 					
 					<strong>Unapplied Amount</strong>
-					<p class="text-muted"><?php echo amount($header->RECEIPT_AMOUNT - $total_amount_applied); ?></p>
+					<p class="text-muted"><?php echo amount($header->RECEIPT_AMOUNT - $total_amount_applied_2); ?></p>
 				</div>
 				<?php 
-				if($header->RECEIPT_AMOUNT - $total_amount_applied < 1 AND $header->RECEIPT_AMOUNT - $total_amount_applied > -1){
+				if($header->RECEIPT_AMOUNT - $total_amount_applied_2 < 1 AND $header->RECEIPT_AMOUNT - $total_amount_applied_2 > -1){
 				?>
 				<div class="box-footer text-right">
 					<a target="_blank" class="btn btn-danger" href="<?php echo base_url('reports/collection_receipt_pdf/index/'.$header->CASH_RECEIPT_ID)?>">Print Receipt</a>
@@ -70,10 +91,10 @@ $data .= '<tr class="primary">
 				?>
 			</div>
 		</div>
-		<div class="col-md-8" style="min-height:400px;">
+		<div class="col-md-9" style="min-height:400px;">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h6 class="box-title">Line Details</h6>
+					<h6 class="box-title">Receipt Application Details</h6>
 				</div>
 				<div class="box-body">
 					<table class="table">
@@ -81,7 +102,9 @@ $data .= '<tr class="primary">
 							<tr>
 								<th class="text-center">Invoice Number</th>
 								<th class="text-center">CS Number</th>
+								<th class="text-right">Invoice Amount</th>
 								<th class="text-right">Amount Applied</th>
+								<th class="text-right">WHT Amount</th>
 								<th class="text-right">Amount Due Remaining</th>
 							</tr>
 						</thead>

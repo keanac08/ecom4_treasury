@@ -4,7 +4,7 @@ $this->load->helper('null_helper');
 ?>
 <section class="content">
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="box box-danger">
 				<div class="box-header with-border">
 					<h6 class="box-title">Search : </h6>
@@ -41,7 +41,7 @@ $this->load->helper('null_helper');
 				</div>
 			</div>
 		</div>
-		<div class="col-md-8" style="min-height:400px;">
+		<div class="col-md-9" style="min-height:400px;">
 			<div class="box box-danger">
 				<div class="box-header with-border">
 					<h6 class="box-title">Line Details</h6>

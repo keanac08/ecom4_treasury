@@ -112,6 +112,8 @@ class Collection_receipt_pdf extends CI_Controller {
 		$total_wht = 0;
 		$total_balance = 0;
 		$total_amount_applied = 0;
+		$total_amount_applied_2 = 0;
+		$negative_amount_applied = 0;
 		$data = '<tr>
 					<td align="center" width="110px">Invoice Number</td>
 					<td align="center" width="110px">Amount</td>
@@ -119,25 +121,31 @@ class Collection_receipt_pdf extends CI_Controller {
 					<td align="center" width="110px">Amount</td>
 				</tr>';
 		foreach($lines as $line){
-			if($column == 0){
-				$data .= '<tr>';
+			if($line->AMOUNT_APPLIED > 0){
+				if($column == 0){
+					$data .= '<tr>';
+				}
+				$column++;
+				$data .= '<td align="center">'.$line->TRX_NUMBER.'</td>
+						  <td align="right">'.amount($line->AMOUNT_APPLIED).'</td>';
+				
+				if($column == 2){
+					$data .= '</tr>';
+					$column = 0;
+				}
+				//~ $total_wht += $line->WHT;
+				$total_balance += $line->BALANCE_PAYABLE;
+				$total_amount_applied += $line->AMOUNT_APPLIED;
 			}
-			$column++;
-			$data .= '<td align="center">'.$line->TRX_NUMBER.'</td>
-					  <td align="right">'.amount($line->AMOUNT_APPLIED).'</td>';
-			
-			if($column == 2){
-				$data .= '</tr>';
-				$column = 0;
+			else{
+				$negative_amount_applied += $line->AMOUNT_APPLIED;
 			}
-			$total_wht += $line->WHT;
-			$total_balance += $line->BALANCE_PAYABLE;
-			$total_amount_applied += $line->AMOUNT_APPLIED;
+			$total_amount_applied_2 += $line->AMOUNT_APPLIED;
 		}
 		if($column == 1){
-			$data .=	 '<td>&nbsp;</td>
+			$data .= '<td>&nbsp;</td>
 						  <td>&nbsp;</td>
-					</tr>';
+					  </tr>';
 		}
 		
 		$html = '<table border="1" style="font-size: 10px;padding: 2px 6px;">
@@ -165,11 +173,11 @@ class Collection_receipt_pdf extends CI_Controller {
 								</tr>
 								<tr>
 									<td align="left">Withholding Tax</td>
-									<td align="right">'.amount($total_wht).'</td>
+									<td align="right">'.amount($negative_amount_applied * -1).'</td>
 								</tr>
 								<tr>
 									<td align="left">Advances</td>
-									<td align="right">'.amount($header->RECEIPT_AMOUNT - $total_amount_applied).'</td>
+									<td align="right">'.amount($header->RECEIPT_AMOUNT - $total_amount_applied_2).'</td>
 								</tr>
 							</table>
 						</td>
