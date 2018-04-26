@@ -202,7 +202,7 @@
 					</li>
 				<?php 
 				}
-				else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+				else if($this->session->tre_portal_user_type == 'Dealer Admins'){
 				?>
 				<li class="treeview <?php  echo ($this->uri->segment(2) == 'check_warehousing') ? 'active' : ''; ?>">
 					<a href="#">
