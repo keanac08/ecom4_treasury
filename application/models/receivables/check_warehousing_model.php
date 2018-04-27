@@ -477,58 +477,143 @@ class Check_warehousing_model extends CI_Model {
 	
 	public function get_unit_check_details($q){
 	
-		$sql = "SELECT
-					pdc.check_id, 
-					pdc.check_number,
-					pdc.check_bank, 
-					pdc.check_amount, 
-					pdc.check_date, 
-						CASE WHEN trx_number IS NULL THEN
-							oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value
-						ELSE
-							ROUND (rctla.invoice_amount - rctla.wht_amount, 2)
-						END
-					amount_due,
-					NVL(rcta.trx_number, '-') trx_number,
-					msn.serial_number cs_number,
-					msib.attribute9 sales_model,
-					NVL(hcaa.account_name, hca.account_name) account_name
+		//~ $sql = "SELECT
+					//~ pdc.check_id, 
+					//~ pdc.check_number,
+					//~ pdc.check_bank, 
+					//~ pdc.check_amount, 
+					//~ pdc.check_date, 
+						//~ CASE WHEN trx_number IS NULL THEN
+							//~ oola.unit_selling_price - (oola.unit_selling_price * .01) +  oola.tax_value
+						//~ ELSE
+							//~ ROUND (rctla.invoice_amount - rctla.wht_amount, 2)
+						//~ END
+					//~ amount_due,
+					//~ NVL(rcta.trx_number, '-') trx_number,
+					//~ msn.serial_number cs_number,
+					//~ msib.attribute9 sales_model,
+					//~ NVL(hcaa.account_name, hca.account_name) account_name
+					//~ FROM ipc.ipc_treasury_pdc pdc
+					//~ LEFT JOIN ipc.ipc_treasury_pdc_units pdcu
+						//~ ON pdc.check_id = pdcu.check_id
+					//~ LEFT JOIN mtl_serial_numbers msn
+						//~ ON pdcu.cs_number = msn.serial_number
+					//~ LEFT JOIN mtl_system_items_b msib
+						//~ ON msn.inventory_item_id = msib.inventory_item_id
+						//~ AND msn.current_organization_id = msib.organization_id
+					//~ LEFT JOIN mtl_reservations mr
+						//~ ON msn.reservation_id = mr.reservation_id
+					//~ LEFT JOIN oe_order_lines_all oola
+						//~ ON oola.line_id = mr.demand_source_line_id
+					//~ LEFT JOIN  oe_order_headers_all ooha
+						//~ ON oola.header_id = ooha.header_id
+					//~ LEFT JOIN hz_cust_accounts_all hcaa
+						//~ ON ooha.sold_to_org_id = hcaa.cust_account_id
+					//~ LEFT JOIN ra_customer_trx_all rcta
+						//~ ON msn.serial_number = rcta.attribute3
+					//~ LEFT JOIN
+					 //~ (SELECT customer_trx_id,
+							   //~ MAX (warehouse_id)                         warehouse_id,
+							   //~ MAX (inventory_item_id)                    inventory_item_id,
+							   //~ MAX (quantity_invoiced)                    quantity_invoiced,
+							   //~ MAX (INTERFACE_LINE_ATTRIBUTE2)            order_type,
+							   //~ SUM (LINE_RECOVERABLE)                     net_amount,
+							   //~ SUM (TAX_RECOVERABLE)                      vat_amount,
+							   //~ SUM (LINE_RECOVERABLE) + SUM (TAX_RECOVERABLE) invoice_amount,
+							   //~ SUM (LINE_RECOVERABLE) * .01               wht_amount
+						  //~ FROM ra_customer_trx_lines_all
+						 //~ WHERE line_type = 'LINE'
+					  //~ GROUP BY customer_trx_id) rctla
+						//~ ON rcta.customer_trx_id = rctla.customer_trx_id
+					//~ LEFT JOIN hz_cust_accounts hca
+						//~ ON rcta.sold_to_customer_id = hca.cust_account_id
+					//~ WHERE to_char(pdcu.cs_number) = ? OR to_char(pdc.check_id) = ? OR to_char(pdc.check_number) = ?";
+					
+		$sql = "SELECT msn.serial_number                              cs_number,
+					   msib.attribute9                                sales_model,
+					   msib.attribute8                                body_color,
+					   ooha.order_number || ' - ' || oola.line_number order_number,
+					   --            oola.line_id,
+					   oola.unit_selling_price + oola.tax_value       invoice_amount,
+					   ROUND (
+							oola.unit_selling_price
+						  + oola.tax_value
+						  - (oola.unit_selling_price * .01),
+						  2)
+						  amount_due,
+					   --            ooha.flow_status_code,
+					   --            nvl (hold.released_flag, nvl (oola.attribute20, 'N')) released_flag,
+					   tab.check_id,
+					   tab.check_bank,
+					   tab.check_date,
+					   tab.check_number,
+					   tab.check_amount,
+					   tab.date_approved,
+					   rcta.trx_number,
+					  CASE WHEN rcta.trx_number is not null then 'Invoiced'
+							WHEN ooha.flow_status_code = 'ENTERED' THEN 'Entered'
+							WHEN ooha.flow_status_code = 'BOOKED' AND nvl (hold.released_flag, nvl (oola.attribute20, 'N')) = 'N' THEN 'Booked / Credit Hold'
+							WHEN ooha.flow_status_code = 'BOOKED' AND nvl (hold.released_flag, nvl (oola.attribute20, 'N')) = 'Y' THEN 'Booked / Credit Hold Released'
+							ELSE 'Not Yet Tagged'
+						END status,
+						CASE
+						  WHEN hcaa.account_name IS NOT NULL
+						  THEN
+							 hp.party_name || ' - ' || hcaa.account_name
+						  ELSE
+							 hp.party_name
+					   END
+						  customer_name
+				FROM mtl_serial_numbers msn
+				LEFT JOIN mtl_system_items_b msib
+				ON msn.inventory_item_id = msib.inventory_item_id
+				AND msn.current_organization_id = msib.organization_id
+				LEFT JOIN mtl_reservations mr
+				ON msn.reservation_id = mr.reservation_id
+				LEFT JOIN (SELECT mmts.*
+									   FROM mtl_material_transactions mmts
+											LEFT JOIN mtl_transaction_types mtt
+											   ON mmts.transaction_type_id = mtt.transaction_type_id
+									  WHERE     1 = 1
+											AND mtt.transaction_type_name IN
+													(   'Sales order issue', 'Sales Order Pick')) mmt
+									   ON msn.last_transaction_id = mmt.transaction_id
+				LEFT JOIN oe_order_lines_all oola
+				ON NVL(mmt.trx_source_line_id,mr.demand_source_line_id) = oola.line_id
+				LEFT JOIN oe_order_headers_all ooha
+				on oola.header_id = ooha.header_id
+				LEFT JOIN (select distinct line_id, released_flag FROM oe_order_holds_all) hold
+				ON oola.line_id = hold.line_id
+				LEFT JOIN (  SELECT customer_trx_id,
+									  interface_line_attribute6
+								 FROM ra_customer_trx_lines_all
+								WHERE line_type = 'LINE'
+							 GROUP BY customer_trx_id, interface_line_attribute6) rctla
+				on oola.line_id = rctla.interface_line_attribute6
+				left join ra_customer_trx_all rcta
+				on rctla.customer_trx_id = rcta.customer_trx_id
+				left join (SELECT pdc.check_id,
+											   unit.cs_number,
+						 pdc.check_number,
+						 pdc.check_bank,
+						 pdc.check_date,
+						 pdc.check_amount,
+						 app_pdc.date_approved
 					FROM ipc.ipc_treasury_pdc pdc
-					LEFT JOIN ipc.ipc_treasury_pdc_units pdcu
-						ON pdc.check_id = pdcu.check_id
-					LEFT JOIN mtl_serial_numbers msn
-						ON pdcu.cs_number = msn.serial_number
-					LEFT JOIN mtl_system_items_b msib
-						ON msn.inventory_item_id = msib.inventory_item_id
-						AND msn.current_organization_id = msib.organization_id
-					LEFT JOIN mtl_reservations mr
-						ON msn.reservation_id = mr.reservation_id
-					LEFT JOIN oe_order_lines_all oola
-						ON oola.line_id = mr.demand_source_line_id
-					LEFT JOIN  oe_order_headers_all ooha
-						ON oola.header_id = ooha.header_id
-					LEFT JOIN hz_cust_accounts_all hcaa
-						ON ooha.sold_to_org_id = hcaa.cust_account_id
-					LEFT JOIN ra_customer_trx_all rcta
-						ON msn.serial_number = rcta.attribute3
-					LEFT JOIN
-					 ( SELECT customer_trx_id,
-							   MAX (warehouse_id)                         warehouse_id,
-							   MAX (inventory_item_id)                    inventory_item_id,
-							   MAX (quantity_invoiced)                    quantity_invoiced,
-							   MAX (INTERFACE_LINE_ATTRIBUTE2)            order_type,
-							   SUM (LINE_RECOVERABLE)                     net_amount,
-							   SUM (TAX_RECOVERABLE)                      vat_amount,
-							   SUM (LINE_RECOVERABLE) + SUM (TAX_RECOVERABLE) invoice_amount,
-							   SUM (LINE_RECOVERABLE) * .01               wht_amount
-						  FROM ra_customer_trx_lines_all
-						 WHERE line_type = 'LINE'
-					  GROUP BY customer_trx_id) rctla
-						ON rcta.customer_trx_id = rctla.customer_trx_id
-					LEFT JOIN hz_cust_accounts hca
-						ON rcta.sold_to_customer_id = hca.cust_account_id
-					WHERE to_char(pdcu.cs_number) = ? OR to_char(pdc.check_id) = ? OR to_char(pdc.check_number) = ?";
-		$data = $this->oracle->query($sql, array($q,$q,$q));
+					  LEFT JOIN ipc.ipc_treasury_pdc_units unit
+					  ON pdc.check_id = unit.check_id
+					  LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+					  ON pdc.check_id = app_pdc.check_id
+					  WHERE app_pdc.check_id IS NOT NULL) tab
+				on msn.serial_number = tab.cs_number
+				LEFT JOIN hz_cust_accounts_all hcaa
+				ON ooha.sold_to_org_id = hcaa.cust_account_id
+				LEFT JOIN hz_parties hp
+				ON hcaa.party_id = hp.party_id
+				where 1 = 1
+				and msn.serial_number = ?";
+					
+		$data = $this->oracle->query($sql,$q);
 		return $data->result();
 	
 	}
