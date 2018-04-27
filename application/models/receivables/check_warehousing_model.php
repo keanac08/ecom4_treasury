@@ -544,9 +544,9 @@ class Check_warehousing_model extends CI_Model {
 					   --            ooha.flow_status_code,
 					   --            nvl (hold.released_flag, nvl (oola.attribute20, 'N')) released_flag,
 					   tab.check_id,
-					   tab.check_bank,
-					   tab.check_date,
+					    tab.check_bank,
 					   tab.check_number,
+					   tab.check_date,
 					   tab.check_amount,
 					   tab.date_approved,
 					   rcta.trx_number,
@@ -557,13 +557,13 @@ class Check_warehousing_model extends CI_Model {
 							ELSE 'Not Yet Tagged'
 						END status,
 						CASE
-						  WHEN hcaa.account_name IS NOT NULL
-						  THEN
-							 hp.party_name || ' - ' || hcaa.account_name
-						  ELSE
-							 hp.party_name
-					   END
-						  customer_name
+							  WHEN hcaa.account_name IS NOT NULL
+							  THEN
+								 hp.party_name || ' - ' || hcaa.account_name
+							  ELSE
+								 hp.party_name
+						   END
+							  customer_name
 				FROM mtl_serial_numbers msn
 				LEFT JOIN mtl_system_items_b msib
 				ON msn.inventory_item_id = msib.inventory_item_id
@@ -582,7 +582,7 @@ class Check_warehousing_model extends CI_Model {
 				ON NVL(mmt.trx_source_line_id,mr.demand_source_line_id) = oola.line_id
 				LEFT JOIN oe_order_headers_all ooha
 				on oola.header_id = ooha.header_id
-				LEFT JOIN (select distinct line_id, released_flag FROM oe_order_holds_all) hold
+				LEFT JOIN (select order_hold_id, line_id, released_flag FROM oe_order_holds_all) hold
 				ON oola.line_id = hold.line_id
 				LEFT JOIN (  SELECT customer_trx_id,
 									  interface_line_attribute6
@@ -593,24 +593,27 @@ class Check_warehousing_model extends CI_Model {
 				left join ra_customer_trx_all rcta
 				on rctla.customer_trx_id = rcta.customer_trx_id
 				left join (SELECT pdc.check_id,
-											   unit.cs_number,
-						 pdc.check_number,
-						 pdc.check_bank,
-						 pdc.check_date,
-						 pdc.check_amount,
-						 app_pdc.date_approved
-					FROM ipc.ipc_treasury_pdc pdc
-					  LEFT JOIN ipc.ipc_treasury_pdc_units unit
-					  ON pdc.check_id = unit.check_id
-					  LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
-					  ON pdc.check_id = app_pdc.check_id
-					  WHERE app_pdc.check_id IS NOT NULL) tab
+									unit.cs_number,
+									MAX(pdc.check_number) check_number,
+									MAX(pdc.check_bank) check_bank,
+									MAX(pdc.check_date) check_date,
+									MAX(pdc.check_amount) check_amount,
+									MAX(app_pdc.date_approved) date_approved
+						FROM ipc.ipc_treasury_pdc pdc
+						  LEFT JOIN ipc.ipc_treasury_pdc_units unit
+						  ON pdc.check_id = unit.check_id
+						  LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+						  ON pdc.check_id = app_pdc.check_id
+						  and unit.cs_number = app_pdc.cs_number
+						  WHERE app_pdc.check_id IS NOT NULL
+						  group by pdc.check_id,unit.cs_number) tab
 				on msn.serial_number = tab.cs_number
 				LEFT JOIN hz_cust_accounts_all hcaa
-				ON ooha.sold_to_org_id = hcaa.cust_account_id
+					ON ooha.sold_to_org_id = hcaa.cust_account_id
 				LEFT JOIN hz_parties hp
-				ON hcaa.party_id = hp.party_id
+					ON hcaa.party_id = hp.party_id
 				where 1 = 1
+				and hold.order_hold_id = (select max(order_hold_id) FROM oe_order_holds_all WHERE line_id = oola.line_id)
 				and msn.serial_number = ?";
 					
 		$data = $this->oracle->query($sql,$q);
