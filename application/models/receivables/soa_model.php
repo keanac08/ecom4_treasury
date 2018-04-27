@@ -40,7 +40,7 @@ class Soa_model extends CI_Model {
 					 LEFT JOIN ra_customer_trx_all rcta
 						ON soa.customer_trx_id = rcta.customer_trx_id
 					 LEFT JOIN oe_order_headers_all ooha
-						ON rcta.interface_header_attribute1 = ooha.order_number 
+						ON rcta.interface_header_attribute1 = to_char(ooha.order_number) 
 					 LEFT JOIN
 						(SELECT applied_customer_trx_id,
 										applied_payment_schedule_id,
@@ -78,7 +78,7 @@ class Soa_model extends CI_Model {
 						 ".$and."
 						  AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 GROUP BY ROLLUP (soa.due_date, soa.customer_trx_id)
-					 ORDER BY due_Date nulls last";
+					 ORDER BY due_Date nulls last"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();
