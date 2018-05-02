@@ -151,7 +151,7 @@ class Check_writer_model extends CI_Model {
 					'1'        pickup_or_delivery,
 					'318'               pickup_branch,
 					'PURC010'               purpose_code,
-					REPLACE(REPLACE(REGEXP_REPLACE(TRANSLATE(max(sup.vendor_name), ' ,''/-.', ' '), ' {2,}', ' ' ),'&','AND'),'Ñ','N') payee_name2,
+					REPLACE(REPLACE(REGEXP_REPLACE(TRANSLATE(max(sup.vendor_name), ' ,''/.', ' '), ' {2,}', ' ' ),'&','AND'),'Ñ','N') payee_name2,
 					CASE WHEN  sum(aip.amount) > 1000000 THEN 'Production related supplies' ELSE '' END particulars,
 					'ISUZU'               authorized_collector,
 					'1'               payee_or_collector
