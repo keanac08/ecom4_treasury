@@ -492,7 +492,7 @@ class Soa_model extends CI_Model {
 					apsa.amount_line_items_original total_net_amount,
 					apsa.tax_original total_vat_amount,
 					'' part_no,
-					 ROUND (CASE
+					ROUND (CASE
                          WHEN SUBSTR (apsa.trx_number, 1, 3) = '521'
 						 OR apsa.trx_number IN ('1926',
 										   '1932',
@@ -516,7 +516,7 @@ class Soa_model extends CI_Model {
 					'' po_number,
 					apsa.amount_applied paid_amount,
 					apsa.amount_adjusted adjusted_amount,
-					 apsa.amount_credited credited_amount,
+					apsa.amount_credited credited_amount,
 					apsa.invoice_currency_code currency,
 					apsa.exchange_rate,
 					CASE apsa.status WHEN 'OP' THEN 'Open' else'Closed' end status,
@@ -530,15 +530,14 @@ class Soa_model extends CI_Model {
 					LEFT JOIN ra_customer_trx_all rcta
 						ON apsa.customer_trx_id = rcta.customer_trx_id
 					LEFT JOIN (SELECT rctl.customer_trx_id,
-									MAX(rctl.quantity_invoiced) qty,
-									MAX(rctl.line_number) line_number,
-									MAX(description) part_description,
-									SUM(rctl.unit_selling_price) unit_selling_price,
-									SUM(rctl.line_recoverable) net_amount,
-									SUM(rctl.tax_recoverable) vat_amount
+									(rctl.quantity_invoiced) qty,
+									(rctl.line_number) line_number,
+									(description) part_description,
+									(rctl.unit_selling_price) unit_selling_price,
+									(rctl.line_recoverable) net_amount,
+									(rctl.tax_recoverable) vat_amount
 							FROM ra_customer_trx_lines_all rctl
-							WHERE rctl.line_type = 'LINE'
-							GROUP BY RCTL.customer_trx_id, rctl.inventory_item_id) rctla
+							WHERE rctl.line_type = 'LINE') rctla
 						  ON rcta.customer_trx_id = rctla.customer_trx_id
 				WHERE apsa.customer_trx_id = ?
 				ORDER BY rctla.line_number";
