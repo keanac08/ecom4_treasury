@@ -107,6 +107,7 @@ class Soa extends CI_Controller {
 				$vat_amount += $row->VAT_AMOUNT;
 				if($x == 0){
 					$header = array(
+									'CUSTOMER_TRX_ID' => $row->CUSTOMER_TRX_ID,
 									'TRX_NUMBER' => $row->TRX_NUMBER,
 									'TRX_DATE' => $row->TRX_DATE,
 									'ORDER_TYPE' => $row->ORDER_TYPE,

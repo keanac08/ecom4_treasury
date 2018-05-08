@@ -128,6 +128,19 @@ $this->load->helper('number_helper');
 	</div>
 </div>
 <div class="modal-footer">
+	<?php 
+	$string = substr($header->TRX_NUMBER, 0, 3);
+	if($string == '401'){
+		$link = "miscellaneous";
+	}
+	else if($string == '521' OR $string == '501'){
+		$link = 'billing';
+	}
+	else{
+		$link = 'parts';
+	}
+	?>
+	<a target="blank" href="<?php echo base_url('reports/invoice_'.$link.'_pdf/index/'.$header->CUSTOMER_TRX_ID); ?>" class="btn btn-danger" >Print Invoice Copy</a>
 	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 </div>
 

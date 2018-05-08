@@ -85,6 +85,7 @@ $this->load->helper('number_helper');
 	</div> 
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	<a target="blank" href="<?php echo base_url('reports/invoice_vehicle_pdf/index/'.$data->CUSTOMER_TRX_ID); ?>" class="btn btn-danger" >Print Invoice Copy</a>
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
 
