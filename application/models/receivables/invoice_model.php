@@ -417,7 +417,7 @@ class Invoice_Model extends CI_Model {
 							END)
 							discount,
 						 SUM (rctla.tax_recoverable) VAT,
-						 MAX (oola.attribute10)     dr_number,
+						 MAX (wdd.attribute2)     dr_number,
 						 MAX (wdd.batch_id)             picklist_number
 					FROM ra_customer_trx_lines_all rctla
                         LEFT JOIN ra_customer_Trx_all rcta
