@@ -118,8 +118,8 @@ $this->load->helper('profile_class_helper');
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-body">
-				<p align="center"><strong>ANNOUNCEMENT/REMINDER</strong></p>
+			<div class="modal-body" style="font-size: 16px;">
+				<p align="center"><strong><h4  align="center">ANNOUNCEMENT/REMINDER</h4></strong></p>
 				<hr />
 				<p class="text-justify">To ensure that your Statement of Account are updated, always send the corresponding Creditable Withholding Tax Certificate (CWT) copy via email right after making the payment online or via bank deposit. Send this always to IPC Treasury together with the validated deposit slip or proof of online transfer/payment. Should the dealer decide to send the check payment over to IPC Treasury, the same documents should be attached( payment details of the check and Original CWT for the payment). The same is true when sending Post Dated Checks to IPC Treasury for Vehicle Fleet Transactions or Retail Vehicle Transactions with payment terms.</p>
 				<p class="text-justify">These conditions apply to all transactions to IPC may it be vehicle, parts, Isuzu Merchandise, payment for licenses, special tools grant from service or any other payments. </p>
