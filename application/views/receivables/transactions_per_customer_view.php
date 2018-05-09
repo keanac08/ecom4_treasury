@@ -126,7 +126,7 @@ $this->load->helper('profile_class_helper');
 				<p class="text-justify">Thank You.</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success" data-dismiss="modal">I UNDERSTAND</button>
+				<button type="button" class="btn btn-success" data-dismiss="modal">WE UNDERSTAND</button>
 			</div>
 		</div>
 	</div>
@@ -162,6 +162,21 @@ $this->load->helper('profile_class_helper');
         });
     });
 </script>
+<?php
+if($this->session->flashdata('banner') !== NULL){
+	?>
+		<script>
+			$(document).ready(function() {
+				
+				 $('#myModal').modal({
+					backdrop: 'static',
+					keyboard: false  // to prevent closing with Esc button (if you want this too)
+				})
+			});
+		</script>
+	<?php 
+	}
+	?>
 <?php
 if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){ 
 ?>
@@ -208,20 +223,7 @@ if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Par
 <?php 
 }
 else if($this->session->tre_portal_user_type == 'Dealer Admin'){ 
-	if($this->session->flashdata('banner') !== NULL){
-	?>
-		<script>
-			$(document).ready(function() {
-				
-				 $('#myModal').modal({
-					backdrop: 'static',
-					keyboard: false  // to prevent closing with Esc button (if you want this too)
-				})
-			});
-		</script>
-	<?php 
-	}
-	?>
+?>	
 	<script>
 		$(document).ready(function() {
 			
