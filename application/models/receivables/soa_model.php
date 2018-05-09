@@ -21,6 +21,7 @@ class Soa_model extends CI_Model {
 						MAX (soa.profile_class_id) profile_class_id,
 						MAX (soa.payment_term)     payment_term,
 						MAX (soa.delivery_date)    delivery_date,
+						MAX(rcta.invoice_currency_code) currency,
 						MAX(checks.check_bank) || ' ' || MAX(checks.check_number) check_no,
 						MAX (ooha.attribute3) fleet_name,
 						MAX (ooha.cust_po_number) cust_po_number,

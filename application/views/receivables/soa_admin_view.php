@@ -240,7 +240,7 @@ $this->load->helper('date_helper');
 												}
 												$past_due_count++;
 											}
-
+											$currency = $row->CURRENCY != 'PHP' ? $row->CURRENCY . ' ' : '';
 											
 										?>
 											<tr class="texts-<?php echo ($row->DELIVERY_DATE == NULL ? 'info info' : ($row->DAYS_OVERDUE > 0 ? 'yellow warning':'success success')); ?>" >
@@ -254,7 +254,7 @@ $this->load->helper('date_helper');
 												<td class="text-center"><?php echo $row->PAYMENT_TERM; ?></td>
 												<td class="text-right"><?php echo amount($row->TRANSACTION_AMOUNT); ?></td>
 												<td class="text-right"><?php echo amount($row->WHT_AMOUNT); ?></td>
-												<td class="text-right"><?php echo amount($row->BALANCE); ?></td>
+												<td class="text-right"><?php echo $currency.amount($row->BALANCE); ?></td>
 												<td class="text-center"><?php echo $row->DAYS_OVERDUE; ?></td>
 												<?php 
 												if(in_array($sales_type, array('vehicle', 'fleet'))){ 
