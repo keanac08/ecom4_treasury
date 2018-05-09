@@ -8,9 +8,10 @@ $this->load->helper('profile_class_helper');
 		<div class="col-md-12">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h6 class="box-title"><?php echo $profile_class[0]->NAME;; ?></h6>
+					<h6 class="box-title"><?php echo $profile_class[0]->NAME; ?></h6>
 					<div class="box-tools pull-right" style="margin-top: 5px;">
-						<a class="text-success" target="_blank" data-toggle="tooltip" data-placement="top" title="Excel" href="<?php echo base_url("reports/receivables_excel/index/".str_replace('/', '', $as_of_date)."/".$profile_class_id); ?>" class=""><i class="fa fa-file-excel-o"></i></a>
+							<a class="text-red" target="_blank" data-toggle="tooltip" data-placement="top" title="PDF" href="<?php echo base_url("reports/aging_profile_pdf/index/".str_replace('/', '', $as_of_date))."/".$profile_class_id; ?>" class=""><i class="fa fa-file-pdf-o"></i></a>
+							<a class="text-success" target="_blank" data-toggle="tooltip" data-placement="top" title="Excel" href="<?php echo base_url("reports/receivables_excel/index/".str_replace('/', '', $as_of_date)."/".$profile_class_id); ?>" class=""><i class="fa fa-file-excel-o"></i></a>
 					</div>
 				</div>
 				<div class="box-body">
@@ -33,7 +34,7 @@ $this->load->helper('profile_class_helper');
 								<th class="text-center">&nbsp;</th>
 								<th class="text-center">Customer ID</th>
 								<th class="text-center">Customer Name</th>
-								<th class="text-center info text-info">Contingent Receivables</th>
+								<th class="text-center info text-info">Unpulledout Receivables</th>
 								<th class="text-center success text-success">Current Receivables</th>
 								<th class="text-center warning text-yellow">Past Due Receivables</th>
 								<th class="text-center danger text-red">Total Receivables</th>

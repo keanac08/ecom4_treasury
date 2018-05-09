@@ -9,6 +9,7 @@ $this->load->helper('number_helper');
 				<div class="box-header with-border">
 					<h6 class="box-title">&nbsp;</h6>
 					<div class="box-tools pull-right" style="margin-top: 5px;">
+						<a class="text-red" target="_blank" data-toggle="tooltip" data-placement="top" title="PDF" href="<?php echo base_url("reports/aging_pdf/index/".str_replace('/', '', $as_of_date)); ?>" class=""><i class="fa fa-file-pdf-o"></i></a>
 						<a class="text-success" target="_blank" data-toggle="tooltip" data-placement="top" title="Excel" href="<?php echo base_url("reports/receivables_excel/index/".str_replace('/', '', $as_of_date)); ?>" class=""><i class="fa fa-file-excel-o"></i></a>
 					</div>
 				</div>
