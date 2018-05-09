@@ -16,12 +16,19 @@ class Invoices_excel extends CI_Controller {
 			
 		$this->load->library('excel');
 		$this->load->helper('date_helper');
+		$this->load->helper('profile_class_helper');
 		
 		$from_date = date('d-M-y', strtotime($this->input->post('from_date')));
 		$to_date = date('d-M-y', strtotime($this->input->post('to_date')));
+		
+		$sales_type = $this->input->post('sales_type');
+		$profile_ids = get_profile_class_ids($sales_type);
+		
+		//~ echo $profile_ids;die();
+		
 		$customer_id = $this->session->tre_portal_customer_id;
 		
-		$rows = $this->invoice_model->get_invoices($from_date, $to_date, $customer_id);
+		$rows = $this->invoice_model->get_invoices($from_date, $to_date, $profile_ids, $customer_id);
 
 		$writer = new XLSXWriter();
 		

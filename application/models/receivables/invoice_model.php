@@ -8,7 +8,9 @@ class Invoice_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 	
-	public function get_invoices($from_date, $to_date, $customer_id){
+	public function get_invoices($from_date, $to_date, $profile_ids, $customer_id){
+		
+		$and = $profile_ids != 0 ? " AND hcpc.profile_class_id IN (".$profile_ids.") ":'';
 		
 		$sql = "SELECT hca.cust_account_id       customer_id,
 					   hp.party_name,
@@ -65,7 +67,8 @@ class Invoice_Model extends CI_Model {
 						  ON soa.profile_class_id = hcpc.profile_class_id
 				 WHERE     1 = 1
 					   AND soa.trx_date BETWEEN ? AND ?
-					   AND soa.customer_id = NVL(?, soa.customer_id)";
+					   ".$and."
+					   AND soa.customer_id = NVL(?, soa.customer_id)"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, array($from_date, $to_date, $customer_id));
 		return $data->result_array();
