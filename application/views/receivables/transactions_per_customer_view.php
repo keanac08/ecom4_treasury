@@ -116,12 +116,18 @@ $this->load->helper('profile_class_helper');
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog">
 		<div class="modal-content">
-			<!-- test
-			test
-			test
-			test -->
+			<div class="modal-body">
+				<p align="center"><strong>ANNOUNCEMENT/REMINDER</strong></p>
+				<hr />
+				<p class="text-justify">To ensure that your Statement of Account are updated, always send the corresponding Creditable Withholding Tax Certificate (CWT) copy via email right after making the payment online or via bank deposit. Send this always to IPC Treasury together with the validated deposit slip or proof of online transfer/payment. Should the dealer decide to send the check payment over to IPC Treasury, the same documents should be attached( payment details of the check and Original CWT for the payment). The same is true when sending Post Dated Checks to IPC Treasury for Vehicle Fleet Transactions or Retail Vehicle Transactions with payment terms.</p>
+				<p class="text-justify">These conditions apply to all transactions to IPC may it be vehicle, parts, Isuzu Merchandise, payment for licenses, special tools grant from service or any other payments. </p>
+				<p class="text-justify">Thank You.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-dismiss="modal">I UNDERSTAND</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -162,7 +168,7 @@ if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Par
 	<script>
 		$(document).ready(function() {
 		  
-			$('select.select2').on('select2:select', function (e) {
+		  $('select.select2').on('select2:select', function (e) {
 				
 				var data = e.params.data;
 				customer_id = data['id'];
@@ -202,9 +208,23 @@ if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Par
 <?php 
 }
 else if($this->session->tre_portal_user_type == 'Dealer Admin'){ 
-?>
+	if($this->session->flashdata('banner') !== NULL){
+	?>
+		<script>
+			$(document).ready(function() {
+				
+				 $('#myModal').modal({
+					backdrop: 'static',
+					keyboard: false  // to prevent closing with Esc button (if you want this too)
+				})
+			});
+		</script>
+	<?php 
+	}
+	?>
 	<script>
 		$(document).ready(function() {
+			
 			$("select.select2").select2({
 				width: '100%'
 			});

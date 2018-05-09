@@ -44,6 +44,9 @@ class Login extends CI_Controller {
 					'tre_portal_image' => base_url($image)
 				);
 			$this->session->set_userdata($treasury_user_data);
+			
+			$this->session->set_flashdata('banner', TRUE);
+			
 			echo 'success';
 		}
 		else{
