@@ -372,7 +372,7 @@ class Invoice_Model extends CI_Model {
 				
 		$sql = "SELECT MAX (rctla.sales_order_line) so_line,
 						 MAX (msib.segment1)        part_number,
-						 MAX (msib.description)     part_description,
+						 NVL(MAX (msib.description), MAX(rctla.description))     part_description,
 						 MAX (
                             CASE rcta.cust_trx_type_id WHEN 2081
                             THEN  rctla.quantity_invoiced
