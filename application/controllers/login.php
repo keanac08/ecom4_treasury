@@ -44,9 +44,9 @@ class Login extends CI_Controller {
 			}
 		}
 		
-		echo '<pre>';
-		print_r($this->session->userdata);
-		echo '</pre>';
+		//~ echo '<pre>';
+		//~ print_r($this->session->userdata);
+		//~ echo '</pre>';
 		
 		$this->load->view('lock_screen_view', $data);
 	}
