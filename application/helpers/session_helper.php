@@ -11,7 +11,7 @@ if ( ! function_exists('session_check')){
 			redirect('login');
 		}
 		else{
-			if(time()-$CI->session->userdata('tre_portal_session_start') > 6){
+			if(time()-$CI->session->userdata('tre_portal_session_start') > 600){
 				$CI->session->set_userdata('tre_portal_last_link', $CI->uri->uri_string());
 				redirect('login/lock_screen');
 			}
