@@ -81,7 +81,7 @@
 								$('.alert').show('slow');
 							}
 							else {
-								window.location.href = 'receivables/transaction/per_customer';
+								window.location.href = '<?php echo base_url();?>receivables/transaction/per_customer';
 							}
 						}
 					});

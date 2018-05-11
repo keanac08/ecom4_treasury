@@ -10,5 +10,14 @@ if ( ! function_exists('session_check')){
 			$CI->session->set_flashdata('login_error', 1);
 			redirect('login');
 		}
+		else{
+			if(time()-$CI->session->userdata('tre_portal_session_start') > 6){
+				$CI->session->set_userdata('tre_portal_last_link', $CI->uri->uri_string());
+				redirect('login/lock_screen');
+			}
+			else{
+				$CI->session->tre_portal_session_start = time();
+			}
+		}
 	}
 }

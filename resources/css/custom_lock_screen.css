@@ -1,0 +1,50 @@
+.lockscreen-wrapper {
+    margin: 0 auto;
+}
+.lockscreen-wrapper::before {
+	background-image: url("../images/login_bg.jpg");
+	min-height: 100%;
+	width: 100%;
+    background-size: cover;
+    content: "";
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.lockscreen-layer {
+    background-color: rgba(26,34,38, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lockscreen-layer2 {
+	margin: 7% auto 0;
+	max-width: 400px;
+	font-size: 110%;
+}
+
+.lockscreen-logo a, .lockscreen-name, .help-block, .lockscreen-footer{
+	color: #e2e8eb;
+}
+
+.or_sign_in a{
+	text-decoration: underline;
+	color: #dd4b39;
+ }
+ 
+.lockscreen-footer{
+	margin-top : 40px;
+}
+
+/*
+.help-block{
+	color: #f0f3f5;
+*/
+}

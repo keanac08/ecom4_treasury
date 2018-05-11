@@ -73,4 +73,23 @@ class Login_model extends CI_Model {
 		$data = $this->oracle->query($sql,$params);
 		return $data->result();
 	}
+	
+	public function new_user_log($params){
+		
+		$sql = "INSERT INTO IPC_PORTAL.USER_LOGS (
+						user_id,
+						system_id,
+						login_date,
+						session_id)
+				VALUES (?,?,to_date(?, 'DD-MON-YY HH24:MI:SS'),?)";
+		$this->oracle->query($sql, $params);
+	}
+	
+	public function update_user_log($params){
+		
+		$sql = "UPDATE IPC_PORTAL.USER_LOGS SET logout_date = to_date(?, 'DD-MON-YY HH24:MI:SS') WHERE session_id = ?";
+		$this->oracle->query($sql, $params);
+	}
+	
+	
 }

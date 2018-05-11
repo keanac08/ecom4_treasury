@@ -152,8 +152,6 @@ $this->load->helper('profile_class_helper');
 			customer_name = data[0].text;
 			as_of_date = $(this).data('date');
 			
-			//~ alert(as_of_date);
-			
 			$('input[name=customer_id]').val(customer_id);
 			$('input[name=customer_name]').val(customer_name);
 			$('input[name=as_of_date]').val(as_of_date);
