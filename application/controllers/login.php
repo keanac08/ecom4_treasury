@@ -94,7 +94,8 @@ class Login extends CI_Controller {
 							$data[0]->USER_ID, 
 							$system_id, 
 							$current_datetime, 
-							$session_id
+							$session_id,
+							$data[0]->USER_NAME
 						);
 			$this->login_model->new_user_log($params);
 			
