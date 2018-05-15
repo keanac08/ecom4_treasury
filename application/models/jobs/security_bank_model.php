@@ -60,6 +60,9 @@ class Security_bank_model extends CI_Model {
 						 AND oola.ship_from_org_id = 121
 						 AND hcca.cust_account_id = 15096
 						 AND msn.serial_number IS NOT NULL
+						   AND hold.order_hold_id = (SELECT MAX (order_hold_id)
+                                                    FROM oe_order_holds_all
+                                                   WHERE line_id = oola.line_id)
 						 AND NVL (hold.RELEASED_FLAG, NVL (oola.ATTRIBUTE20, 'N')) = 'N'
 						 AND msn.serial_number NOT IN (SELECT cs_number FROM ipc.ipc_sb_tagged_units)";
 					   
