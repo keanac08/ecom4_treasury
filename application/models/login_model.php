@@ -81,7 +81,7 @@ class Login_model extends CI_Model {
 						system_id,
 						login_date,
 						session_id,
-						username)
+						source_id)
 				VALUES (?,?,to_date(?, 'DD-MON-YY HH24:MI:SS'),?,?)";
 		$this->oracle->query($sql, $params);
 	}

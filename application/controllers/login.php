@@ -85,6 +85,7 @@ class Login extends CI_Controller {
 					'tre_portal_department' => $data[0]->DEPARTMENT,
 					'tre_portal_section' => $data[0]->SECTION,
 					'tre_portal_image' => base_url($image),
+					'tre_portal_source_id' => $data[0]->SOURCE_ID,
 					'tre_portal_session_start' => time(),
 					'tre_portal_session_id' => $session_id
 				);
@@ -95,7 +96,7 @@ class Login extends CI_Controller {
 							$system_id, 
 							$current_datetime, 
 							$session_id,
-							$data[0]->USER_NAME
+							$data[0]->SOURCE_ID
 						);
 			$this->login_model->new_user_log($params);
 			
