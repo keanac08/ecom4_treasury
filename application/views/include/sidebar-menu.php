@@ -245,11 +245,24 @@
 				<?php 
 				}
 				?>
+				
 				<li class="<?php echo ($this->uri->segment(1) == 'reports' AND $this->uri->segment(2) == 'dashboard') ? 'active' : ''; ?>">
 					<a href="<?php echo base_url('reports/dashboard');?>">
 						<i class="fa fa-bar-chart"></i> <span>Reports</span>
 					</a>
 				</li>
+				
+				<?php 
+				if($this->session->tre_portal_user_type == 'Administrator'){
+				?>
+					<li class="<?php echo ($this->uri->segment(1) == 'users' AND $this->uri->segment(2) == 'log') ? 'active' : ''; ?>">
+						<a href="<?php echo base_url('users/log');?>">
+							<i class="fa fa-users"></i> <span>User Logs</span>
+						</a>
+					</li>
+				<?php 
+				}
+				?>
 			</ul><!-- /.sidebar-menu -->
 	</section>
 <!-- /.sidebar -->

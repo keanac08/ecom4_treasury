@@ -4,6 +4,10 @@ function short_date($date){
 	return ($date != NULL) ? date('m/d/Y', strtotime($date)) : '-';
 }
 
+function long_date($date){
+	return ($date != NULL) ? date('m/d/Y g:i a', strtotime($date)) : '-';
+}
+
 function excel_date($date){
 	return ($date != NULL) ? date('Y-m-d', strtotime($date)) : NULL;
 }

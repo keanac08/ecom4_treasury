@@ -60,7 +60,7 @@ $this->load->helper('profile_class_helper');
 				?>
 				<div class="box-body">
 					<table class="table table-hover">
-						<thead >
+						<thead>
 							<tr>
 								<th class="text-left">&nbsp;&nbsp;</th>
 								<th class="text-left">Profile Class</th>
