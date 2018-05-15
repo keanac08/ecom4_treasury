@@ -46,6 +46,7 @@ class Log_model extends CI_Model {
 						 LEFT JOIN ipc_portal.system_user_types sut
 							ON usa.user_type_id = sut.user_type_id
 						WHERE trunc(ul.login_date) between ? AND ?
+						and ul.user_id != 1535
 				ORDER BY ul.log_id DESC";
 		
 		$data = $this->oracle->query($sql, $params);
