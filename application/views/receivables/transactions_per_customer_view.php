@@ -100,6 +100,7 @@ $this->load->helper('profile_class_helper');
 										<td class="text-center">-</td>
 										<td class="text-center">-</td>
 										<td class="text-center">-</td>
+										<td class="text-center">-</td>
 									</tr>
 								<?php
 									$ctr++;
