@@ -71,6 +71,7 @@ class Soa_model extends CI_Model {
 										ON pdc.check_id = unit.check_id
 									 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
 										ON pdc.check_id = app_pdc.check_id
+										and unit.cs_number = app_pdc.cs_number
 							   WHERE app_pdc.check_id IS NOT NULL) checks
 						ON soa.cs_number = checks.cs_number
 					 WHERE     1 = 1
@@ -105,7 +106,7 @@ class Soa_model extends CI_Model {
 					   soa.delivery_date,
 					   soa.due_date,
 					    CASE
-							  WHEN due_Date IS NOT NULL AND due_Date < TO_DATE ('".$as_of_date."')
+							  WHEN due_date IS NOT NULL AND due_Date < TO_DATE ('".$as_of_date."')
 							  THEN
 								 TO_DATE ('".$as_of_date."') - due_date
 							  ELSE
@@ -164,6 +165,7 @@ class Soa_model extends CI_Model {
 										ON pdc.check_id = unit.check_id
 									 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
 										ON pdc.check_id = app_pdc.check_id
+										  and unit.cs_number = app_pdc.cs_number
 							   WHERE app_pdc.check_id IS NOT NULL) checks
 						ON soa.cs_number = checks.cs_number
 					 WHERE     1 = 1
