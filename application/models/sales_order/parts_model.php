@@ -30,7 +30,7 @@ class Parts_model extends CI_Model {
 								wnd.delivery_id dr_Reference,
 								wdd.attribute2 dr_number,
 								rcta.trx_number invoice_number,
-								wnd.confirm_date,
+								ooha.ordered_date,
 								wdd.released_status
 				  FROM oe_order_headers_all ooha
 					   LEFT JOIN oe_order_lines_all oola ON ooha.header_id = oola.header_id
@@ -59,7 +59,8 @@ class Parts_model extends CI_Model {
 				       AND ooha.sold_to_org_id = ?
 					   AND wdd.released_status in ('R', 'Y','C')
 				       AND TRUNC(ooha.ordered_date) between ? AND ?
-				       -- AND ooha.order_number IN ('3010035407')";
+				       -- AND ooha.order_number IN ('3010035407')
+				       ORDER BY ooha.ordered_date DESC";
 		
 		$data = $this->oracle->query($sql, $params);
 		return $data->result();

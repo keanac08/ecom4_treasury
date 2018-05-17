@@ -30,7 +30,8 @@
 								<th>Customer Name</th>
 								<th>Prepared By</th>
 								<th>PO Number</th>
-								<th>SO Number</th>
+								<th>Sales Order Number</th>
+								<th>Sales Order Date</th>
 								<th>Picklist Number</th>
 								<th>DR Reference</th>
 								<th>DR Number</th>
@@ -46,6 +47,7 @@
 								<td><?php echo $row->PREPARED_BY;?></td>
 								<td><?php echo $row->CUST_PO_NUMBER;?></td>
 								<td><?php echo $row->ORDER_NUMBER;?></td>
+								<td><?php echo short_Date($row->ORDERED_DATE);?></td>
 								<td><?php echo $row->PICKLIST_NUMBER;?></td>
 								<td><?php echo $row->DR_REFERENCE;?></td>
 								<td><?php echo $row->DR_NUMBER;?></td>
