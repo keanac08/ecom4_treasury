@@ -134,7 +134,7 @@
 					if(in_array($this->session->tre_portal_user_type, array('Dealer Parts'))){
 					?>
 						<li class="<?php echo ($this->uri->segment(4) == 'parts') ? 'active' : ''; ?>" >
-							<a href="<?php echo base_url('sales_order/parts'); ?> ">
+							<a href="<?php echo base_url('sales_order/parts/status'); ?> ">
 								<i class="fa fa-circle-o"></i>Parts
 							</a>
 						</li>
