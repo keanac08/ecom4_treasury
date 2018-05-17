@@ -38,7 +38,7 @@ class Invoice_details_model extends CI_Model {
 						  THEN
 							 CONCAT ('313', LPAD (wdd.attribute2, 8, 0))
 						  ELSE
-							 oola.attribute10
+							 wdd.attribute2
 					   END
 						  dr_number,
 					   wdd.source_line_id,

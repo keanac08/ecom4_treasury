@@ -28,7 +28,7 @@ class Transaction extends CI_Controller {
 		}
 		else if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle', 'IPC Fleet'))){
 			
-			$profile_class_id = NULL;$this->load->helper('profile_class_helper');
+			$this->load->helper('profile_class_helper');
 			
 			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
 			$customer_id = $this->input->post('customer_id');
@@ -40,6 +40,17 @@ class Transaction extends CI_Controller {
 			$rows = $this->transaction_model->get_customer($customer_id);
 			$customer_name = $rows[0]->CUSTOMER_NAME;
 			$profile_class_id = NULL;
+			
+			$this->session->set_userdata('tre_portal_customer_name', $customer_name);
+		}
+		else if(in_array($this->session->tre_portal_user_type, array('Dealer Parts','Dealer Vehicle'))){
+			
+			$this->load->helper('profile_class_helper');
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
+			
+			$customer_id = $this->session->tre_portal_customer_id;
+			$rows = $this->transaction_model->get_customer($customer_id);
+			$customer_name = $rows[0]->CUSTOMER_NAME;
 			
 			$this->session->set_userdata('tre_portal_customer_name', $customer_name);
 		}

@@ -86,6 +86,7 @@ function get_user_access($user_type){
 	
 	switch ($user_type){
 		case 'IPC Parts':
+		case 'Dealer Parts':
 			$profile_class_id = '1042,1044,1046,1049,1050';
 			break;
 		case 'IPC Vehicle':
@@ -95,9 +96,10 @@ function get_user_access($user_type){
 			$profile_class_id = '1040,1045';
 			break;
 		case 'IPC Vehicle-Fleet':
+		case 'Dealer Vehicle':
 			$profile_class_id = '1043,1040,1045';
 			break;
-		 default:
+		default:
 			$profile_class_id = 0;
 	} 
 

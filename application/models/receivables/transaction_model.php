@@ -66,7 +66,7 @@ class Transaction_model extends CI_Model {
 							 AND soa.customer_id = ?
 							 )
 					WHERE balance > 0
-						 GROUP BY ROLLUP (profile_class_id)";
+						 GROUP BY ROLLUP (profile_class_id)"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql,$customer_id);
 		return $data->result();
@@ -76,7 +76,7 @@ class Transaction_model extends CI_Model {
 
 		//~ $and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';
 		$and = '';
-		if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
+		if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet','Dealer Parts','Dealer Vehicle'))){
 			$this->load->helper('profile_class_helper');
 			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
 			$and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';

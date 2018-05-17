@@ -12,6 +12,8 @@ class Login extends CI_Controller {
 	}
 	
 	public function index(){
+		
+		//~ echo $_SERVER['REMOTE_ADDR'];die();
 		if($this->session->userdata('tre_portal_user_id') !== NULL){
 			redirect('receivables/transaction/per_customer');
 		}

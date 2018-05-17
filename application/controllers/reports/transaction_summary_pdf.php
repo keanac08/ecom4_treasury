@@ -34,9 +34,7 @@ class Transaction_summary_pdf extends CI_Controller {
 		foreach($rows as $row){
 			$data .= '<tr>
 						<td align="left">'.$row->PROFILE_CLASS.'</td>
-						
 						<td align="right">'.amount($row->CONTINGENT_RECEIVABLES).'</td>
-						
 						<td align="right">'.amount($row->CURRENT_RECEIVABLES).'</td>
 						<td align="right">'.amount($row->PAST_DUE).'</td>
 						<td align="right">'.amount($row->TOTAL).'</td>

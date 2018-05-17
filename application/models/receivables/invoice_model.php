@@ -326,52 +326,6 @@ class Invoice_Model extends CI_Model {
 	}
 	
 	public function get_parts_invoice_lines_print($invoice_id){
-		
-		//~ $sql = "SELECT MAX (rctla.sales_order_line) so_line,
-						 //~ MAX (msib.segment1)        part_number,
-						 //~ MAX (msib.description)     part_description,
-						 //~ SUM (
-							//~ CASE INTERFACE_LINE_ATTRIBUTE11
-							   //~ WHEN '0' THEN rctla.quantity_invoiced
-							   //~ ELSE 0
-							//~ END)
-							//~ qty,
-						 //~ SUM (
-							//~ CASE INTERFACE_LINE_ATTRIBUTE11
-							   //~ WHEN '0' THEN rctla.unit_selling_price
-							   //~ ELSE 0
-							//~ END)
-							//~ unit_price,
-						 //~ SUM (
-							//~ CASE INTERFACE_LINE_ATTRIBUTE11
-							   //~ WHEN '0' THEN rctla.extended_amount
-							   //~ ELSE 0
-							//~ END)
-							//~ amount,
-						 //~ SUM (
-							//~ CASE
-							   //~ WHEN INTERFACE_LINE_ATTRIBUTE11 <> '0'
-							   //~ THEN
-								  //~ rctla.extended_amount
-							   //~ ELSE
-								  //~ 0
-							//~ END)
-							//~ discount,
-						 //~ SUM (rctla.tax_recoverable) VAT,
-						 //~ MAX (oola.attribute10)     dr_number,
-						 //~ MAX (wdd.batch_id)             picklist_number
-					//~ FROM ra_customer_trx_lines_all rctla
-						 //~ LEFT JOIN mtl_system_items_b msib
-							//~ ON     rctla.inventory_item_id = msib.inventory_item_id
-							   //~ -- AND rctla.warehouse_id = msib.organization_id
-							     //~ AND NVL(rctla.warehouse_id,1) = decode(rctla.warehouse_id,null,1,msib.organization_id)
-						 //~ LEFT JOIN oe_order_lines_all oola
-							//~ ON rctla.interface_line_attribute6 = oola.line_id
-						 //~ LEFT JOIN wsh_delivery_details wdd
-							//~ ON oola.line_id = wdd.source_line_id
-				   //~ WHERE 1 = 1 AND rctla.line_type = 'LINE' AND rctla.customer_trx_id = ? -- 1927907
-				//~ GROUP BY rctla.inventory_item_id
-				//~ ORDER BY TO_NUMBER (so_line)";
 				
 		$sql = "SELECT MAX (rctla.sales_order_line) so_line,
 						 MAX (msib.segment1)        part_number,
@@ -430,7 +384,7 @@ class Invoice_Model extends CI_Model {
 							   AND NVL(rctla.warehouse_id,1) = decode(rctla.warehouse_id,null,1,msib.organization_id)
 						 LEFT JOIN oe_order_lines_all oola
 							ON rctla.interface_line_attribute6 = oola.line_id
-						 LEFT JOIN wsh_delivery_details wdd
+						 LEFT JOIN (select source_line_id, batch_id, attribute2 FROM wsh_delivery_details group by SOURCE_LINE_ID, batch_id, attribute2) wdd
 							ON oola.line_id = wdd.source_line_id
 				   WHERE 1 = 1 AND rctla.line_type = 'LINE' AND rctla.customer_trx_id = ?
 				GROUP BY rctla.inventory_item_id

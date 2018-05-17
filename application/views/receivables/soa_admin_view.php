@@ -525,7 +525,7 @@ if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Par
 	</script>
 <?php 
 }
-else if($this->session->tre_portal_user_type == 'Dealer Admin'){ 
+else if(in_array($this->session->tre_portal_user_type, array('Dealer Admin','Dealer Vehicle','Dealer Parts'))){ 
 ?>
 	<script>
 		$(document).ready(function() {

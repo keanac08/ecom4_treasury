@@ -27,7 +27,7 @@ class Soa extends CI_Controller {
 			if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
 				$customer_id = $this->input->post('customer_id') != NULL ? $this->input->post('customer_id') : 0;
 			}
-			else if($this->session->tre_portal_user_type == 'Dealer Admin'){
+			else if(in_array($this->session->tre_portal_user_type, array('Dealer Admin','Dealer Vehicle','Dealer Parts'))){
 				$customer_id = $this->session->tre_portal_customer_id;
 			}
 		}

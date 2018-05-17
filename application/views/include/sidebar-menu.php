@@ -38,7 +38,7 @@
 					<ul class="treeview-menu">
 						<?php 
 						//~ VEHICLE -------------------------------------------------------------------------------
-						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','IPC Vehicle','IPC Vehicle-Fleet'))){
+						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','Dealer Vehicle','IPC Vehicle','IPC Vehicle-Fleet'))){
 						?>
 							<li class="<?php echo ($this->uri->segment(4) == 'vehicle') ? 'active' : ''; ?>" >
 								<a href="<?php echo base_url('receivables/soa/admin/vehicle'); ?> ">
@@ -51,7 +51,7 @@
 						
 						<?php 
 						//~ FLEET -------------------------------------------------------------------------------
-						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','IPC Fleet','IPC Vehicle-Fleet'))){
+						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','Dealer Vehicle','IPC Fleet','IPC Vehicle-Fleet'))){
 						?>
 							<li class="<?php echo ($this->uri->segment(4) == 'fleet') ? 'active' : ''; ?>" >
 								<a href="<?php echo base_url('receivables/soa/admin/fleet'); ?> ">
@@ -63,8 +63,8 @@
 						?>
 						
 						<?php 
-						//~ OTHERS -------------------------------------------------------------------------------
-						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','IPC Parts'))){
+						//~ PARTS -------------------------------------------------------------------------------
+						if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin','Dealer Parts','IPC Parts'))){
 						?>
 							<li class="<?php echo ($this->uri->segment(4) == 'parts') ? 'active' : ''; ?>" >
 								<a href="<?php echo base_url('receivables/soa/admin/parts'); ?> ">
@@ -116,6 +116,33 @@
 						
 					</ul>
 				</li>
+				
+				<?php 
+				//~ SO STATUS -------------------------------------------------------------------------------
+				if(in_array($this->session->tre_portal_user_type, array('Dealer Parts'))){
+				?>
+				<li class="treeview <?php  echo ($this->uri->segment(2) == 'sales_order') ? 'active' : ''; ?>">
+				<a href="#">
+					<i class="fa fa-file-text-o"></i> <span>Sales Order</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+				<?php 
+					//~ PARTS -------------------------------------------------------------------------------
+					if(in_array($this->session->tre_portal_user_type, array('Dealer Parts'))){
+					?>
+						<li class="<?php echo ($this->uri->segment(4) == 'parts') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('sales_order/parts'); ?> ">
+								<i class="fa fa-circle-o"></i>Parts
+							</a>
+						</li>
+					</ul>
+					<?php 
+					}
+				}
+				?>
 				
 				<?php 
 				//~ RECEIVABLES AGING -------------------------------------------------------------------------------
