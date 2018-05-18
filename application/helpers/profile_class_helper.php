@@ -60,6 +60,9 @@ function get_profile_class_ids($sales_type){
 		case 'parts':
 			$profile_class_id = '1042,1044,1046,1049';
 			break;
+		case 'vehicle-fleet':
+			$profile_class_id = '1043,1040,1045';
+			break;
 		case 'vehicle':
 			$profile_class_id = '1043';
 			break;

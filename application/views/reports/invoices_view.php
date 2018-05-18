@@ -13,6 +13,9 @@
 			<label>Invoice Date To</label>
 			<input type="text" class="form-control" id="date_to" name="to_date" required>
 		</div>
+		<?php 
+		if(!in_array($this->session->tre_portal_user_type,array('Dealer Parts','Dealer Vehicle'))){
+		?>
 		<div class="form-group">
 			<label>Sales Type</label>
 			<select class="form-control select2" name="sales_type">
@@ -25,6 +28,9 @@
 				<option value="employee">Employee</option>
 			</select>
 		</div>
+		<?php 
+		}
+		?>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

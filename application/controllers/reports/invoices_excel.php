@@ -21,7 +21,15 @@ class Invoices_excel extends CI_Controller {
 		$from_date = date('d-M-y', strtotime($this->input->post('from_date')));
 		$to_date = date('d-M-y', strtotime($this->input->post('to_date')));
 		
-		$sales_type = $this->input->post('sales_type');
+		if(!in_array($this->session->tre_portal_user_type,array('Dealer Parts','Dealer Vehicle'))){
+			$sales_type = $this->input->post('sales_type');
+		}
+		else if($this->session->tre_portal_user_type == 'Dealer Parts'){
+			$sales_type = 'parts';
+		}
+		else if($this->session->tre_portal_user_type == 'Dealer Vehicle'){
+			$sales_type = 'vehicle-fleet';
+		}
 		$profile_ids = get_profile_class_ids($sales_type);
 		
 		//~ echo $profile_ids;die();
