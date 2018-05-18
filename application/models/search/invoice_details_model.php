@@ -62,7 +62,10 @@ class Invoice_details_model extends CI_Model {
 					   LEFT JOIN hz_parties hp ON hca.party_id = hp.party_id
 					   LEFT JOIN hz_cust_profile_classes hcpc
 						  ON soa.profile_class_id = hcpc.profile_class_id
+						  LEFT JOIN ipc_ar_invoices_with_cm cm
+                        ON soa.customer_Trx_id = cm.orig_trx_id
 				 WHERE 1 = 1
+				 	 AND cm.orig_trx_id is null
 				AND (soa.trx_number = ? OR soa.cs_number = ?)";
 		
 		$data = $this->oracle->query($sql, array($q,$q));
