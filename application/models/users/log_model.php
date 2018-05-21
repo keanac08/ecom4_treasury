@@ -13,7 +13,7 @@ class Log_model extends CI_Model {
 	public function get_user_logs($from_date, $to_date){
 		
 		
-		$from_date = ($from_date == NULL)? date('01-M-y'):date('d-M-y', strtotime($from_date));
+		$from_date = ($from_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($from_date));
 		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
 		$params = array($from_date, $to_date);
 		

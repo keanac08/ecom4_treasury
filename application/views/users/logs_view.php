@@ -16,11 +16,11 @@
 				<div class="row">
 					<div class="col-sm-3" style="padding: 10px;margin-left: 20px;">
 						<form id="form_filters" method="POST" accept-charset="utf-8">
-							<input type="hidden" name="from_date" value="<?php echo ($from_date == '')? date('01-M-y'):date('d-M-y', strtotime($from_date)); ?>"/>
+							<input type="hidden" name="from_date" value="<?php echo ($from_date == '')? date('d-M-y'):date('d-M-y', strtotime($from_date)); ?>"/>
 							<input type="hidden" name="to_date" value="<?php echo ($to_date == '')? date('d-M-y'):date('d-M-y', strtotime($to_date)); ?>"/>
 							<div class="form-group">
 								<label class=" control-label" for="unput1">Session Date</label>
-								<input class="form-control" type="text" name="date_created" value="<?php echo ($from_date == '')? date('m/01/Y'):date('m/d/Y', strtotime($from_date)); ?> - <?php echo ($to_date == '')? date('m/d/Y'):date('m/d/Y', strtotime($to_date)); ?>" />
+								<input class="form-control" type="text" name="date_created" value="<?php echo ($from_date == '')? date('m/d/Y'):date('m/d/Y', strtotime($from_date)); ?> - <?php echo ($to_date == '')? date('m/d/Y'):date('m/d/Y', strtotime($to_date)); ?>" />
 							</div>
 						</form>
 					</div>

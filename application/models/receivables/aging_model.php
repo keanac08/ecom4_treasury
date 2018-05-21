@@ -68,9 +68,77 @@ class Aging_Model extends CI_Model {
 										 AND soa.trx_date <= '".$as_of_date."'
 										 )
 								WHERE balance > 0
-									 GROUP BY ROLLUP (profile_class_id)";
+									 GROUP BY ROLLUP (profile_class_id)
+									 ";
 		$data = $this->oracle->query($sql);
 		return $data->result();
+	}
+	
+	public function get_receivables_aging_graph($as_of_date){
+		
+		$and = '';
+		if(in_array($this->session->tre_portal_user_type, array('IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){
+			$this->load->helper('profile_class_helper');
+			$profile_class_id = get_user_access($this->session->tre_portal_user_type);
+			$and = $profile_class_id != NULL ? 'AND hcpc.profile_class_id IN ('.$profile_class_id.')':'';
+		}
+		
+		$sql = "SELECT profile_class_id,
+						CASE WHEN profile_class_id IS NULL THEN 'Total' ELSE MAX(profile_class_name) END profile_class,
+						SUM(CASE WHEN days_overdue = 0 AND delivery_date IS NOT NULL THEN balance ELSE 0 END) current_receivables,
+						SUM(CASE WHEN delivery_date IS NULL THEN balance ELSE 0 END) contingent_receivables,
+						SUM(CASE WHEN days_overdue > 0 THEN balance ELSE 0 END) past_due,
+						SUM(balance) total
+								FROM (
+									SELECT      
+										soa.profile_class_id,
+										CASE
+											WHEN soa.due_date IS NOT NULL AND soa.due_date < to_date('".$as_of_date."')
+												THEN to_Date('".$as_of_date."') - soa.due_date
+											ELSE 0
+										END
+										days_overdue,
+										soa.delivery_date,
+										hcpc.name profile_class_name,
+										 soa.invoice_amount + (NVL(adj.adjustment_amount,0) * NVL(soa.EXCHANGE_RATE, 1)) - (NVL (araa.paid_amount , 0) * NVL(soa.EXCHANGE_RATE, 1))balance
+									 FROM IPC.IPC_INVOICE_DETAILS soa
+									 LEFT JOIN
+										(SELECT applied_customer_trx_id,
+														applied_payment_schedule_id,
+														SUM (amount_applied) paid_amount
+											FROM ar_receivable_applications_all
+												WHERE display = 'Y'
+												AND gl_date <= '".$as_of_date."'
+											GROUP BY applied_customer_trx_id, applied_payment_schedule_id) araa
+										ON soa.customer_trx_id = araa.applied_customer_trx_id
+											AND soa.payment_schedule_id = araa.applied_payment_schedule_id
+									 LEFT JOIN
+										(SELECT customer_trx_id,
+														payment_schedule_id,
+														MAX (apply_date) apply_date,
+														SUM (amount) adjustment_amount
+											FROM AR_ADJUSTMENTS_ALL
+												WHERE 1 = 1
+												AND gl_date <= '".$as_of_date."'
+											GROUP BY payment_schedule_id, customer_trx_id) adj
+										ON soa.customer_trx_id = adj.customer_trx_id
+											AND soa.payment_schedule_id = adj.payment_schedule_id
+									 LEFT JOIN hz_cust_accounts_all hcaa
+										ON soa.customer_id = hcaa.cust_account_id
+									  LEFT JOIN hz_parties hp 
+										ON hcaa.party_id = hp.party_id
+									 LEFT JOIN hz_cust_profile_classes hcpc
+										ON soa.profile_class_id = hcpc.profile_class_id
+									 WHERE     1 = 1
+										 ".$and."
+										 AND soa.trx_date <= '".$as_of_date."'
+										 )
+								WHERE balance > 0
+									 GROUP BY (profile_class_id)
+									 ORDER BY total DESC
+									 ";
+		$data = $this->oracle->query($sql);
+		return $data->result_array();
 	}
 
 	public function get_receivables_profile_summary($as_of_date, $profile_class_id){

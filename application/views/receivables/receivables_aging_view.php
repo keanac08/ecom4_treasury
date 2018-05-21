@@ -3,6 +3,8 @@ $this->load->helper('number_helper');
 ?>
 <link href="<?php echo base_url('resources/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css') ?>" rel="stylesheet" >
 <section class="content">
+	
+	
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-danger">
@@ -69,6 +71,19 @@ $this->load->helper('number_helper');
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-danger">
+				<div class="box-header with-border">
+					<i class="fa fa-bar-chart"></i>
+					<h3 class="box-title">AR Summary Graph</h3>
+				</div><!-- /.box-header -->
+				<div class="box-body">
+					<canvas id="line-chart2" width="700" height="310"></canvas>
+				</div><!-- /.box-body -->
+			</div>
+		</div>	
+	</div>
 </section>
 
 <!-- Modal -->
@@ -83,6 +98,7 @@ $this->load->helper('number_helper');
 	</div>
 </div>
 
+<script src="<?php echo base_url('resources/plugins/chartjs/Chart.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/moment/js/moment.min.js');?>"></script>
 <script src="<?php echo base_url('resources/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js');?>"></script>
 <script>
@@ -99,6 +115,150 @@ $this->load->helper('number_helper');
 		$('#datetimepicker').on('dp.change', function (e) {
 			$('#myForm').submit();
         });
+        
+        var as_of_date = $('.as_of_date').val();
+        
+        $.ajax({
+			url : "<?php echo base_url();?>receivables/aging/ajax_summary_chart",
+			type : "POST",
+			data: {
+					as_of_date : as_of_date
+					},
+			success : function(data){
+				var info = JSON.parse(data);
+
+				var v_profile_class = [];
+				var v_contingent = [];
+				var v_current = [];
+				var v_pastdue = [];
+				var v_total = [];
+
+				for(var i in info) {
+					v_profile_class.push(info[i].PROFILE_CLASS);
+					v_current.push(info[i].CURRENT_RECEIVABLES);
+					v_contingent.push(info[i].CONTINGENT_RECEIVABLES);
+					v_pastdue.push(info[i].PAST_DUE);
+					v_total.push(info[i].TOTAL);
+				}
+				
+				var chartdata = {
+					labels: v_profile_class,
+					datasets: [
+						//~ {
+							//~ label: "Total",
+							//~ fill: true,
+							//~ stack: 'Stack 1',
+							//~ backgroundColor: "#f56954",
+							//~ data: v_total
+						//~ },
+						{
+							label: "Unpulledout",
+							fill: true,
+							stack: 'Stack 0',
+							backgroundColor: "#39CCCC",
+							data: v_contingent
+						},
+						{
+							label: "Current",
+							fill: true,
+							stack: 'Stack 0',
+							backgroundColor: "#00a65a",
+							data: v_current
+						},
+						
+							{
+							label: "Past Due",
+							fill: true,
+							stack: 'Stack 0',
+							backgroundColor: "#f39c12",
+							data: v_pastdue
+						}
+					]
+				};
+
+				//~ var ctx = $("#line-chart");
+				var ctx = $("#line-chart2");
+
+				var LineGraph = new Chart(ctx, {
+					type: 'bar',
+					data: chartdata,
+					options: {
+						scales: {
+							xAxes: [{
+								stacked: true,
+								//~ ticks: {
+									min: 100000000,
+									//~ beginAtZero: true,
+									//~ callback: function(value, index, values) {
+										//~ if(parseInt(value) >= 1000){
+											//~ return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+										//~ } 
+										//~ else {
+											//~ return value;
+										//~ }
+									//~ }
+								 //~ }	
+							}],
+							yAxes: [{
+								stacked: true,
+								ticks: {
+									beginAtZero: true,
+									callback: function(value, index, values) {
+										if(parseInt(value) >= 1000){
+											return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+										} 
+										else {
+											return value;
+										}
+									}
+								 }
+							}]
+						},
+						tooltips: {
+							mode: 'index',
+							intersect: true,
+							 callbacks:  {
+								afterTitle: function() {
+									window.total = 0;
+								},
+								label: function(tooltipItem, data) {
+									var tag = data.datasets[tooltipItem.datasetIndex].label;
+									var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+									window.total += parseFloat(valor);
+									
+									tab = "";
+									for (var i = parseFloat(valor).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,').length; i <= 16; i++){
+										tab = tab + " ";
+									}
+									
+									if(tag == "Current"){
+										tab2 = "         ";
+									}
+									else if(tag == "Past Due"){
+										tab2 = "      ";
+									}
+									else if(tag == "Unpulledout"){
+										tab2 = "";
+									}
+									else{
+										tab2 = "";
+									}
+									
+									return tag + tab2 + " : " + tab + parseFloat(valor).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');             
+								},
+								footer: function() {
+									return "TOTAL                :    " + window.total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+								}
+							}
+						}
+					}
+					
+				});
+			},
+			error : function(data) {
+
+			}
+		});
 
 	});
 </script>

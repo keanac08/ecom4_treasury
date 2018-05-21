@@ -23,6 +23,21 @@ class Aging extends CI_Controller{
 		$this->load->view('include/template',$data);
 	}
 	
+	public function ajax_summary_chart(){
+		
+		$as_of_date = $this->input->post('as_of_date') != NULL ? date('m/d/Y', strtotime($this->input->post('as_of_date'))) : date('m/d/Y');
+		$results = $this->aging_model->get_receivables_aging_graph(date('d-M-y', strtotime($as_of_date)));
+		
+		//~ $data = array();
+		//~ foreach ($results as $row) {
+			//~ if($row->PROFILE_CLASS != 'Total'){
+				//~ $data[] = $row;
+			//~ }
+		//~ }
+
+		print json_encode($results);
+	}
+	
 	public function profile_summary(){
 		
 		$profile_class_id = $this->uri->segment(4);
