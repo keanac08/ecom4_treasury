@@ -288,11 +288,11 @@ class Invoice_Model extends CI_Model {
 								 DECODE (
 									REGEXP_REPLACE (
 									   MAX (hl.address1),
-									   'DEALERS-PARTS|DEALERS-VEHICLE|DEALERS-OTHERS|DEALERS-FLEET|FLEET-PARTS|FLEET'),
+									   'DEALERS-PARTS|DEALERS-VEHICLE|DEALERS-OTHERS|DEALERS-FLEET|FLEET-PARTS|FLEET|POWERTRAIN'),
 									'', MAX (hl.address2) || ' ' || MAX (hl.address3),
 									   REGEXP_REPLACE (
 										  MAX (hl.address1),
-										  'DEALERS-PARTS|DEALERS-VEHICLE|DEALERS-OTHERS|DEALERS-FLEET|FLEET-PARTS|FLEET')
+										  'DEALERS-PARTS|DEALERS-VEHICLE|DEALERS-OTHERS|DEALERS-FLEET|FLEET-PARTS|FLEET|POWERTRAIN')
 									|| ' '
 									|| MAX (hl.address2)
 									|| ' '
