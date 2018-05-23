@@ -239,9 +239,13 @@ class Check_warehousing extends CI_Controller {
 	
 	public function pdc_details_pdf(){
 		
+		//~ echo $this->uri->segment(4);
+		
 		$this->load->helper('number_helper');
 		$this->load->helper('date_helper');
 		$rows = $this->check_warehousing_model->get_pdc_details($this->uri->segment(4));
+		
+		
 		
 		//~ echo '<pre>';
 		//~ print_r($rows);
