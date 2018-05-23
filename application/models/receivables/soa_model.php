@@ -247,64 +247,117 @@ class Soa_model extends CI_Model {
 			//~ $and = '';
 		//~ }
 		
-		$sql = "SELECT DISTINCT
-						hca.cust_account_id customer_id,
-						CASE
-							WHEN hca.account_name IS NOT NULL THEN
-								hp.party_name || ' - ' || hca.account_name
-							ELSE
-								hp.party_name
-						END
-						  customer_name,
-						 hca.account_number,
-						 hca.account_name,
-						 hp.party_name,
-						 hcpc.profile_class_id,
-						 hcpc.name         profile_class,
-						 CASE hl.address1
-							WHEN 'DEALERS-PARTS'
-							THEN
-								  hl.address2
-							   || ' '
-							   || hl.address3
-							   || ' '
-							   || hl.address4
-							   || ' '
-							   || hl.city
-							ELSE
-								  hl.address1
-							   || ' '
-							   || hl.address2
-							   || ' '
-							   || hl.address3
-							   || ' '
-							   || hl.address4
-							   || ' '
-							   || hl.city
-						 END
-							address,
-							hcpc.profile_class_id
-					FROM ar_payment_schedules_all aps
-						 LEFT JOIN hz_cust_accounts hca
-							ON aps.customer_id = hca.cust_account_id
-						 LEFT JOIN hz_customer_profiles hzp
-							ON     hca.cust_account_id = hzp.cust_account_id
-							   AND aps.customer_site_use_id = hzp.site_use_id
-						 LEFT JOIN hz_cust_profile_classes hcpc
-							ON hzp.profile_class_id = hcpc.profile_class_id
-						 LEFT JOIN hz_parties hp ON hca.party_id = hp.party_id
-						  LEFT JOIN hz_cust_acct_sites_all hcas
-							 ON hca.cust_account_id = hcas.cust_account_id
-						  LEFT JOIN hz_party_sites hps
-							 ON hps.party_site_id = hcas.party_site_id
-						  LEFT JOIN hz_locations hl 
-							ON hl.location_id = hps.location_id
-				   WHERE     1 = 1
-						 AND aps.class IN ('INV', 'DM')
-						 AND aps.status = 'OP'
-						 AND hca.cust_account_id = ?
-						 ".$and."
-				ORDER BY account_name, party_name";
+		//~ $sql = "SELECT DISTINCT
+						//~ hca.cust_account_id customer_id,
+						//~ CASE
+							//~ WHEN hca.account_name IS NOT NULL THEN
+								//~ hp.party_name || ' - ' || hca.account_name
+							//~ ELSE
+								//~ hp.party_name
+						//~ END
+						  //~ customer_name,
+						 //~ hca.account_number,
+						 //~ hca.account_name,
+						 //~ hp.party_name,
+						 //~ hcpc.profile_class_id,
+						 //~ hcpc.name         profile_class,
+						 //~ CASE WHEN hl.address1 IN  ('DEALERS-PARTS','POWERTRAIN')
+							//~ THEN
+								  //~ hl.address2
+							   //~ || ' '
+							   //~ || hl.address3
+							   //~ || ' '
+							   //~ || hl.address4
+							   //~ || ' '
+							   //~ || hl.city
+							//~ ELSE
+								  //~ REPLACE(hl.address1
+							   //~ || ' '
+							   //~ || hl.address2
+							   //~ || ' '
+							   //~ || hl.address3
+							   //~ || ' '
+							   //~ || hl.address4
+							   //~ || ' '
+							   //~ || hl.city, 'POWERTRAIN')
+						 //~ END
+							//~ address,
+							//~ hcpc.profile_class_id
+					//~ FROM ar_payment_schedules_all aps
+						 //~ LEFT JOIN hz_cust_accounts hca
+							//~ ON aps.customer_id = hca.cust_account_id
+						 //~ LEFT JOIN hz_customer_profiles hzp
+							//~ ON     hca.cust_account_id = hzp.cust_account_id
+							   //~ AND aps.customer_site_use_id = hzp.site_use_id
+						 //~ LEFT JOIN hz_cust_profile_classes hcpc
+							//~ ON hzp.profile_class_id = hcpc.profile_class_id
+						 //~ LEFT JOIN hz_parties hp ON hca.party_id = hp.party_id
+						  //~ LEFT JOIN hz_cust_acct_sites_all hcas
+							 //~ ON hca.cust_account_id = hcas.cust_account_id
+						  //~ LEFT JOIN hz_party_sites hps
+							 //~ ON hps.party_site_id = hcas.party_site_id
+						  //~ LEFT JOIN hz_locations hl 
+							//~ ON hl.location_id = hps.location_id
+				   //~ WHERE     1 = 1
+						 //~ AND aps.class IN ('INV', 'DM')
+						 //~ AND aps.status = 'OP'
+						 //~ AND hca.cust_account_id = ?
+						 //~ ".$and."
+				//~ ORDER BY account_name, party_name"; //echo $sql;
+				
+				$sql = "SELECT hca.cust_account_id customer_id,
+						   CASE
+							  WHEN hca.account_name IS NOT NULL
+							  THEN
+								 hp.party_name || ' - ' || hca.account_name
+							  ELSE
+								 hp.party_name
+						   END
+							  customer_name,
+						   hca.account_number,
+						   hca.account_name,
+						   hp.party_name,
+						   hcpc.profile_class_id,
+						   hcpc.name           profile_class,
+						   CASE
+							  WHEN hl.address1 IN ('DEALERS-PARTS', 'POWERTRAIN')
+							  THEN
+									hl.address2
+								 || ' '
+								 || hl.address3
+								 || ' '
+								 || hl.address4
+								 || ' '
+								 || hl.city
+							  ELSE
+									hl.address1
+								 || ' '
+								 || hl.address2
+								 || ' '
+								 || hl.address3
+								 || ' '
+								 || hl.address4
+								 || ' '
+								 || hl.city
+						   END
+							  address
+					  FROM hz_parties hp
+						   LEFT JOIN hz_cust_accounts_all hca ON hp.party_id = hca.party_id
+						   LEFT JOIN hz_cust_acct_sites_all hcas
+							  ON hca.cust_account_id = hcas.cust_account_id
+						   LEFT JOIN hz_party_sites hps ON hps.party_site_id = hcas.party_site_id
+						   LEFT JOIN hz_locations hl ON hl.location_id = hps.location_id
+						   LEFT JOIN hz_cust_site_uses_all hcasa
+							  ON hcasa.cust_acct_site_id = hcas.cust_acct_site_id
+						   LEFT JOIN hz_customer_profiles hzp
+							  ON     hzp.cust_account_id = hca.cust_account_id
+								 AND hzp.site_use_id = hcasa.site_use_id
+						   LEFT JOIN hz_cust_profile_classes hcpc
+							  ON hzp.profile_class_id = hcpc.profile_class_id
+					 WHERE     1 = 1
+						   AND hca.cust_account_id = ?
+						   ".$and."
+						   AND hcasa.site_use_code IN ('BILL_TO')";
 		
 		$rows = $this->oracle->query($sql,$customer_id);
 		if($rows->num_rows() > 0){

@@ -40,7 +40,7 @@ class Soa extends CI_Controller {
 			$data['customer_details'] = $rows;
 		}
 		
-		$data['customer_details'] = $this->soa_model->get_customer_details($customer_id, $profile_class_ids);
+		$data['customer_details'] = $rows;
 		
 		$data['customer_id'] = $customer_id;
 		$data['as_of_date'] = $as_of_date;
