@@ -16,6 +16,7 @@ class Invoice_Model extends CI_Model {
 					   hp.party_name,
 					   hca.account_name,
 					   ooha.attribute3           fleet_name,
+					   soa.cs_number       cs_number,
 					   soa.customer_trx_id       invoice_id,
 					   soa.trx_number            invoice_number,
 					   to_char(soa.trx_date, 'YYYY-MM-DD') invoice_date,

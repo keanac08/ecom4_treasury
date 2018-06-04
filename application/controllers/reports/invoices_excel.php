@@ -45,6 +45,7 @@ class Invoices_excel extends CI_Controller {
 						'PARTY_NAME' => 'string',
 						'ACCOUNT_NAME' => 'string',
 						'FLEET_NAME' => 'string',
+						'CS_NUMBER' => 'string',
 						'INVOICE_ID' => 'string',
 						'INVOICE_NUMBER' => 'string',
 						'INVOICE_DATE' => 'MM/DD/YYYY',
