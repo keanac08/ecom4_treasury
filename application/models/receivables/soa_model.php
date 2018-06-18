@@ -194,9 +194,9 @@ class Soa_model extends CI_Model {
 						 soa.delivery_date,
 						 soa.due_date,
 						 CASE
-							WHEN due_date IS NOT NULL AND due_Date < TO_DATE (''".$as_of_date."'')
+							WHEN due_date IS NOT NULL AND due_Date < TO_DATE ('".$as_of_date."')
 							THEN
-							   TO_DATE (''".$as_of_date."'') - due_date
+							   TO_DATE ('".$as_of_date."') - due_date
 							ELSE
 							   0
 						 END
@@ -224,7 +224,7 @@ class Soa_model extends CI_Model {
 								   applied_payment_schedule_id,
 								   SUM (amount_applied) paid_amount
 							  FROM ar_receivable_applications_all
-							 WHERE display = 'Y' AND gl_date <= ''".$as_of_date."''
+							 WHERE display = 'Y' AND gl_date <= '".$as_of_date."'
 						  GROUP BY applied_customer_trx_id, applied_payment_schedule_id) araa
 							ON     soa.customer_trx_id = araa.applied_customer_trx_id
 							   AND soa.payment_schedule_id = araa.applied_payment_schedule_id
@@ -233,7 +233,7 @@ class Soa_model extends CI_Model {
 											 MAX (apply_date) apply_date,
 											 SUM (amount) adjustment_amount
 										FROM AR_ADJUSTMENTS_ALL
-									   WHERE 1 = 1 AND gl_date <= ''".$as_of_date."''
+									   WHERE 1 = 1 AND gl_date <= '".$as_of_date."'
 									GROUP BY payment_schedule_id, customer_trx_id) adj
 							ON     soa.customer_trx_id = adj.customer_trx_id
 							   AND soa.payment_schedule_id = adj.payment_schedule_id
@@ -256,7 +256,7 @@ class Soa_model extends CI_Model {
 						   WHERE app_pdc.check_id IS NOT NULL) checks
 							ON soa.cs_number = checks.cs_number
 				   WHERE     1 = 1
-						 AND soa.trx_date <= ''".$as_of_date."''
+						 AND soa.trx_date <= '".$as_of_date."'
 						 AND soa.customer_id = ?
 						 ".$and."
 				GROUP BY soa.customer_trx_id,
@@ -280,7 +280,7 @@ class Soa_model extends CI_Model {
 				  HAVING SUM (
 							  (soa.invoice_orig_amount + NVL (adj.adjustment_amount, 0))
 							- NVL (araa.paid_amount, 0)) > 0
-				ORDER BY due_Date NULLS LAST";
+				ORDER BY due_Date NULLS LAST"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();
