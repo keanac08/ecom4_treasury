@@ -298,7 +298,24 @@ class Aging_Model extends CI_Model {
 								soa.trx_number      invoice_number,
 								soa.trx_date        invoice_date,
 								soa.cs_number,
-								msib.attribute9 sales_model,
+								CASE WHEN soa.cs_number in ('CJ6150') THEN '020NKR55EL'
+									 WHEN soa.cs_number in ('CQ0168') THEN '090FORWARD FV'
+									 WHEN soa.cs_number in ('CP2565',
+															'CP2566',
+															'CP2564',
+															'CP2567') THEN '120FVM34UL-TN'
+									 WHEN soa.cs_number in ('CO0821') THEN '150 D-MAX 4X2 LS MT X-Series'
+									 WHEN soa.cs_number in ('CN0842') THEN '150 D-MAX Single Cab&Chassis'
+									 WHEN soa.cs_number in ('CO5024',
+															'CO5165') THEN '2014 EXR51F'
+									 WHEN soa.cs_number in ('CO7499',
+															'CO8491',
+															'CO8826') THEN 'EXZS51K TRACTOR HEAD'
+									 WHEN soa.cs_number in ('CQ7696') THEN 'mu-X 4x2 LS-A (8N) AT 3.0 L.E.'
+									 WHEN soa.cs_number in ('CO2222') THEN 'mu-X 4x2 LS-A AT'
+									 WHEN soa.cs_number in ('CN3661') THEN 'mu-X 4x4 LS-A AT 2.5'
+									 ELSE msib.attribute9
+								END sales_model,
 								msib.attribute8 body_color,
 								soa.payment_term payment_terms,
 								soa.delivery_date,
