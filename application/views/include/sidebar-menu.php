@@ -158,13 +158,34 @@
 				?>
 				
 				<?php 
-				//~ RECEIPT -------------------------------------------------------------------------------
+				//~ PAYMENTS -------------------------------------------------------------------------------
 				if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin'))){
 				?>
-					<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'receipt') ? 'active' : ''; ?>">
-						<a href="<?php echo base_url('receivables/receipt/search');?>">
-							<i class="fa fa-file-text-o"></i> <span><?php echo $this->session->tre_portal_user_type == 'Dealer Admin' ? 'Payment':'Collection'?> Receipt</span>
+					<li class="treeview <?php  echo (in_array($this->uri->segment(2), array('payment','receipt'))) ? 'active' : ''; ?>">
+						<a href="#">
+							<i class="fa fa-truck"></i> <span>Payments</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
 						</a>
+						<ul class="treeview-menu">
+							<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'receipt') ? 'active' : ''; ?>">
+								<a href="<?php echo base_url('receivables/receipt/search');?>">
+									<i class="fa fa-circle-o"></i> <span><?php echo $this->session->tre_portal_user_type == 'Dealer Admin' ? 'Payment':'Collection'?> Receipt</span>
+								</a>
+							</li>
+							<li class="treeview <?php echo ($this->uri->segment(2) == 'payment' AND in_array($this->uri->segment(3),array('parts','vehicle'))) ? 'active' : ''; ?>" >
+								<a  href=""><i class="fa fa-circle-o"></i>RCBC
+									<span class="pull-right-container">
+										<i class="fa fa-angle-left pull-right"></i>
+									</span>
+								</a>
+								<ul class="treeview-menu">
+									<li class="<?php echo ($this->uri->segment(2) == 'payment' AND $this->uri->segment(3) == 'parts') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/payment/parts'); ?> "><i class="fa fa-circle-o"></i> Parts</a></li>
+									<li class="<?php echo ($this->uri->segment(2) == 'payment' AND $this->uri->segment(3) == 'vehicle') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/payment/vehicle'); ?> "><i class="fa fa-circle-o"></i> Vehicle</a></li>
+								</ul>
+							</li> 
+						</ul>
 					</li>
 				<?php 
 				}
@@ -257,6 +278,7 @@
 							</a>
 						</li> 
 					</ul>
+				</li>
 				<?php 
 				}
 				?>
