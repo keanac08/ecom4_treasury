@@ -21,7 +21,7 @@ class Rcbc_payment_reference_v_pdf extends CI_Controller {
 		$this->load->helper('date_helper');
 		$this->load->helper('number_helper');
 		
-		$rows = $this->payment_model->get_vehicle_tagged($cs_numbers);
+		$rows = $this->payment_model->get_vehicle_tagged($this->session->tre_portal_customer_id, $cs_numbers);
 
 		$this->pdf->AddPage($orientation);
 		

@@ -8,7 +8,7 @@ class Payment_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 	
-	public function get_vehicle_tagged($cs_numbers = NULL){
+	public function get_vehicle_tagged($customer_id, $cs_numbers = NULL){
 		
 		if($cs_numbers != NULL){
 			$and = " AND msn.serial_number IN (".$cs_numbers.") ";
@@ -49,18 +49,18 @@ class Payment_Model extends CI_Model {
 				 WHERE     1 = 1
 					   AND msn.c_attribute30 IS NULL
 					   AND mr.organization_id = 121
-					   AND hcaa.cust_account_id = 15096
+					   AND hcaa.cust_account_id = ?
 					   AND NVL (hold.released_flag, NVL (oola.attribute20, 'N')) = 'N'
 					   ".$and."
 					   AND NVL (hold.order_hold_id, 1) = (SELECT NVL (MAX (order_hold_id), 1)
 															FROM oe_order_holds_all
 														   WHERE line_id = oola.line_id)";
 																								
-		$data = $this->oracle->query($sql);
+		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();
 	}
 	
-	public function get_parts_invoiced($invoices = NULL){
+	public function get_parts_invoiced($customer_id, $invoices = NULL){
 		
 		if($invoices != NULL){
 			$and = " AND soa.trx_number IN (".$invoices.") ";
@@ -86,7 +86,7 @@ class Payment_Model extends CI_Model {
 						  LEFT JOIN hz_parties hp
 							ON hcaa.party_id = hp.party_id
 				   WHERE    1 = 1
-						 and soa.customer_id = 15096
+						 and soa.customer_id = ?
 						 AND soa.profile_class_id = 1042
 						 AND soa.status = 'OP'
 						 ".$and."
@@ -99,7 +99,7 @@ class Payment_Model extends CI_Model {
 						 hcaa.account_name
 				ORDER BY soa.due_date";
 																								
-		$data = $this->oracle->query($sql);
+		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();
 	}
 }

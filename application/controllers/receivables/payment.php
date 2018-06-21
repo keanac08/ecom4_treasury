@@ -13,7 +13,7 @@ class Payment extends CI_Controller{
 		$data['head_title'] = 'Treasury | Payments';
 		$data['title'] = 'Payments';
 		$data['subtitle'] = 'Vehicle';
-		$data['results'] = $this->payment_model->get_vehicle_tagged();
+		$data['results'] = $this->payment_model->get_vehicle_tagged($this->session->tre_portal_customer_id);
 		
 		$this->load->view('include/template',$data);
 	}
@@ -24,7 +24,7 @@ class Payment extends CI_Controller{
 		$data['head_title'] = 'Treasury | Payments';
 		$data['title'] = 'Payments';
 		$data['subtitle'] = 'Parts';
-		$data['results'] = $this->payment_model->get_parts_invoiced();
+		$data['results'] = $this->payment_model->get_parts_invoiced($this->session->tre_portal_customer_id);
 		
 		$this->load->view('include/template',$data);
 	}

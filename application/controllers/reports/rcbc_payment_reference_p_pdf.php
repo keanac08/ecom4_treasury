@@ -25,7 +25,7 @@ class Rcbc_payment_reference_p_pdf extends CI_Controller {
 		$this->load->helper('date_helper');
 		$this->load->helper('number_helper');
 		
-		$rows = $this->payment_model->get_parts_invoiced($invoice_numbers);
+		$rows = $this->payment_model->get_parts_invoiced($this->session->tre_portal_customer_id, $invoice_numbers);
 
 		//~ echo '<pre>';
 		//~ print_r($rows);
