@@ -60,7 +60,7 @@ $this->load->helper('date_helper');
 					<li class=""><a href="#detailed" data-toggle="tab" aria-expanded="true">Detailed SOA</a></li>
 					
 					<?php 
-					if(!empty($customer_details)){
+					if(!empty($customer_details) AND !empty($soa_detailed)){
 					?>
 					<li class="pull-right" style="margin-top: 10px;">
 						<a target="_blank" data-toggle="tooltip" data-placement="top" title="PDF" class="text-red" style="display: inline;padding: 1px;" href="<?php echo base_url('reports/soa_pdf/index/'); ?><?php echo $sales_type; ?>/<?php echo $customer_details->PROFILE_CLASS_ID; ?>/<?php echo $customer_id * 101403; ?>/<?php echo date('mdY', strtotime($as_of_date)); ?>"><i class="fa fa-file-pdf-o"></i> </a>
