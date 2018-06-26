@@ -176,7 +176,7 @@
 					if(in_array($this->session->tre_portal_user_type, array('Dealer Admin'))){
 					?>
 						<li class="<?php echo ($this->uri->segment(2) == 'invoice' and $this->uri->segment(3) == 'by_date_range') ? 'active' : ''; ?>" >
-							<a href="<?php echo base_url('invoice/by_date_range'); ?> ">
+							<a href="<?php echo base_url('receivables/invoice/by_date_range'); ?> ">
 								<i class="fa fa-circle-o"></i>By Date Range
 							</a>
 						</li>
