@@ -27,4 +27,25 @@ class Invoice extends CI_Controller{
 		
 		$this->load->view('include/template',$data);
 	}
+	
+	public function by_date_range(){
+		
+		$this->load->model('receivables/invoice_model');
+		
+		$from_date = $this->input->post('from_date') == NULL ? date('d-M-y'): date('d-M-y', strtotime($this->input->post('from_date')));
+		$to_date = $this->input->post('to_date')  == NULL ? date('d-M-y'): date('d-M-y', strtotime($this->input->post('to_date')));
+		$customer_id = $this->session->tre_portal_customer_id;
+		
+		$data['from_date'] = $from_date;
+		$data['to_date'] = $to_date;
+		$data['customer_id'] = $customer_id;
+		
+		$data['content'] = 'receivables/invoiced_date_range_view';
+		$data['title'] = 'Invoices';
+		$data['head_title'] = 'Treasury | Invoices';
+		
+		$data['result'] = $this->invoice_model->get_invoices($from_date, $to_date, 0, $customer_id);
+		
+		$this->load->view('include/template',$data);
+	}
 }

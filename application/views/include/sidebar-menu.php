@@ -119,28 +119,73 @@
 				
 				<?php 
 				//~ SO STATUS -------------------------------------------------------------------------------
-				if(in_array($this->session->tre_portal_user_type, array('Dealer Parts'))){
+				if(in_array($this->session->tre_portal_user_type, array('Dealer Admin','Dealer Parts', 'Dealer Vehicle'))){
 				?>
-				<li class="treeview <?php  echo ($this->uri->segment(2) == 'sales_order') ? 'active' : ''; ?>">
-				<a href="#">
-					<i class="fa fa-file-text-o"></i> <span>Sales Order</span>
-					<span class="pull-right-container">
-						<i class="fa fa-angle-left pull-right"></i>
-					</span>
-				</a>
-				<ul class="treeview-menu">
-				<?php 
+				<li class="treeview <?php  echo ($this->uri->segment(1) == 'sales_order') ? 'active' : ''; ?>">
+					<a href="#">
+						<i class="fa fa-edit"></i> <span>Sales Order</span>
+						<span class="pull-right-container">
+							<i class="fa fa-angle-left pull-right"></i>
+						</span>
+					</a>
+					<ul class="treeview-menu">
+					<?php 
 					//~ PARTS -------------------------------------------------------------------------------
-					if(in_array($this->session->tre_portal_user_type, array('Dealer Parts'))){
+					if(in_array($this->session->tre_portal_user_type, array('Dealer Admin','Dealer Parts'))){
 					?>
-						<li class="<?php echo ($this->uri->segment(4) == 'parts') ? 'active' : ''; ?>" >
+						<li class="<?php echo ($this->uri->segment(2) == 'parts' and $this->uri->segment(3) == 'status') ? 'active' : ''; ?>" >
 							<a href="<?php echo base_url('sales_order/parts/status'); ?> ">
-								<i class="fa fa-circle-o"></i>Parts
+								<i class="fa fa-circle-o"></i>DBS SO Status
 							</a>
 						</li>
-					</ul>
 					<?php 
 					}
+					?>
+					<?php 
+					//~ Vehicle -------------------------------------------------------------------------------
+					if(in_array($this->session->tre_portal_user_type, array('Dealer Admin','Dealer Vehicle'))){
+					?>
+						<li class="<?php echo ($this->uri->segment(2) == 'vehicle' and $this->uri->segment(3) == 'tagged') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('sales_order/vehicle/tagged'); ?> ">
+								<i class="fa fa-circle-o"></i>Vehicle Tagged Units
+							</a>
+						</li>
+					<?php 
+					}
+					?>
+					</ul>
+				</li>
+				<?php
+				}
+				?>
+				
+				<?php 
+				//~ INVOICES -------------------------------------------------------------------------------
+				if(in_array($this->session->tre_portal_user_type, array('Dealer Admin'))){
+				?>
+				<li class="treeview <?php  echo ($this->uri->segment(2) == 'invoice') ? 'active' : ''; ?>">
+					<a href="#">
+						<i class="fa fa-file-text"></i> <span>Invoices</span>
+						<span class="pull-right-container">
+							<i class="fa fa-angle-left pull-right"></i>
+						</span>
+					</a>
+					<ul class="treeview-menu">
+					<?php 
+					//~ BY Date Range -------------------------------------------------------------------------------
+					if(in_array($this->session->tre_portal_user_type, array('Dealer Admin'))){
+					?>
+						<li class="<?php echo ($this->uri->segment(2) == 'invoice' and $this->uri->segment(3) == 'by_date_range') ? 'active' : ''; ?>" >
+							<a href="<?php echo base_url('invoice/by_date_range'); ?> ">
+								<i class="fa fa-circle-o"></i>By Date Range
+							</a>
+						</li>
+					<?php 
+					}
+					?>
+					</ul>
+				</li>
+				<?php
 				}
 				?>
 				
@@ -163,7 +208,7 @@
 				?>
 					<li class="treeview <?php  echo (in_array($this->uri->segment(2), array('payment','receipt'))) ? 'active' : ''; ?>">
 						<a href="#">
-							<i class="fa fa-truck"></i> <span>Payments</span>
+							<i class="fa fa-credit-card"></i> <span>Payment</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
@@ -171,7 +216,7 @@
 						<ul class="treeview-menu">
 							<li class="<?php echo ($this->uri->segment(1) == 'receivables' AND $this->uri->segment(2) == 'receipt') ? 'active' : ''; ?>">
 								<a href="<?php echo base_url('receivables/receipt/search');?>">
-									<i class="fa fa-circle-o"></i> <span><?php echo $this->session->tre_portal_user_type == 'Dealer Admin' ? 'Payment':'Collection'?> Receipt</span>
+									<i class="fa fa-circle-o"></i><span><?php echo $this->session->tre_portal_user_type == 'Dealer Admin' ? '':'Collection '?>Receipt</span>
 								</a>
 							</li>
 							<li class="treeview <?php echo ($this->uri->segment(2) == 'payment' AND in_array($this->uri->segment(3),array('parts','vehicle'))) ? 'active' : ''; ?>" >

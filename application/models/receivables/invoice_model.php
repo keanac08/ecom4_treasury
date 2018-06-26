@@ -10,7 +10,7 @@ class Invoice_Model extends CI_Model {
 	
 	public function get_invoices($from_date, $to_date, $profile_ids, $customer_id){
 		
-		$and = $profile_ids != 0 ? " AND hcpc.profile_class_id IN (".$profile_ids.") ":'';
+		$and = $profile_ids != 0 ? " AND hcpc.profile_class_id IN (".$profile_ids.") ":"";
 		
 		$sql = "SELECT hca.cust_account_id       customer_id,
 					   hp.party_name,
@@ -35,7 +35,7 @@ class Invoice_Model extends CI_Model {
 						  THEN
 							 CONCAT ('313', LPAD (wdd.attribute2, 8, 0))
 						  ELSE
-							 oola.attribute10
+							 wdd.attribute2
 					   END
 						  dr_number,
 					   soa.invoice_orig_amount   invoice_amount,
@@ -43,6 +43,7 @@ class Invoice_Model extends CI_Model {
 					   soa.wht_orig_amount       wht_amount,
 					   apsa.amount_due_remaining balance,
 					   soa.status                invoice_status,
+					   receipt.receipt_number,
 					   soa.invoice_currency_code,
 					   soa.exchange_rate
 				  FROM ipc.ipc_invoice_details soa
@@ -50,6 +51,13 @@ class Invoice_Model extends CI_Model {
 						  ON soa.customer_trx_id = rcta.customer_trx_id
 					   LEFT JOIN ar_payment_schedules_all apsa
 						  ON rcta.customer_trx_id = apsa.customer_trx_id
+					   LEFT JOIN (  SELECT  araa.applied_customer_trx_id, max(receipt_number) receipt_number
+								FROM ar_receivable_applications_all araa
+									 LEFT JOIN ar_cash_receipts_all acra
+										ON araa.cash_receipt_id = acra.cash_receipt_id
+							   WHERE araa.display = 'Y'
+							GROUP BY araa.applied_customer_trx_id) receipt
+							ON receipt.applied_customer_trx_id = apsa.customer_trx_id
 					   LEFT JOIN oe_order_headers_all ooha
 						  ON rcta.interface_header_attribute1 = TO_CHAR (ooha.order_number)
 					   LEFT JOIN oe_order_lines_all oola
@@ -69,7 +77,8 @@ class Invoice_Model extends CI_Model {
 				 WHERE     1 = 1
 					   AND soa.trx_date BETWEEN ? AND ?
 					   ".$and."
-					   AND soa.customer_id = NVL(?, soa.customer_id)"; //echo $sql;die();
+					   AND soa.customer_id = NVL(?, soa.customer_id)
+					   ORDER BY  soa.status desc, soa.due_date"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, array($from_date, $to_date, $customer_id));
 		return $data->result_array();
