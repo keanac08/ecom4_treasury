@@ -1,0 +1,62 @@
+<?php
+
+class Vehicle_model extends CI_Model {
+	
+	private $oracle = NULL;
+	
+	public function __construct(){
+		
+		parent::__construct();
+		$this->oracle = $this->load->database('oracle', true);
+	}
+	
+	public function get_tagged($customer_id){
+		
+		$sql = "SELECT mr.reservation_id,
+					   hp.party_name,
+					   hcaa.cust_account_id,
+					   hcaa.account_name,
+					   msn.serial_number cs_number,
+					   msn.attribute2                            chassis_number,
+					   msib.attribute9                                       sales_model,
+					   msib.attribute8                                       body_color,
+					    msib.attribute11 || ' / ' || msn.attribute3 engine,
+					   msib.attribute19 || ' / ' || msn.attribute7 aircon,
+					   msib.attribute20 || ' / ' || msn.attribute9 stereo,
+					   msn.attribute6                            key_no,
+					   NVL (hold.released_flag, NVL (oola.attribute20, 'N')) released_flag,
+					   msn.d_attribute20                                     tagged_date,
+					   TRUNC (SYSDATE) - TRUNC (msn.d_attribute20)           aging,
+					   oola.unit_selling_price                               net_amount,
+					   oola.tax_value                                        vat_amount,
+					   oola.unit_selling_price +  oola.tax_value amount,
+					   round(oola.unit_selling_price * .01,2) wht,
+					   round(( oola.unit_selling_price +  oola.tax_value )  -  (oola.unit_selling_price * .01),2) amount_due
+				  FROM mtl_reservations mr
+					   LEFT JOIN oe_order_lines_all oola
+						  ON oola.line_id = mr.demand_source_line_id
+					   LEFT JOIN oe_order_headers_all ooha ON ooha.header_id = oola.header_id
+					   LEFT JOIN oe_order_holds_all hold
+						  ON ooha.header_id = hold.header_id AND oola.line_id = hold.line_id
+					   LEFT JOIN mtl_serial_numbers msn
+						  ON mr.reservation_id = msn.reservation_id
+					   LEFT JOIN mtl_system_items_b msib
+						  ON     msib.inventory_item_id = msn.inventory_item_id
+							 AND msib.organization_id = msn.current_organization_id
+					   LEFT JOIN hz_cust_accounts_all hcaa
+						  ON hcaa.cust_account_id = ooha.sold_to_org_id
+					   LEFT JOIN hz_parties hp ON hp.party_id = hcaa.party_id
+				 WHERE     1 = 1
+					   AND msn.c_attribute30 IS NULL
+					   AND mr.organization_id = 121
+					   AND hcaa.cust_account_id = ?
+					   AND NVL (hold.released_flag, NVL (oola.attribute20, 'N')) = 'N'
+					   AND msn.serial_number IS NOT NULL
+					   AND NVL (hold.order_hold_id, 1) = (SELECT NVL (MAX (order_hold_id), 1)
+															FROM oe_order_holds_all
+														   WHERE line_id = oola.line_id)";
+		
+		$data = $this->oracle->query($sql, $customer_id);
+		return $data->result();
+	}
+}
