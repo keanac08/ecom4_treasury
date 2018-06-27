@@ -83,6 +83,20 @@ $this->load->helper('number_helper');
 			</div>
 		</div>
 	</div> 
+	<div class="row">
+		<div class="col-sm-3">
+			<strong>Check Number</strong>
+			<p class="text-muted"><?php echo nvl($data->CHECK_NUMBER); ?></p>
+			<strong>Check Bank</strong>
+			<p class="text-muted"><?php echo nvl($data->CHECK_BANK); ?></p>
+		</div>
+		<div class="col-sm-3">
+			<strong>Check Date</strong>
+			<p class="text-muted"><?php echo nvl($data->CHECK_DATE); ?></p>
+			<strong>Check Amount</strong>
+			<p class="text-muted"><?php echo amount($data->CHECK_AMOUNT); ?></p>
+		</div>
+	</div>
 </div>
 <div class="modal-footer">
 	<a target="blank" href="<?php echo base_url('reports/invoice_vehicle_pdf/index/'.$data->CUSTOMER_TRX_ID); ?>" class="btn btn-danger" >Print Invoice Copy</a>

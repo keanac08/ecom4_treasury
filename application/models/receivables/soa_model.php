@@ -72,7 +72,10 @@ class Soa_model extends CI_Model {
 									 LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
 										ON pdc.check_id = app_pdc.check_id
 										and unit.cs_number = app_pdc.cs_number
-							   WHERE app_pdc.check_id IS NOT NULL) checks
+							   WHERE app_pdc.check_id IS NOT NULL
+							    AND app_pdc.check_id = (select max(check_id) 
+														from  ipc.ipc_treasury_approved_pdc 
+														where cs_number = unit.cs_number)) checks
 						ON soa.cs_number = checks.cs_number
 					 WHERE     1 = 1
 						 AND soa.trx_date <= '".$as_of_date."'
@@ -541,7 +544,11 @@ class Soa_model extends CI_Model {
 					msn.attribute2 chassis_number,
 					rcta.attribute4 wb_number,
 					rcta.attribute8 csr_number,
-					rcta.attribute11 csr_date
+					rcta.attribute11 csr_date,
+					chk.check_number,
+					chk.check_bank,
+					to_char(chk.check_date,'MM/DD/YYYY') check_date, 
+					chk.check_amount
 				FROM ar_payment_schedules_all apsa
 					LEFT JOIN ra_customer_trx_all rcta
 						ON apsa.customer_trx_id = rcta.customer_trx_id
@@ -554,6 +561,23 @@ class Soa_model extends CI_Model {
 						ON rcta.interface_header_attribute1 = to_char(ooha.order_number) 
 					LEFT JOIN oe_transaction_types_tl ottl
 						ON ooha.order_type_id = ottl.transaction_type_id
+					LEFT JOIN (SELECT DISTINCT pdc.check_number,
+									pdc.check_bank,
+									unit.cs_number,
+									pdc.check_date,
+									pdc.check_amount,
+									pdc.date_created
+							  FROM ipc.ipc_treasury_pdc pdc
+								   LEFT JOIN ipc.ipc_treasury_pdc_units unit
+									  ON pdc.check_id = unit.check_id
+								   LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+									  ON     pdc.check_id = app_pdc.check_id
+										 AND unit.cs_number = app_pdc.cs_number
+							 WHERE app_pdc.check_id IS NOT NULL
+								 AND app_pdc.check_id = (select max(check_id) 
+												from ipc.ipc_treasury_approved_pdc
+												 where cs_number = unit.cs_number)) chk
+						ON msn.serial_number = chk.cs_number
 				WHERE apsa.customer_trx_id = ?";
 				 
 		$data = $this->oracle->query($sql,$customer_trx_id);
