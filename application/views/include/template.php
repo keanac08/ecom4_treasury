@@ -7,7 +7,7 @@
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="treasury-portal">
 		<meta name="author" content="chris-tupe-r">
-		<link rel="icon" href="../../favicon.ico">
+		<link rel="icon" href="<?php echo base_url('/favicon.ico')?>">
 		<title><?php echo $head_title; ?></title>
 		
 		<!-- Bootstrap core CSS -->
