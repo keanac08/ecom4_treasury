@@ -12,7 +12,7 @@ class Check_writer_model extends CI_Model {
 		
 		$sql = "SELECT sup.segment1                                payee_code,
 					   sup.vendor_name                             payee_name,
-					   sup.attribute3                              ifs_payee_code,
+					   NVL(sup.attribute3,sup.segment1)            ifs_payee_code,
 					   ieba.bank_account_num                       account_number,
 					   ac.doc_sequence_value                       reference_no,
 					   TO_CHAR (ai.invoice_date, 'MM/DD/YYYY')     invoice_date,
