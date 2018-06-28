@@ -41,6 +41,10 @@ class vehicle_invoice_by_due_date_excel extends CI_Controller {
 						'Invoice_Amount' => '#,##0.00',
 						'WHT_Amount' => '#,##0.00',
 						'Balance' => '#,##0.00',
+						'Check_Number' => 'string',
+						'Check_Bank' => 'string',
+						'Check_Date' => 'MM/DD/YYYY',
+						'Check_Amount' => '#,##0.00',
 						'Due_Date_From' => 'MM/DD/YYYY',
 						'Due_Date_To' => 'MM/DD/YYYY'
 					);

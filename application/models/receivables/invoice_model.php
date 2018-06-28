@@ -113,6 +113,10 @@ class Invoice_Model extends CI_Model {
 					soa.invoice_amount ,
 					soa.wht_orig_amount wht_amount,
 					apsa.amount_due_remaining balance,
+					chk.check_number,
+					chk.check_bank,
+					to_char(chk.check_date, 'YYYY-MM-DD') check_date,
+					chk.check_amount,
 					to_char(to_date('".$from_date."'), 'YYYY-MM-DD') from_duedate,
 					to_char(to_date('".$to_date."'), 'YYYY-MM-DD') to_duedate
 				FROM ipc.ipc_invoice_details soa
@@ -136,8 +140,78 @@ class Invoice_Model extends CI_Model {
 						ON hzp.profile_class_id = hcpc.profile_class_id
 					LEFT JOIN hz_parties hp 
 						ON hcaa.party_id = hp.party_id
+					LEFT JOIN (SELECT DISTINCT pdc.check_number,
+									pdc.check_bank,
+									unit.cs_number,
+									pdc.check_date,
+									pdc.check_amount,
+									pdc.date_created
+							  FROM ipc.ipc_treasury_pdc pdc
+								   LEFT JOIN ipc.ipc_treasury_pdc_units unit
+									  ON pdc.check_id = unit.check_id
+								   LEFT JOIN ipc.ipc_treasury_approved_pdc app_pdc
+									  ON     pdc.check_id = app_pdc.check_id
+										 AND unit.cs_number = app_pdc.cs_number
+							 WHERE app_pdc.check_id IS NOT NULL
+								 AND app_pdc.check_id = (select max(check_id) 
+												from ipc.ipc_treasury_approved_pdc
+												 where cs_number = unit.cs_number)) chk
+						ON msn.serial_number = chk.cs_number
 				WHERE 1 = 1
 					AND soa.profile_class_id IN (1040, 1043, 1045)
+					AND soa.due_date BETWEEN ? AND ?
+					AND soa.status = 'OP'";
+		
+		$data = $this->oracle->query($sql, array($from_date, $to_date));
+		return $data->result_array();
+	}
+	
+	public function get_parts_invoice_by_duedate($from_date, $to_date){
+		
+		
+		$sql = "SELECT
+					soa.customer_id,
+					hp.party_name       customer_name,
+					hcaa.account_name   account_name,
+					hcpc.name           profile_class,
+					soa.customer_trx_id invoice_id,
+					ooha.cust_po_number,
+					soa.trx_number      invoice_number,
+					to_char(soa.trx_date, 'YYYY-MM-DD')      invoice_date,
+					soa.payment_term,
+					to_char(soa.delivery_date, 'YYYY-MM-DD')delivery_date,
+					to_char(soa.due_date, 'YYYY-MM-DD') due_date,
+					CASE
+						WHEN soa.due_date IS NOT NULL AND soa.due_date < TRUNC(SYSDATE)
+							THEN
+								TRUNC(SYSDATE) - soa.due_date
+							ELSE
+								0
+						END
+					days_overdue,
+					soa.invoice_amount ,
+					soa.wht_orig_amount wht_amount,
+					apsa.amount_due_remaining balance,
+					to_char(to_date('".$from_date."'), 'YYYY-MM-DD') from_duedate,
+					to_char(to_date('".$to_date."'), 'YYYY-MM-DD') to_duedate
+				FROM ipc.ipc_invoice_details soa
+					LEFT JOIN ar_payment_schedules_all apsa
+						ON soa.customer_trx_id = apsa.customer_trx_id
+					LEFT JOIN ra_customer_trx_all rcta
+						ON soa.customer_trx_id = rcta.customer_trx_id
+					LEFT JOIN oe_order_headers_all ooha
+						ON rcta.interface_header_attribute1 = ooha.order_number
+					LEFT JOIN hz_cust_accounts_all hcaa
+						ON soa.customer_id = hcaa.cust_account_id
+					LEFT JOIN hz_customer_profiles hzp
+						ON hcaa.cust_account_id = hzp.cust_account_id
+						AND soa.customer_site_use_id = hzp.site_use_id
+					LEFT JOIN hz_cust_profile_classes hcpc
+						ON hzp.profile_class_id = hcpc.profile_class_id
+					LEFT JOIN hz_parties hp 
+						ON hcaa.party_id = hp.party_id
+				WHERE 1 = 1
+					AND soa.profile_class_id IN (1042,1044,1046,1049,1050)
 					AND soa.due_date BETWEEN ? AND ?
 					AND soa.status = 'OP'";
 		
