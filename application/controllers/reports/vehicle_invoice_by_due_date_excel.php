@@ -16,7 +16,7 @@ class vehicle_invoice_by_due_date_excel extends CI_Controller {
 		//~ $from_date = '01-FEB-18';
 		//~ $to_date = '05-FEB-18';
 
-		$rows = $this->invoice_model->get_vehicle_invoice_by_duedate($from_date,$to_date);
+		$rows = $this->invoice_model->get_vehicle_invoice_by_duedate($from_date,$to_date, $this->session->tre_portal_customer_id);
 		
 		$this->load->library('excel');
 			
