@@ -84,8 +84,7 @@ class Invoice_Model extends CI_Model {
 		return $data->result_array();
 	}
 	
-	public function get_vehicle_invoice_by_duedate($from_date, $to_date){
-		
+	public function get_vehicle_invoice_by_duedate($from_date, $to_date, $customer_id){
 		
 		$sql = "SELECT
 					soa.customer_id,
@@ -160,13 +159,14 @@ class Invoice_Model extends CI_Model {
 				WHERE 1 = 1
 					AND soa.profile_class_id IN (1040, 1043, 1045)
 					AND soa.due_date BETWEEN ? AND ?
+					AND soa.customer_id = NVL(?, soa.customer_id)
 					AND soa.status = 'OP'";
 		
-		$data = $this->oracle->query($sql, array($from_date, $to_date));
+		$data = $this->oracle->query($sql, array($from_date, $to_date, $customer_id));
 		return $data->result_array();
 	}
 	
-	public function get_parts_invoice_by_duedate($from_date, $to_date){
+	public function get_parts_invoice_by_duedate($from_date, $to_date, $customer_id){
 		
 		
 		$sql = "SELECT
@@ -183,10 +183,10 @@ class Invoice_Model extends CI_Model {
 					to_char(soa.due_date, 'YYYY-MM-DD') due_date,
 					CASE
 						WHEN soa.due_date IS NOT NULL AND soa.due_date < TRUNC(SYSDATE)
-							THEN
-								TRUNC(SYSDATE) - soa.due_date
-							ELSE
-								0
+						THEN
+							TRUNC(SYSDATE) - soa.due_date
+						ELSE
+							0
 						END
 					days_overdue,
 					soa.invoice_amount ,
@@ -213,9 +213,10 @@ class Invoice_Model extends CI_Model {
 				WHERE 1 = 1
 					AND soa.profile_class_id IN (1042,1044,1046,1049,1050)
 					AND soa.due_date BETWEEN ? AND ?
+					AND soa.customer_id = NVL(?, soa.customer_id)
 					AND soa.status = 'OP'";
 		
-		$data = $this->oracle->query($sql, array($from_date, $to_date));
+		$data = $this->oracle->query($sql, array($from_date, $to_date, $customer_id));
 		return $data->result_array();
 	}
 	

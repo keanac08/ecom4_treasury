@@ -26,6 +26,7 @@
 								<th>CS Number</th>
 								<th>Sales Model</th>
 								<th>Body Color</th>
+								<th>Order Type</th>
 								<th>Tagged Date</th>
 								<th>Aging</th>
 								<th>Amount Due</th>
@@ -41,6 +42,7 @@
 								<td><?php echo $row->CS_NUMBER; ?></td>
 								<td><?php echo $row->SALES_MODEL; ?></td>
 								<td><?php echo $row->BODY_COLOR; ?></td>
+								<td><?php echo $row->ORDER_TYPE; ?></td>
 								<td><?php echo short_date($row->TAGGED_DATE); ?></td>
 								<td><?php echo $row->AGING; ?></td>
 								<td align="right"><?php echo amount($row->AMOUNT_DUE); ?></td>

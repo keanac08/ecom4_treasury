@@ -22,6 +22,7 @@ class Payment_Model extends CI_Model {
 					   hcaa.cust_account_id,
 					   hcaa.account_name,
 					   msn.serial_number cs_number,
+					    type.name order_type,
 					   msib.attribute9                                       sales_model,
 					   msib.attribute8                                       body_color,
 					   NVL (hold.released_flag, NVL (oola.attribute20, 'N')) released_flag,
@@ -35,7 +36,10 @@ class Payment_Model extends CI_Model {
 				  FROM mtl_reservations mr
 					   LEFT JOIN oe_order_lines_all oola
 						  ON oola.line_id = mr.demand_source_line_id
-					   LEFT JOIN oe_order_headers_all ooha ON ooha.header_id = oola.header_id
+					   LEFT JOIN oe_order_headers_all ooha 
+						ON ooha.header_id = oola.header_id
+						 LEFT JOIN oe_transaction_types_tl type
+						  ON ooha.order_type_id = type.transaction_type_id
 					   LEFT JOIN oe_order_holds_all hold
 						  ON ooha.header_id = hold.header_id AND oola.line_id = hold.line_id
 					   LEFT JOIN mtl_serial_numbers msn
@@ -46,7 +50,11 @@ class Payment_Model extends CI_Model {
 					   LEFT JOIN hz_cust_accounts_all hcaa
 						  ON hcaa.cust_account_id = ooha.sold_to_org_id
 					   LEFT JOIN hz_parties hp ON hp.party_id = hcaa.party_id
+					    LEFT JOIN ipc.ipc_vehicle_for_invoice for_inv
+					      ON msn.serial_number = for_inv.cs_number
+					      AND  hcaa.cust_account_id = for_inv.customer_id
 				 WHERE     1 = 1
+						AND for_inv.cs_number is not null
 					   AND msn.c_attribute30 IS NULL
 					   AND mr.organization_id = 121
 					   AND hcaa.cust_account_id = ?
