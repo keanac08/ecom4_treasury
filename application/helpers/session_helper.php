@@ -12,7 +12,12 @@ if ( ! function_exists('session_check')){
 		}
 		else{
 			if(time()-$CI->session->userdata('tre_portal_session_start') > 600){
-				$CI->session->set_userdata('tre_portal_last_link', $CI->uri->uri_string());
+				if(strpos($CI->uri->uri_string(),'ajax_invoice_details')){
+					$CI->session->set_userdata('tre_portal_last_link', 'receivables/transaction/per_customer');
+				}
+				else{
+					$CI->session->set_userdata('tre_portal_last_link', $CI->uri->uri_string());
+				}
 				redirect('login/lock_screen');
 			}
 			else{
