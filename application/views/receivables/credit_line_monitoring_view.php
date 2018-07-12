@@ -22,6 +22,7 @@
 						<thead>
 							<tr>
 								<th>Customer Name</th>
+								<th>Profile Class</th>
 								<th class="text-right">Credit<br />Limit</th>
 								<th class="text-right">Exposure<br />AR Balance</th>
 								<th class="text-right">Exposure<br />Open SO</th>
@@ -35,6 +36,7 @@
 						?>
 							<tr class="<?php echo $row->AVAILABLE_CREDIT_LIMIT < 0 ? 'warning text-yellow':'success text-success';?>" >
 								<td><?php echo $row->CUSTOMER_NAME; ?></td>
+								<td><?php echo $row->PROFILE_CLASS; ?></td>
 								<td class="text-right"><?php echo amount($row->CREDIT_LIMIT); ?></td>
 								<td class="text-right"><?php echo amount($row->EXPOSURE_AR_BALANCE_TOTAL); ?></td>
 								<td class="text-right"><?php echo amount($row->EXPOSURE_OPEN_SO); ?></td>
