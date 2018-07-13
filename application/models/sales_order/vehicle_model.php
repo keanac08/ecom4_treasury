@@ -37,7 +37,7 @@ class Vehicle_model extends CI_Model {
 					   NVL (hold.released_flag, NVL (oola.attribute20, 'N')) released_flag,
 					   msn.d_attribute20                                     tagged_date,
 					   for_inv.date_requested                                     for_invoice_date,
-					   TRUNC (SYSDATE) - TRUNC (msn.d_attribute20)           aging,
+					   (select count(*) from ipc_calendars_view where date_time_Start between TRUNC (msn.d_attribute20 + 1) and TRUNC (SYSDATE) and TRIM(DAY_OF_WEEK_DESC) not in ('Sunday','Saturday')) aging,
 					   oola.unit_selling_price                               net_amount,
 					   oola.tax_value                                        vat_amount,
 					   oola.unit_selling_price +  oola.tax_value amount,
