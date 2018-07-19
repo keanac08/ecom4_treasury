@@ -316,7 +316,7 @@ class Soa_model extends CI_Model {
 						LEFT JOIN ra_customer_trx_all rcta
 							ON soa.customer_trx_id = rcta.customer_trx_id
 						LEFT JOIN oe_order_headers_all ooha
-							ON rcta.interface_header_attribute1 = ooha.order_number
+							ON rcta.interface_header_attribute1 = to_char(ooha.order_number)
 						LEFT JOIN
 							(SELECT applied_customer_trx_id,
 									applied_payment_schedule_id,
@@ -342,7 +342,7 @@ class Soa_model extends CI_Model {
 							AND soa.trx_date <= '".$as_of_date."'
 							AND soa.customer_id = ?
 							".$and."
-							)HAVING SUM((invoice_amount + adjustment_amount) - paid_amount)  > 0";
+							)HAVING SUM((invoice_amount + adjustment_amount) - paid_amount)  > 0"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, $customer_id);
 		return $data->result();
