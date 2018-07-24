@@ -83,7 +83,7 @@ class Soa_model extends CI_Model {
 						 ".$and."
 						 -- AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 GROUP BY ROLLUP (soa.due_date, soa.customer_trx_id)
-					 HAVING SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) > 0
+					 HAVING SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - (NVL (araa.paid_amount, 0) * NVL(soa.EXCHANGE_RATE, 1))) > 0
 					 ORDER BY due_Date nulls last"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, $customer_id);
@@ -311,7 +311,7 @@ class Soa_model extends CI_Model {
 						soa.invoice_amount,
 						soa.delivery_date,
 						NVL(adj.adjustment_amount,0) adjustment_amount,
-						NVL (araa.paid_amount, 0) paid_amount
+						NVL (araa.paid_amount, 0) * NVL(soa.exchange_rate, 1) paid_amount
 					FROM IPC.IPC_INVOICE_DETAILS soa
 						LEFT JOIN ra_customer_trx_all rcta
 							ON soa.customer_trx_id = rcta.customer_trx_id
