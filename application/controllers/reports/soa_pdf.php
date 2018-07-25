@@ -139,6 +139,7 @@ class Soa_pdf extends CI_Controller {
 		$ctr = 0;
 	
 		foreach($rows as $row){
+			$currency = $row->CURRENCY != 'PHP' ? $row->CURRENCY . ' ' : '';
 			if($row->INVOICE_ID != NULL){
 				if($ctr == 0){
 					$html = '<table border="0" style="font-size: 8px;padding: 2px">
@@ -153,7 +154,7 @@ class Soa_pdf extends CI_Controller {
 							<td width="60" align="center">'.$row->PAYMENT_TERM.'</td>
 							<td width="75" align="right">'.amount($row->TRANSACTION_AMOUNT).'</td>
 							<td width="55" align="right">'.amount($row->WHT_AMOUNT).'</td>
-							<td width="75" align="right">'.amount($row->BALANCE).'</td>
+							<td width="75" align="right">'.$currency.amount($row->BALANCE).'</td>
 							<td width="70" align="center">'.$row->DAYS_OVERDUE.'</td>
 							<td width="' . ($pdc_number == 1 ? 70:1) . '" align="center">' . ($pdc_number == 1 ? $row->CHECK_NO:'') . '</td>
 							<td width="' . ($cust_po_number == 1 ? 90:1) . '" align="center">' . ($cust_po_number == 1 ? $row->CUST_PO_NUMBER:'') . '</td>

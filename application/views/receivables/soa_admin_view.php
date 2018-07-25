@@ -160,83 +160,83 @@ $this->load->helper('date_helper');
 											
 											if($row->DELIVERY_DATE == NULL){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$contingent += $row->BALANCE;
+													$contingent += $row->BALANCE_PHP;
 												}
 												else{
-													$contingent_wht += $row->BALANCE;
+													$contingent_wht += $row->BALANCE_PHP;
 												}
 												$contingent_count++;
 											}
 											else if($row->DAYS_OVERDUE == 0){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$current += $row->BALANCE;
+													$current += $row->BALANCE_PHP;
 												}
 												else{
-													$current_wht += $row->BALANCE;
+													$current_wht += $row->BALANCE_PHP;
 												}
 												$current_count++;
 											}
 											else if($row->DAYS_OVERDUE > 0 AND $row->DAYS_OVERDUE <= 15){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_01_15 += $row->BALANCE;
+													$past_due_01_15 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_01_15_wht += $row->BALANCE;
+													$past_due_01_15_wht += $row->BALANCE_PHP;
 												}
 												$past_due_01_15_count++;
 											}
 											else if($row->DAYS_OVERDUE > 15 AND $row->DAYS_OVERDUE <= 30){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_16_30 += $row->BALANCE;
+													$past_due_16_30 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_16_30_wht += $row->BALANCE;
+													$past_due_16_30_wht += $row->BALANCE_PHP;
 												}
 												$past_due_16_30_count++;
 											}
 											else if($row->DAYS_OVERDUE > 30 AND $row->DAYS_OVERDUE <= 60){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_31_60 += $row->BALANCE;
+													$past_due_31_60 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_31_60_wht += $row->BALANCE;
+													$past_due_31_60_wht += $row->BALANCE_PHP;
 												}
 												$past_due_31_60_count++;
 											}
 											else if($row->DAYS_OVERDUE > 60 AND $row->DAYS_OVERDUE <= 90){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_61_90 += $row->BALANCE;
+													$past_due_61_90 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_61_90_wht += $row->BALANCE;
+													$past_due_61_90_wht += $row->BALANCE_PHP;
 												}
 												$past_due_61_90_count++;
 											}
 											else if($row->DAYS_OVERDUE > 90 AND $row->DAYS_OVERDUE <= 120){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_91_120 += $row->BALANCE;
+													$past_due_91_120 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_91_120_wht += $row->BALANCE;
+													$past_due_91_120_wht += $row->BALANCE_PHP;
 												}
 												$past_due_91_120_count++;
 											}
 											else if($row->DAYS_OVERDUE > 120){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due_over_120 += $row->BALANCE;
+													$past_due_over_120 += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_over_120_wht += $row->BALANCE;
+													$past_due_over_120_wht += $row->BALANCE_PHP;
 												}
 												$past_due_over_120_count++;
 											}
 											
 											if($row->DAYS_OVERDUE > 0){
 												if($row->BALANCE - $row->WHT_AMOUNT > 1){
-													$past_due += $row->BALANCE;
+													$past_due += $row->BALANCE_PHP;
 												}
 												else{
-													$past_due_wht += $row->BALANCE;
+													$past_due_wht += $row->BALANCE_PHP;
 												}
 												$past_due_count++;
 											}

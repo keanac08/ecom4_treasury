@@ -36,8 +36,9 @@ class Soa_model extends CI_Model {
 						days_overdue,
 						SUM (soa.invoice_orig_amount) transaction_amount,
 						SUM (soa.wht_orig_amount)       wht_amount,
-						SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) balance
-					 FROM IPC.IPC_INVOICE_DETAILS soa
+						SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) balance,
+						SUM ((soa.invoice_amount + NVL(adj.adjustment_amount,0)) - (NVL (araa.paid_amount, 0) * NVL(soa.exchange_Rate,1))) balance_php
+					FROM IPC.IPC_INVOICE_DETAILS soa
 					 LEFT JOIN ra_customer_trx_all rcta
 						ON soa.customer_trx_id = rcta.customer_trx_id
 					 LEFT JOIN oe_order_headers_all ooha
@@ -83,7 +84,7 @@ class Soa_model extends CI_Model {
 						 ".$and."
 						 -- AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 GROUP BY ROLLUP (soa.due_date, soa.customer_trx_id)
-					 HAVING SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - (NVL (araa.paid_amount, 0) * NVL(soa.EXCHANGE_RATE, 1))) > 0
+					 HAVING SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) > 0
 					 ORDER BY due_Date nulls last"; //echo $sql;die();
 		
 		$data = $this->oracle->query($sql, $customer_id);
