@@ -446,9 +446,9 @@ class Invoice_Model extends CI_Model {
 							END)
 							amount,
 						 SUM (
-						  CASE rcta.cust_trx_type_id WHEN 2081
-						   THEN rctla.extended_amount
-						   ELSE
+						 -- CASE rcta.cust_trx_type_id WHEN 2081
+						 --  THEN rctla.extended_amount
+						 --  ELSE
                                 CASE
                                    WHEN  rctla.extended_amount < 0
                                    THEN
@@ -456,7 +456,8 @@ class Invoice_Model extends CI_Model {
                                    ELSE
                                       0
                                  END
-							END)
+						--	END
+							)
 							discount,
 						 SUM (rctla.tax_recoverable) VAT,
 						 MAX (wdd.attribute2)     dr_number,
