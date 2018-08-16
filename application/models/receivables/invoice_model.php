@@ -489,7 +489,10 @@ class Invoice_Model extends CI_Model {
 				   rctla.line_number,
 				   rctla.description,
 				   rctla.extended_amount amount,
-				   rctla.tax_recoverable vat
+				   rctla.tax_recoverable vat,
+				   rctla.quantity_invoiced qty,
+				   rctla.unit_selling_price,
+				   rctla.unit_selling_price *  rctla.quantity_invoiced total
 			  FROM ra_customer_trx_all rcta
 				   LEFT JOIN ra_customer_trx_lines_all rctla
 					  ON rcta.customer_trx_id = rctla.customer_trx_id

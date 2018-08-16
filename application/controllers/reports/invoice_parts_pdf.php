@@ -255,7 +255,7 @@ class Invoice_parts_pdf extends CI_Controller {
 				';
 		$this->pdf->writeHTML($html, true, false, true, false, '');
 		
-		$this->pdf->Output('vehicle_invoice.pdf', 'I');
+		$this->pdf->Output('parts_invoice.pdf', 'I');
 	}
 	
 	public function pdf($orientation){

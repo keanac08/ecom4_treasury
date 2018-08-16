@@ -22,7 +22,8 @@ class Invoice_miscellaneous_pdf extends CI_Controller {
 		$header = $this->invoice_model->get_parts_invoice_header_print($invoice_id);
 		
 		//~ $header->TRX_NUMBER;die();
-		$lines = $this->invoice_model->get_parts_invoice_lines_print($invoice_id);
+		//~ $lines = $this->invoice_model->get_parts_invoice_lines_print($invoice_id);
+		$lines = $this->invoice_model->get_others_invoice_lines_print($invoice_id);
 		
 		$this->pdf->AddPage($orientation);
 		
@@ -112,18 +113,27 @@ class Invoice_miscellaneous_pdf extends CI_Controller {
 		$vat = 0;
 		$total = 0;
 		foreach($lines as $line){
+			//~ $data .= '<tr>
+						//~ <td width="50px" align="center" style="borders-right:1px solid #000;">'.$ctr.'</td>
+						//~ <td width="80px" align="center" style="borders-right:1px solid #000;">'.$line->PART_NUMBER.'</td>
+						//~ <td width="226px" align="left" style="borders-right:1px solid #000;">'.$line->PART_DESCRIPTION.'</td>
+						//~ <td width="40px" align="center" style="borders-right:1px solid #000;">'.$line->QTY.'</td>
+						//~ <td width="80px" align="right" style="borders-right:1px solid #000;">'.amount($line->UNIT_PRICE).'</td>
+						//~ <td width="197px" align="right">'.amount($line->AMOUNT).'</td>
+					//~ </tr>';
+			//~ $ctr++;
 			$data .= '<tr>
 						<td width="50px" align="center" style="borders-right:1px solid #000;">'.$ctr.'</td>
-						<td width="80px" align="center" style="borders-right:1px solid #000;">'.$line->PART_NUMBER.'</td>
-						<td width="226px" align="left" style="borders-right:1px solid #000;">'.$line->PART_DESCRIPTION.'</td>
+						<td width="80px" align="center" style="borders-right:1px solid #000;">&nbsp;</td>
+						<td width="226px" align="left" style="borders-right:1px solid #000;">'.$line->DESCRIPTION.'</td>
 						<td width="40px" align="center" style="borders-right:1px solid #000;">'.$line->QTY.'</td>
-						<td width="80px" align="right" style="borders-right:1px solid #000;">'.amount($line->UNIT_PRICE).'</td>
-						<td width="197px" align="right">'.amount($line->AMOUNT).'</td>
+						<td width="80px" align="right" style="borders-right:1px solid #000;">'.amount($line->UNIT_SELLING_PRICE).'</td>
+						<td width="197px" align="right">'.amount($line->TOTAL).'</td>
 					</tr>';
 			$ctr++;
 			
-			$vatable_sales += $line->VAT > 0 ? $line->AMOUNT : 0;
-			$exempt += $line->VAT > 0 ? 0 : $line->AMOUNT;
+			$vatable_sales += $line->VAT > 0 ? $line->UNIT_SELLING_PRICE : 0;
+			$exempt += $line->VAT > 0 ? 0 : $line->UNIT_SELLING_PRICE;
 			$net = $vatable_sales + $exempt;
 			$vat += $line->VAT;
 			$total = $net + $vat;
