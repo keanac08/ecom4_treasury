@@ -279,9 +279,9 @@ class Check_warehousing_model extends CI_Model {
 						release_reason_code)
 					SELECT OE_HOLD_RELEASES_S.NEXTVAL,
 							 SYSDATE,
-							 1394,
+							 1278,
 							 SYSDATE,
-							 1394,
+							 1278,
 							 HOLD_SOURCE_ID,
 							 'MANUAL_RELEASE_MARGIN_HOLD' 
 						FROM IPC_SALES_ORDER_V 
