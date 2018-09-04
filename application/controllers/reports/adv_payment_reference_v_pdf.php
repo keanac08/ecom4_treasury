@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rcbc_payment_reference_v_pdf extends CI_Controller {
+class Adv_payment_reference_v_pdf extends CI_Controller {
 	
 	var $pdf = NULL;
 	
@@ -32,7 +32,7 @@ class Rcbc_payment_reference_v_pdf extends CI_Controller {
 		
 		$html = '<table style="font-size: 12px;padding: 3px;">
 					<tr>
-						<td align="center" colspan="2" style="font-size: 15px;">Bills Payment Reference Form ('.$this->input->post('bank').')</td>
+						<td align="center" colspan="2" style="font-size: 15px;">Payment Reference (Advance Payment)</td>
 					</tr>
 					<tr>
 						<td colspan="2" style="font-size: 15px;">&nbsp;</td>
@@ -62,25 +62,27 @@ class Rcbc_payment_reference_v_pdf extends CI_Controller {
 		foreach($rows as $row){
 			$data .= '<tr>
 						<td width="30px">'.$count.'</td>
-						<td width="80px">'.$row->CS_NUMBER.'</td>
-						<td width="180px">'.$row->SALES_MODEL.'</td>
-						<td width="180px">'.$row->BODY_COLOR.'</td>
-						<td width="90px">'.short_date($row->TAGGED_DATE).'</td>
-						<td width="113px" align="right">'.amount($row->AMOUNT_DUE).'</td>
+						<td width="60px">'.$row->CS_NUMBER.'</td>
+						<td width="160px">'.$row->SALES_MODEL.'</td>
+						<td width="160px">'.$row->BODY_COLOR.'</td>
+						<td width="80px">'.$row->PAYMENT_TERMS.'</td>
+						<td width="90px" align="right">'.amount($row->AMOUNT_DUE).'</td>
+						<td width="90px" align="right">'.amount($row->DISCOUNTED_AMOUNT).'</td>
 					</tr>';
 			$count++;
-			$total += $row->AMOUNT_DUE;
+			$total += $row->DISCOUNTED_AMOUNT;
 		}
 		
 		$html = '<table border="1" style="font-size: 10px;padding: 3px;">
 					<thead>
 						<tr style="background-color: #ccc;">
 							<th width="30px">#</th>
-							<th width="80px">CS Number</th>
-							<th width="180px">Sale Model</th>
-							<th width="180px">Body Color</th>
-							<th width="90px">Tagged Date</th>
-							<th width="113px" align="right">Amount Due</th>
+							<th width="60px">CS Number</th>
+							<th width="160px">Sale Model</th>
+							<th width="160px">Body Color</th>
+							<th width="80px">Payment Terms</th>
+							<th width="90px" align="right">Amount Due</th>
+							<th width="90px" align="right">Discounted Amt</th>
 						</tr>
 					</thead>
 					<tbody>

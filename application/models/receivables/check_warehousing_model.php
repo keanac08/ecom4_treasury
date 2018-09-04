@@ -105,7 +105,7 @@ class Check_warehousing_model extends CI_Model {
 		$from_date = ($from_date == NULL)? date('01-M-y'):date('d-M-y', strtotime($from_date));
 		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
 		$params = array($from_date, $to_date, $customer_id);
-		
+		//~ print_r($params);die();
 		$sql = "SELECT DISTINCT pdc.check_id,
 							  pdc.check_number,
 							  pdc.check_bank,
@@ -116,7 +116,7 @@ class Check_warehousing_model extends CI_Model {
 					 LEFT JOIN ipc.ipc_treasury_pdc_units unit
 						ON pdc.check_id = unit.check_id
 				WHERE 1 = 1
-			   AND pdc.check_date between ? AND ?
+			   AND trunc(pdc.check_date) between ? AND ?
 			   AND pdc.customer_id = ?
 			ORDER BY pdc.date_created DESC";
 		$data = $this->oracle->query($sql, $params);
@@ -654,6 +654,56 @@ class Check_warehousing_model extends CI_Model {
 			//~ $and = "";
 		//~ }
 		
+		//~ SELECT mr.reservation_id,
+					   //~ hp.party_name,
+					   //~ hcaa.cust_account_id,
+					   //~ hcaa.account_name,
+					   //~ msn.serial_number cs_number,
+					   //~ type.name order_type,
+					   //~ rt.name payment_terms,
+					   //~ msib.attribute9                                       sales_model,
+					   //~ msib.attribute8                                       body_color,
+					   //~ msn.d_attribute20                                     tagged_date,
+					   //~ for_inv.date_requested                                     for_invoice_date,
+					   //~ (select count(*) from ipc_calendars_view where date_time_Start between TRUNC (msn.d_attribute20 + 1) and TRUNC (SYSDATE) and TRIM(DAY_OF_WEEK_DESC) not in ('Sunday','Saturday')) aging,
+					   //~ oola.unit_selling_price                               net_amount,
+					   //~ oola.tax_value                                        vat_amount,
+					   //~ oola.unit_selling_price +  oola.tax_value amount,
+					   //~ round(oola.unit_selling_price * .01,2) wht,
+					   //~ round(( oola.unit_selling_price +  oola.tax_value )  -  (oola.unit_selling_price * .01),2) amount_due
+				  //~ FROM mtl_reservations mr
+					   //~ LEFT JOIN oe_order_lines_all oola
+						  //~ ON oola.line_id = mr.demand_source_line_id
+					   //~ LEFT JOIN oe_order_headers_all ooha 
+						  //~ ON ooha.header_id = oola.header_id
+					   //~ LEFT JOIN oe_transaction_types_tl type
+						  //~ ON ooha.order_type_id = type.transaction_type_id
+					   //~ LEFT JOIN oe_order_holds_all hold
+						  //~ ON ooha.header_id = hold.header_id AND oola.line_id = hold.line_id
+					    //~ LEFT JOIN ra_terms_tl rt
+                            //~ ON oola.payment_term_id = rt.term_id
+					   //~ LEFT JOIN mtl_serial_numbers msn
+						  //~ ON mr.reservation_id = msn.reservation_id
+					   //~ LEFT JOIN mtl_system_items_b msib
+						  //~ ON     msib.inventory_item_id = msn.inventory_item_id
+							 //~ AND msib.organization_id = msn.current_organization_id
+					   //~ LEFT JOIN hz_cust_accounts_all hcaa
+						  //~ ON hcaa.cust_account_id = ooha.sold_to_org_id
+					   //~ LEFT JOIN hz_parties hp ON hp.party_id = hcaa.party_id
+					   //~ LEFT JOIN ipc.ipc_vehicle_for_invoice for_inv
+					      //~ ON msn.serial_number = for_inv.cs_number
+					      //~ AND  hcaa.cust_account_id = for_inv.customer_id
+				 //~ WHERE     1 = 1
+					   //~ AND msn.c_attribute30 IS NULL
+					   //~ AND mr.organization_id = 121
+					   //~ AND hcaa.cust_account_id = 15096 
+					   //~ AND NVL (hold.released_flag, NVL (oola.attribute20, 'N')) = 'N'
+					   //~ AND msn.serial_number IS NOT NULL
+					   //~ AND NVL (hold.order_hold_id, 1) = (SELECT NVL (MAX (order_hold_id), 1)
+															//~ FROM oe_order_holds_all
+														   //~ WHERE line_id = oola.line_id)
+						//~ ORDER BY for_inv.date_requested, aging DESC
+		
 		$sql = "SELECT 
 					ooha.header_id,
 					ooha.order_number,
@@ -703,6 +753,9 @@ class Check_warehousing_model extends CI_Model {
 					AND ooha.order_type_id NOT IN (1150,1151)
 					AND ooha.ship_from_org_id = 121
 					AND ooha.sold_to_org_id = ?
+					AND NVL (hold.order_hold_id, 1) = (SELECT NVL (MAX (order_hold_id), 1)
+															FROM oe_order_holds_all
+														   WHERE line_id = oola.line_id)
 				ORDER BY aging DESC, reserved_date";//echo $sql;
 
 		$data = $this->oracle->query($sql, $customer_id);

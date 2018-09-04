@@ -29,8 +29,8 @@ class Check_warehousing extends CI_Controller {
 		$data['to_date'] = $this->input->post('to_date');
 		
 		$data['content'] = 'receivables/check_warehousing_pdc_customer_view';
-		$data['title'] = 'Requests for Invoice';
-		$data['head_title'] = 'Treasury | Tagged Units';
+		$data['title'] = 'Payments';
+		$data['head_title'] = 'Treasury | Check Warehousing';
 		
 		$data['result'] = $this->check_warehousing_model->get_customer_pdc($data['from_date'], $data['to_date'], $this->session->tre_portal_customer_id);
 		
@@ -278,11 +278,11 @@ class Check_warehousing extends CI_Controller {
 				}
 				
 				$data .= '<tr>
-							<td width="170px;" colspan="2">Check ID</td>
+							<td width="100px;" colspan="2">Check ID</td>
 							<td colspan="5">'.$row->CHECK_ID.'</td>
 						</tr>
 						<tr>
-							<td width="170px;" colspan="2">Check Number</td>
+							<td colspan="2">Check Number</td>
 							<td colspan="5">'.$row->CHECK_NUMBER.'</td>
 						</tr>
 						<tr>
@@ -300,7 +300,7 @@ class Check_warehousing extends CI_Controller {
 						<tr>
 							<td colspan="7">&nbsp;</td>
 						</tr>
-						<tr style="background-color: #ccc;">
+						<tr style="background-color: #ccc;font-weight: bold;">
 							<th width="20px;" style="text-align: center;">#</th>
 							<th width="70px;" style="text-align: center;">CS Number</th>
 							<th width="180px;" style="text-align: left;">Sales Model</th>
@@ -345,12 +345,13 @@ class Check_warehousing extends CI_Controller {
 					<td colspan="7">&nbsp;</td>
 				</tr>';
 		
-		$html = '<table border="0" style="padding: 3px;">
+		$html = '<table border="0" style="padding: 2px 1px;font-size: 11px;">
+					
 					<tr>
-						<td colspan="7">&nbsp;</td>
+						<td colspan="7" align="center" style="font-size: 15px;">Payment Reference (Check Details)</td>
 					</tr>
 					<tr>
-						<td colspan="7" style="font-size: 15px;text-align: center;">Check Details</td>
+						<td colspan="7">&nbsp;</td>
 					</tr>
 					'.$data.'
 				</table>';
@@ -388,7 +389,7 @@ class Check_warehousing extends CI_Controller {
 
         $pdf->setFontSubsetting(true);
 
-        $pdf->SetFont('dejavusans', '', 7, '', true);
+        //~ $pdf->SetFont('dejavusans', '', 7, '', true);
 
         $pdf->AddPage('P', 'A4');
 		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);

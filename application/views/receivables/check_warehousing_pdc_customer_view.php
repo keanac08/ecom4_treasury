@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h3 class="box-title">Pending for Invoice</h3>
+					<h3 class="box-title">Check Warehousing</h3>
 				</div>
 				<div class="row">
 					<div class="col-sm-3" style="padding: 10px;margin-left: 20px;">
