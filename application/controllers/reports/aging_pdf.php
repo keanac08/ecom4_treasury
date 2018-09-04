@@ -41,7 +41,10 @@ class Aging_pdf extends CI_Controller {
 		
 		$html = '<table border="0" style="font-size: 12px;padding: 3px;">
 					<tr>
-						<td colspan="5" align="left">Accounts Receivable Aging</td>
+						<td colspan="5" align="left">Profile Accounts Receivable</td>
+					</tr>
+					<tr>
+						<td colspan="5" align="left">As of : '.$as_of_date.'</td>
 					</tr>
 				</table>';
 		$this->pdf->writeHTML($html, true, false, true, false, '');

@@ -14,7 +14,7 @@ class Aging extends CI_Controller{
 		$as_of_date = $this->input->post('as_of_date') != NULL ? date('m/d/Y', strtotime($this->input->post('as_of_date'))) : date('m/d/Y');
 		
 		$data['content'] = 'receivables/receivables_aging_view';
-		$data['title'] = 'Accounts Receivable Aging';
+		$data['title'] = 'Profile Accounts Receivable';
 		$data['head_title'] = 'Treasury | Receivables Aging';
 
 		$data['results'] = $this->aging_model->get_receivables_aging(date('d-M-y', strtotime($as_of_date)));
@@ -40,12 +40,20 @@ class Aging extends CI_Controller{
 	
 	public function profile_summary(){
 		
+		//~ $as_of_date = $this->input->post('as_of_date') != NULL ? date('m/d/Y', strtotime($this->input->post('as_of_date'))) : date('m/d/Y');
+		
+		if($this->input->post('as_of_date') != NULL){
+			$as_of_date = date('m/d/Y', strtotime($this->input->post('as_of_date')));
+		}
+		else{
+			$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(5));
+			$as_of_date =  $as_of_date->format('m/d/Y');
+		}
+		
 		$profile_class_id = $this->uri->segment(4);
-		$as_of_date = DateTime::createFromFormat('mdY', $this->uri->segment(5));
-		$as_of_date =  $as_of_date->format('m/d/Y');
 		
 		$data['content'] = 'receivables/profile_class_receivables_aging_view';
-		$data['title'] = 'Accounts Receivable Aging <small>Per Profile Class</small>';
+		$data['title'] = 'Profile Accounts Receivable <small>Per Customer</small>';
 		$data['head_title'] = 'Treasury | Receivables Summary';
 
 		$data['results'] = $this->aging_model->get_receivables_profile_summary(date('d-M-y', strtotime($as_of_date)), $profile_class_id);
