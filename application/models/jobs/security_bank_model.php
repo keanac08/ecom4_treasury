@@ -58,7 +58,7 @@ class Security_bank_model extends CI_Model {
 							ON oola.line_id = hold.line_id
 				   WHERE 1 = 1
 						 AND oola.ship_from_org_id = 121
-						 AND hcca.cust_account_id = 15096
+						 AND hcca.cust_account_id IN (15096,15131,15141)
 						 AND msn.serial_number IS NOT NULL
 						   AND hold.order_hold_id = (SELECT MAX (order_hold_id)
                                                     FROM oe_order_holds_all
