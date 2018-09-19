@@ -177,7 +177,7 @@ if($this->session->flashdata('banner') !== NULL){
 	}
 	?>
 <?php
-if(in_array($this->session->tre_portal_user_type, array('Administrator','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){ 
+if(in_array($this->session->tre_portal_user_type, array('Administrator','Regular User','IPC Parts','IPC Vehicle-Fleet','IPC Vehicle','IPC Fleet'))){ 
 ?>
 	<script>
 		$(document).ready(function() {

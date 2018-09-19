@@ -21,7 +21,7 @@ class Transaction extends CI_Controller {
 		
 		$as_of_date_orig = $this->input->post('as_of_date');
 		
-		if(in_array($this->session->tre_portal_user_type, array('Administrator'))){
+		if(in_array($this->session->tre_portal_user_type, array('Administrator','Regular User'))){
 			$customer_id = $this->input->post('customer_id');
 			$customer_name = $this->input->post('customer_name');
 			$profile_class_id = NULL;
