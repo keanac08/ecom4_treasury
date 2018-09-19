@@ -77,7 +77,7 @@
 						
 						<?php 
 						//~ OTHERS -------------------------------------------------------------------------------
-						if(in_array($this->session->tre_portal_user_type, array('Administrator','Regular User','Dealer Admin'))){
+						if(in_array($this->session->tre_portal_user_type, array('Administrator','Regular User','Dealer Admin','IPC Parts'))){
 						?>
 							<li class="<?php echo ($this->uri->segment(4) == 'others') ? 'active' : ''; ?>" >
 								<a href="<?php echo base_url('receivables/soa/admin/others'); ?> ">
