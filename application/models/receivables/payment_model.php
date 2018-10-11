@@ -130,11 +130,11 @@ class Payment_Model extends CI_Model {
 					   LEFT JOIN hz_cust_accounts_all hcaa
 						  ON hcaa.cust_account_id = ooha.sold_to_org_id
 					   LEFT JOIN hz_parties hp ON hp.party_id = hcaa.party_id
-					  --  LEFT JOIN ipc.ipc_vehicle_for_invoice for_inv
-					  --    ON msn.serial_number = for_inv.cs_number
-					  --    AND  hcaa.cust_account_id = for_inv.customer_id
+					    LEFT JOIN ipc.ipc_vehicle_for_invoice for_inv
+					      ON msn.serial_number = for_inv.cs_number
+					      AND  hcaa.cust_account_id = for_inv.customer_id
 				 WHERE     1 = 1
-						-- AND for_inv.cs_number is not null
+					    AND for_inv.cs_number is not null
 					   AND msn.c_attribute30 IS NULL
 					   AND mr.organization_id = 121
 					   AND hcaa.cust_account_id = ?
@@ -249,6 +249,7 @@ class Payment_Model extends CI_Model {
 					      ON msn.serial_number = for_inv.cs_number
 					      AND  hcaa.cust_account_id = for_inv.customer_id
 				 WHERE     1 = 1
+						AND for_inv.cs_number is not null
 						AND msn.c_attribute30 IS NULL
 						AND mr.organization_id = 121
 						AND hcaa.cust_account_id = ? -- 15096 
