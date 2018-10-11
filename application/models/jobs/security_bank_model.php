@@ -12,8 +12,10 @@ class Security_bank_model extends CI_Model {
 		
 		$sql = "SELECT hcca.cust_account_id customer_id,
 						msn.serial_number || '-' || TO_CHAR(sysdate, 'MMDDYYYY') INVOICE_NUMBER,
-						to_char(d_attribute20, 'MM/DD/YYYY') invoice_date,
-						to_char(d_attribute20, 'MM/DD/YYYY') invoice_due_date,
+						-- to_char(d_attribute20, 'MM/DD/YYYY') invoice_date,
+						-- to_char(d_attribute20, 'MM/DD/YYYY') invoice_due_date,
+						trunc(sysdate) invoice_date,
+						trunc(sysdate) invoice_due_date,
 						round((oola.unit_selling_price + oola.tax_value) - (oola.unit_selling_price * .01),2) invoice_amount,
 						'INV' document_type,
 						'0222025472001' collection_acct_no,
