@@ -222,7 +222,7 @@
 				//~ PAYMENTS -------------------------------------------------------------------------------
 				if(in_array($this->session->tre_portal_user_type, array('Administrator','Dealer Admin'))){
 				?>
-					<li class="treeview <?php  echo (in_array($this->uri->segment(2), array('payment','receipt','check_warehousing'))) ? 'active' : ''; ?>">
+					<li class="treeview <?php  echo (in_array($this->uri->segment(2), array('payment','check_warehousing'))) ? 'active' : ''; ?>">
 						<a href="#">
 							<i class="fa fa-credit-card"></i> <span>Payments</span>
 							<span class="pull-right-container">
