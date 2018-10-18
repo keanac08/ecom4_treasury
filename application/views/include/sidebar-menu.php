@@ -237,12 +237,12 @@
 									</span>
 								</a>
 								<ul class="treeview-menu">
-									<li class="<?php echo ($this->uri->segment(2) == 'payment' AND $this->uri->segment(3) == 'dated') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/payment/dated'); ?> "><i class="fa fa-circle-o"></i>w/ Terms</a></li>
+									<li class="<?php echo ($this->uri->segment(2) == 'payment' AND $this->uri->segment(3) == 'dated') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/payment/dated'); ?> "><i class="fa fa-circle-o"></i>w/o Terms</a></li>
 <!--
 									<li class="<?php echo ($this->uri->segment(2) == 'payment' AND $this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>"><a href="<?php echo base_url('receivables/payment/pdc'); ?> "><i class="fa fa-circle-o"></i> PDC (W/ Payment Terms)</a></li>
 -->
 									<li class="treeview <?php echo ($this->uri->segment(2) == 'payment' AND in_array($this->uri->segment(3),array('regular_pdc','advance_payment'))) ? 'active' : ''; ?>" >
-										<a  href=""><i class="fa fa-circle-o"></i>w/o Terms
+										<a  href=""><i class="fa fa-circle-o"></i>w/ Terms
 											<span class="pull-right-container">
 												<i class="fa fa-angle-left pull-right"></i>
 											</span>

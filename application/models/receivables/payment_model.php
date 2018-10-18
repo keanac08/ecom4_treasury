@@ -8,6 +8,35 @@ class Payment_Model extends CI_Model {
 		$this->oracle = $this->load->database('oracle', true);
 	}
 	
+	public function new_bank_payment_header($bank){
+		$sql = "INSERT INTO  ipc.ipc_bank_payment_header (
+					created_by,
+					bank)
+				VALUES (?,?)";
+				
+		$this->oracle->query($sql, array($this->session->tre_portal_user_id, $bank));
+	}
+	
+	public function new_bank_payment_lines_v($last_id, $cs_number){
+		$sql = "INSERT INTO  ipc.ipc_bank_payment_lines (
+					payment_ref_id,
+					cs_number)
+				VALUES (?,?)";
+				
+		$this->oracle->query($sql, array($last_id, $cs_number));
+	}
+	
+	
+	public function last_payment_reference_id(){
+		$sql = "SELECT ipc.pay_ref_seq.currval last_id
+				from dual";
+				
+		$data = $this->oracle->query($sql);
+		$rows = $data->result();
+		return $rows[0];
+	}
+	
+	
 	public function get_vehicle_tagged($customer_id, $cs_numbers = NULL){
 		
 		if($cs_numbers != NULL){

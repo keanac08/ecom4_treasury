@@ -26,6 +26,9 @@ class Rcbc_payment_reference_v_pdf extends CI_Controller {
 		
 		$rows = $this->payment_model->get_vehicle_tagged($this->session->tre_portal_customer_id, $cs_numbers);
 		
+		$this->payment_model->new_bank_payment_header($this->input->post('bank'));
+		$last_insert_id = $this->payment_model->last_payment_reference_id();
+		
 		//~ print_R($rows);die();
 
 		$this->pdf->AddPage($orientation);
@@ -60,6 +63,9 @@ class Rcbc_payment_reference_v_pdf extends CI_Controller {
 		$count = 1;
 		$total = 0;
 		foreach($rows as $row){
+			
+			$this->payment_model->new_bank_payment_lines_v($last_insert_id->LAST_ID, $row->CS_NUMBER);
+			
 			$data .= '<tr>
 						<td width="30px">'.$count.'</td>
 						<td width="80px">'.$row->CS_NUMBER.'</td>

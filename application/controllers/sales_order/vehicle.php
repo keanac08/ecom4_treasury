@@ -37,5 +37,7 @@ class Vehicle extends CI_Controller {
 						);
 			$this->vehicle_model->new_request_for_invoice($params);
 		}
+		
+		redirect('sales_order/vehicle/tagged');
 	}
 }
