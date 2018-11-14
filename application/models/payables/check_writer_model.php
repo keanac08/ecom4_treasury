@@ -62,6 +62,7 @@ class Check_writer_model extends CI_Model {
 					   LEFT JOIN iby_ext_bank_accounts ieba
 						  ON ieba.ext_bank_account_id = iao.ext_bank_account_id
 				 WHERE     1 = 1
+				 AND IEBA.BRANCH_ID IS NOT NULL
 					   AND ac.check_date BETWEEN ? AND ?
 					   AND cpd.payment_document_name = ?
 					   AND ac.status_lookup_code = 'NEGOTIABLE'";
