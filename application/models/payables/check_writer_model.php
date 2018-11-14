@@ -66,6 +66,7 @@ class Check_writer_model extends CI_Model {
 					   AND cpd.payment_document_name = ?
 					   AND ac.status_lookup_code = 'NEGOTIABLE'";
 					   
+		
 		$data = $this->oracle->query($sql, $params);
 		return $data->result();
 		
