@@ -34,7 +34,8 @@ class Soa_model extends CI_Model {
 									0
 							END
 						days_overdue,
-						SUM (soa.invoice_orig_amount) transaction_amount,
+						-- SUM (soa.invoice_orig_amount) transaction_amount,
+						SUM (CASE WHEN (soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0) = 0 THEN 0 ELSE soa.invoice_orig_amount END) transaction_amount,
 						SUM (soa.wht_orig_amount)       wht_amount,
 						SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) balance,
 						SUM ((soa.invoice_amount + NVL(adj.adjustment_amount,0)) - (NVL (araa.paid_amount, 0) * NVL(soa.exchange_Rate,1))) balance_php
@@ -82,7 +83,7 @@ class Soa_model extends CI_Model {
 						 AND soa.trx_date <= '".$as_of_date."'
 						 AND soa.customer_id = ?
 						 ".$and."
-						 -- AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
+						--  AND (soa.invoice_orig_amount +NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)  > 0
 					 GROUP BY ROLLUP (soa.due_date, soa.customer_trx_id)
 					 HAVING SUM ((soa.invoice_orig_amount + NVL(adj.adjustment_amount,0)) - NVL (araa.paid_amount, 0)) > 0
 					 ORDER BY due_Date nulls last"; //echo $sql;die();
