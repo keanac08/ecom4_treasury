@@ -64,7 +64,8 @@ class Check_writer_model extends CI_Model {
 				 WHERE     1 = 1
 					   AND ac.check_date BETWEEN ? AND ?
 					   AND cpd.payment_document_name = ?
-					   AND ac.status_lookup_code = 'NEGOTIABLE'";
+					   AND ac.status_lookup_code = 'NEGOTIABLE'
+					   AND CASE WHEN sup.party_id = 842201 and ieba.branch_id is NULL then 0 else 1 end = 1";
 					   
 		
 		$data = $this->oracle->query($sql, $params);
