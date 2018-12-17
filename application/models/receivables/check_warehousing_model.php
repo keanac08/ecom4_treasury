@@ -158,6 +158,14 @@ class Check_warehousing_model extends CI_Model {
 		$this->oracle->query($sql, $check_id);
 	}
 	
+	public function new_pdc_lines($check_id, $cs_number){
+		$sql = "INSERT INTO ipc.ipc_treasury_pdc_units (
+					check_id,
+					cs_number)
+					values (?,?)";
+		$this->oracle->query($sql, array($check_id,$cs_number));
+	}
+	
 	public function get_check_details_for_releasing($batch_id, $check_id){
 		
 		if($batch_id != NULL){

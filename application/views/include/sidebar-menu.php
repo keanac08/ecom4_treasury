@@ -306,6 +306,11 @@
 									<i class="fa fa-circle-o"></i>New Entry
 								</a>
 							</li> 
+							<li class="<?php echo ($this->uri->segment(3) == 'entry') ? 'active' : ''; ?>" >
+								<a href="<?php echo base_url('receivables/check_warehousing/new_entry'); ?> ">
+									<i class="fa fa-circle-o"></i>New Entry 2
+								</a>
+							</li> 
 							<li class="<?php echo ($this->uri->segment(3) == 'credit_hold_releasing') ? 'active' : ''; ?>" >
 								<a href="<?php echo base_url('receivables/check_warehousing/credit_hold_releasing'); ?> ">
 									<i class="fa fa-circle-o"></i>Credit Hold Releasing

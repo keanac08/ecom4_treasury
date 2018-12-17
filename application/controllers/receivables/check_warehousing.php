@@ -89,6 +89,17 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function new_entry(){
+		
+		$data['content'] = 'receivables/check_warehousing_entry_new_view';
+		$data['title'] = 'Check Warehousing <small>New Entry</small>';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		$data['cs_numbers'] = NULL;
+		
+		$this->load->view('include/template',$data);
+	}
+	
 	public function customer_entry(){
 		
 		//~ echo $this->session->tre_portal_customer_id;
@@ -170,6 +181,18 @@ class Check_warehousing extends CI_Controller {
 		echo $this->load->view('ajax/check_warehousing_selected_units',$data,true);	
 	}
 	
+	public function ajax_new_search_cs_number(){
+		
+		$cs_numbers = explode(',', $this->input->post('cs_numbers'));
+		$cs_numbers = '\''.implode('\',\'', str_replace(' ', '', $cs_numbers)).'\'';
+		$cs_numbers = STRTOUPPER($cs_numbers);
+		
+		$data['result'] = $this->check_warehousing_model->get_tagged_units($cs_numbers);
+		$data['cs_numbers'] = $cs_numbers;
+		
+		echo $this->load->view('ajax/check_warehousing_selected_units_new',$data,true);	
+	}
+	
 	public function save_entry(){
 		
 		$this->load->helper('date_helper');
@@ -207,6 +230,53 @@ class Check_warehousing extends CI_Controller {
 		//~ echo $header_id->LAST_ID . ' ' . $cs_numbers;
 		
 		echo $header_id->LAST_ID;
+	}
+	
+	public function save_entry_new(){
+		
+		$this->load->helper('date_helper');
+		
+		$rows = $this->input->post('data');
+		
+		usort($rows, function($a, $b) {
+			return $a['check_bank'].$a['check_number'] <=> $b['check_bank'].$b['check_number'];
+		});
+		
+		$check_number = '';
+		$check_ids = array();
+		foreach($rows as $row){
+			
+			$row = (object)$row;
+			
+			if($check_number != $row->check_number){
+				$check_header = array(
+					$row->check_number,
+					$row->check_bank,
+					oracle_date($row->check_date),	
+					$row->check_amount,
+					$this->session->tre_portal_customer_id
+				);
+				
+				//~ insert check header
+				$this->check_warehousing_model->new_pdc_header($check_header);
+				
+				//~ get last header id
+				$header_id = $this->check_warehousing_model->get_last_pdc_header_id();
+				$header_id = $header_id[0];
+				
+				//~ save check_id
+				$check_ids[] = $header_id->LAST_ID;
+				
+				//~ set value of last check_number
+				$check_number = $row->check_number;
+			}
+			
+			$this->check_warehousing_model->new_pdc_lines($header_id->LAST_ID, $row->cs_number);
+		}
+		//~ print_r($check_ids);
+		$check_ids = implode(",", $check_ids);
+		$this->session->set_flashdata('save_success', 'PDC details has been successfully saved. ('.$check_ids.')');
+		redirect('receivables/check_warehousing/new_entry');
 	}
 	
 	public function approved_check_unit_details_ajax(){
