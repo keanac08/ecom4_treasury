@@ -247,13 +247,14 @@ class Check_warehousing extends CI_Controller {
 		foreach($rows as $row){
 			
 			$row = (object)$row;
+			$check_amount = str_replace( ',', '', $row->check_amount );
 			
 			if($check_number != $row->check_number){
 				$check_header = array(
 					$row->check_number,
 					$row->check_bank,
 					oracle_date($row->check_date),	
-					$row->check_amount,
+					$check_amount,
 					$this->session->tre_portal_customer_id
 				);
 				
