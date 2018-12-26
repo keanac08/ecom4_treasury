@@ -11,7 +11,7 @@ if(!empty($result)){
 	<div class="col-md-12">
 		<div class="table-responsive">
 			<form id="myForm" method="POST" action="save_entry_new">
-				<table class="table" style="width:1700px;">
+				<table class="table" style="width:1700px;max-width: none;">
 					<thead>
 						<tr>
 							<th width="30px" class="text-center">#</th>
