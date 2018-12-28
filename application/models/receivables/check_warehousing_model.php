@@ -100,6 +100,72 @@ class Check_warehousing_model extends CI_Model {
 		return $data->result();
 	}
 	
+	public function get_approved_pdc_new($from_date, $to_date){
+		
+		$from_date = ($from_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($from_date));
+		$to_date = ($to_date == NULL)? date('d-M-y'):date('d-M-y', strtotime($to_date));
+		$params = array($from_date, $to_date);
+		
+		$sql = "select --oola.*,
+				tp.check_id,
+				tp.date_created date_received,
+				tp.check_date,
+				tap.date_deposit,
+				tp.check_bank,
+				tp.check_number,
+				tp.check_amount,
+				tap.cs_number,
+				rcta.trx_number invoice_number,
+				rcta.trx_date invoice_date,
+				hp.party_name customer_name,
+				hcaa.account_name,
+				hcpc.name profile_class,
+				ooha.attribute3 fleet_name,
+				msib.attribute9 sales_model,
+				msib.attribute8 body_color,
+				rt.name payment_terms,
+				rcta.attribute5 pullout_date,
+				case when rcta.attribute5 is not null then
+				to_date(rcta.attribute5, 'YYYY/MM/DD HH24:MI:SS') +  NVL (
+												   SUBSTR (rt.name,
+														   0,
+														   INSTR (rt.name, ' ') - 1),
+												   rt.name) else null end due_date
+				from ipc.ipc_treasury_approved_pdc tap
+				left join ipc.ipc_treasury_pdc_units tpu
+				on tap.cs_number = tpu.cs_number
+				and tap.check_id = tpu.check_id
+				left join ipc.ipc_treasury_pdc tp
+				on tpu.check_id = tp.check_id
+				left join oe_order_lines_all oola
+				on tap.line_id = oola.line_id
+				left join oe_order_headers_all ooha
+				on oola.header_id = ooha.header_id
+				left join ra_terms_tl rt
+				ON oola.payment_term_id = rt.term_id
+				left join ra_customer_trx_all rcta
+				on tap.cs_number = rcta.attribute3
+				left join mtl_system_items_b msib
+				on oola.ordered_item = msib.segment1
+				and oola.ship_from_org_id = msib.organization_id
+				left join hz_cust_accounts_all hcaa
+				on ooha.sold_to_org_id = hcaa.cust_account_id
+				left join hz_parties hp
+				on hcaa.party_id = hp.party_id
+				LEFT JOIN hz_customer_profiles hzp
+				ON  hcaa.cust_account_id = hzp.cust_account_id
+				AND oola.invoice_to_org_id = hzp.site_use_id
+				LEFT JOIN hz_cust_profile_classes hcpc
+				ON hzp.profile_class_id = hcpc.profile_class_id
+				where 1 = 1
+				--and tap.check_id = 6238
+				 AND tp.check_date between ? AND ?
+				--and tap.cs_number = 'D1C123'";
+				
+		$data = $this->oracle->query($sql, $params);
+		return $data->result();
+	}
+	
 	public function get_customer_pdc($from_date, $to_date, $customer_id){
 		
 		$from_date = ($from_date == NULL)? date('01-M-y'):date('d-M-y', strtotime($from_date));

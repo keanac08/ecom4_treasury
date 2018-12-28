@@ -23,6 +23,20 @@ class Check_warehousing extends CI_Controller {
 		$this->load->view('include/template',$data);
 	}
 	
+	public function pdc_new(){
+		
+		$data['from_date'] = $this->input->post('from_date');
+		$data['to_date'] = $this->input->post('to_date');
+		
+		$data['content'] = 'receivables/check_warehousing_pdc_new_view';
+		$data['title'] = 'Check Warehousing';
+		$data['head_title'] = 'Treasury | Check Warehousing';
+		
+		$data['result'] = $this->check_warehousing_model->get_approved_pdc_new($data['from_date'], $data['to_date']);
+		
+		$this->load->view('include/template',$data);
+	}
+	
 	public function customer_check_list(){
 		
 		$data['from_date'] = $this->input->post('from_date');
@@ -305,7 +319,10 @@ class Check_warehousing extends CI_Controller {
 		
 		$check_id = $this->input->post('check_id');
 		$deposit_date = $this->input->post('deposit_date');
+		
 		$this->check_warehousing_model->update_check_deposit_date($check_id, oracle_date($deposit_date));
+		
+		echo $deposit_date;
 	}
 	
 	public function pdc_details_pdf(){
