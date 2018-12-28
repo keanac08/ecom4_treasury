@@ -192,8 +192,8 @@
 		
 		$( ".deposit_update" ).on('blur' ,function() {
 			
-			let deposit_date = $(this).val();
-			let check_id = $(this).data('check_id');
+			var deposit_date = $(this).val();
+			var check_id = $(this).data('check_id');
 			
 			if(deposit_date.length > 0){
 				//~ console.log(deposit_date);
