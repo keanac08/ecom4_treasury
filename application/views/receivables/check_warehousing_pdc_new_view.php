@@ -190,15 +190,10 @@
 			});
 		});
 		
-		
-		//~ $( ".deposit_update" ).blur(function() {
-			//~ alert($(this).val());
-		//~ });
-		
 		$( ".deposit_update" ).on('blur' ,function() {
 			
-			let deposit_date = $(this).val()
-			let check_id = $(this).data('check_id')
+			let deposit_date = $(this).val();
+			let check_id = $(this).data('check_id');
 			
 			if(deposit_date.length > 0){
 				//~ console.log(deposit_date);
