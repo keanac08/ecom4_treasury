@@ -317,7 +317,7 @@
 								</a>
 							</li> 
 							<li class="<?php echo ($this->uri->segment(3) == 'pdc') ? 'active' : ''; ?>" >
-								<a href="<?php echo base_url('receivables/check_warehousing/pdc'); ?> ">
+								<a href="<?php echo base_url('receivables/check_warehousing/pdc_new'); ?> ">
 									<i class="fa fa-circle-o"></i>Approved PDCs
 								</a>
 							</li> 
