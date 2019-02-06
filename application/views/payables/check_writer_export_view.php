@@ -9,7 +9,7 @@
 		<div class="col-md-9">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<h3 class="box-title">Account Payables</h3>
+					<h3 class="box-title">Accounts Payable</h3>
 				</div>
 				<div class="box-body">
 					<table class="table table-condensed table-striped table-bordered" id="dr-list" class="display" cellspacing="0" width="100%" style="font-size: 90%;">
