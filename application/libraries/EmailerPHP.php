@@ -16,7 +16,7 @@ class EmailerPHP extends PHPMailer {
 		$this->Password = 'URc#5110AZ';                        // SMTP password
 		$this->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 		$this->Port = 587;                                    // TCP port to connect to
-		$this->From = 'interface-notif@isuzuphil.com';
+		$this->From = 'interface-notification@isuzuphil.com';
 		$this->FromName = 'System Notfication';
 		$this->isHTML(true);                                  // Set 
 	}
