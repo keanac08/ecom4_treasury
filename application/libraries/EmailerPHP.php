@@ -13,7 +13,7 @@ class EmailerPHP extends PHPMailer {
 		$this->Host = 'smtp.office365.com';                   // Specify main and backup SMTP servers
 		$this->SMTPAuth = true;                               // Enable SMTP authentication
 		$this->Username = 'interface-notification@isuzuphil.com';    // SMTP username
-		$this->Password = 'URc#5110AZ';                        // SMTP password
+		$this->Password = 'Luk@71az55';                        // SMTP password
 		$this->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 		$this->Port = 587;                                    // TCP port to connect to
 		$this->From = 'interface-notification@isuzuphil.com';
